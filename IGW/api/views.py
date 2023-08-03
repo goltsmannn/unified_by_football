@@ -20,7 +20,7 @@ class PlacemarkApiView(APIView):
             x=request.data['x'],
             y=request.data['y'],
         )
-        if request.data['type'] is not None:
+        if "type" in request.data:
             placemark.type = request.data['type']
             placemark.save()
         return Response({'placemark':PlacemarkSerializer(placemark).data})

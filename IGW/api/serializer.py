@@ -10,8 +10,8 @@ from rest_framework.renderers import JSONRenderer
 
 
 class PlacemarkSerializer(serializers.Serializer):
-    x = serializers.IntegerField()
-    y = serializers.IntegerField()
+    x = serializers.FloatField()
+    y = serializers.FloatField()
     type = serializers.CharField(max_length=1)
 
 
