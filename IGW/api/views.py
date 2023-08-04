@@ -16,11 +16,22 @@ class PlacemarkApiView(APIView):
         return Response({'title':'bebra', 'placemarks':PlacemarkSerializer(placemarks, many=True).data})
     
     def post(self, request):
-        placemark = Placemark.objects.create(
-            x=request.data['x'],
-            y=request.data['y'],
-        )
-        if "type" in request.data:
-            placemark.type = request.data['type']
-            placemark.save()
-        return Response({'placemark':PlacemarkSerializer(placemark).data})
+        serializer = PlacemarkSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'placemark': serializer.data})
+    
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({'Error': 'Put not allowed'})
+        
+        try:
+            instance = Placemark.objects.get(pk=pk)
+        except:
+            return Response({'Error': 'Key undefined'})
+        
+        serializer = PlacemarkSerializer(instance, request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'placemark': serializer.data})

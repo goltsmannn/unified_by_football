@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 
+from map.models import Placemark
+
 
 # class PlacemarkModel:
 #     def __init__(self, x, y, type) -> None:
@@ -9,12 +11,11 @@ from rest_framework.renderers import JSONRenderer
 #         self.type = type
 
 
-class PlacemarkSerializer(serializers.Serializer):
-    x = serializers.FloatField()
-    y = serializers.FloatField()
-    type = serializers.CharField(max_length=1)
-
-
+class PlacemarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Placemark
+        fields = ('x', 'y', 'type')
+    
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)
