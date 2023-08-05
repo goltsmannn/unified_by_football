@@ -10,6 +10,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
+class PlacemarkAPIList(generics.ListCreateAPIView):
+    queryset = Placemark.objects.all()
+    serializer_class = PlacemarkSerializer
+
 class PlacemarkApiView(APIView):
     def get(self, request):
         placemarks = Placemark.objects.all().values()

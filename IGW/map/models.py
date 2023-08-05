@@ -12,10 +12,10 @@ class Placemark(models.Model):
 class Review(models.Model):
     author = models.CharField(max_length=10)
     text = models.CharField(max_length=200)
-    placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE)
+    placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="reviews")
     rating = models.PositiveSmallIntegerField()
 
 
 class ReviewPictures(models.Model):
-    image = models.ImageField() 
-    review = models.ForeignKey(Review,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='review_pictures/') 
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="pictures")

@@ -14,7 +14,7 @@ from map.models import Placemark
 class PlacemarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Placemark
-        fields = ('x', 'y', 'type')
+        fields = "__all__"
     
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')

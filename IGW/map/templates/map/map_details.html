@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+{% regroup pictures by review  as reviews %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+</head>
+
+<body>
+  {% for review in reviews%}
+  <div style='border: 1px solid black; margin: 20px;'>
+    <p>{{review.grouper.author}}</p> <br>
+    <div>{{review.grouper.text}}</div> <br>
+    <p> {{review.grouper.rating}} </p> <br>
+  </div>
+  
+    {% for picture in review.list %}
+    <div>
+      <img src="media/{{picture.image}}">
+      <div> {{picture.url}} </div>
+    {% endfor %}
+  {% endfor %}
+</body>
+
+</html>
