@@ -15,7 +15,7 @@ async function fetchAsync () {
 
 async function renderMarkers(){
   json_response = await fetchAsync();
-  json_response.placemarks.forEach(placemark_json=>{
+  json_response.forEach(placemark_json=>{
     var placemark = new ymaps.Placemark([placemark_json.x, placemark_json.y], {
       balloonContentHeader: 'Header',
       balloonContentBody: 'Body',

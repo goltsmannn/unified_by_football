@@ -15,6 +15,13 @@
             <ul>
                 <li>
                     <a href="{% url 'main_page' %}">Map</a>
+                    {% if user.is_authenticated%}
+                        <a href="#">Профиль</a>
+                        <a href="{% url 'logout_page' %}"> Выйти </a>
+                    {% else %}
+                        <a href="{% url 'register_page' %}">Регистрация</a>
+                        <a href="{% url 'login_page' %}">Войти</a>
+                    {% endif%}
                 </li>
             </ul>
         </nav>
