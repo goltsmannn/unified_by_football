@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 import jinja2
 from map.models import Placemark, ReviewPictures, Review
+from django.views.generic import TemplateView
 
 
-def main_page(request, *args,):
-    return render(request, 'map/main_map.html')
+class MainPageTemplateView(TemplateView):
+    template_name = 'map/main_map.html'
+
 
 def show_details(request, pk):
     pictures = ReviewPictures.objects.select_related('review', 'review__placemark').filter(review__placemark__pk=pk)

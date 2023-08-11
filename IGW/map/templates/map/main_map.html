@@ -1,16 +1,11 @@
-<!DOCTYPE html>
+{% extends 'map/base.html' %}
 {% load static %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block scriptsTitleMeta%}
     <script src="https://api-maps.yandex.ru/2.1/?apikey=2f1de802-9ce8-4808-b8b6-8c5b019a0c46&lang=ru_RU"></script>
     <script src="{% static 'map/script.js' %}"></script>
     <title>Map</title>
-</head>
-
-<body>
-  <div id="map" style="width: 600px; height: 400px"></div>
-</body>
-
-</html>
+{% endblock%}
+{% block content %}
+  <div id="map" style="width:500px; height:500px"></div>
+{% endblock%}

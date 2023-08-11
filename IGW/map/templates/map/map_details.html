@@ -1,26 +1,23 @@
-<!DOCTYPE html>
+{% extends 'map/base.html' %}
 {% load static %}
-{% regroup pictures by review  as reviews %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% block scriptsTitleMeta %}
     <title>Map</title>
-</head>
+{% endblock %}
 
-<body>
+
+{% block content %} 
+{% regroup pictures by review as reviews %}
   {% for review in reviews%}
-  <div style='border: 1px solid black; margin: 20px;'>
-    <p>{{review.grouper.author}}</p> <br>
-    <div>{{review.grouper.text}}</div> <br>
-    <p> {{review.grouper.rating}} </p> <br>
-  </div>
+    <div style='border: 1px solid black; margin: 20px; width:450px'>
+      <p>{{review.grouper.author}}</p> <br>
+      <div>{{review.grouper.text}}</div> <br>
+      <p> {{review.grouper.rating}} </p> <br>
   
-    {% for picture in review.list %}
-    <div>
-      <img src="media/{{picture.image}}">
-      <div> {{picture.url}} </div>
+      {% for picture in review.list %}
+      <div>
+        <img src="media/{{picture.image}}" style="width:400px; height:400px">
+      </div>
+    </div>
     {% endfor %}
   {% endfor %}
-</body>
-
-</html>
+{% endblock content%}
