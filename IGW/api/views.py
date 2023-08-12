@@ -16,8 +16,8 @@ class PlacemarkAPIList(generics.ListCreateAPIView):
 
 class PlacemarkApiView(APIView):
     def get(self, request):
-        placemarks = Placemark.objects.all().values()
-        return Response({'title':'bebra', 'placemarks':PlacemarkSerializer(placemarks, many=True).data})
+        data = Placemark.objects.all().prefetch_related('review', 'review__pictures')
+        return Response({'title':'bebra', 'placemarks':PlacemarkSerializer(data, many=True).data})
     
     def post(self, request):
         serializer = PlacemarkSerializer(data=request.data)

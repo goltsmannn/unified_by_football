@@ -36,12 +36,10 @@ class RegisterView(CreateView):
 
 
 class ReviewsListView(DetailView):
-    template_name ='map/map_details.html'
-    
+    template_name ='map/map_details.html'  
 
     def get_object(self) -> Review:
         return ReviewPictures.objects.select_related('review', 'review__placemark').filter(review__placemark__pk=self.kwargs['pk'])
-
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -50,10 +48,3 @@ class ReviewsListView(DetailView):
         return context
 
 
-
-def show_details(request, pk):
-    pictures = ReviewPictures.objects.select_related('review', 'review__placemark').filter(review__placemark__pk=pk)
-    context = {
-        'pictures': pictures
-    }
-    return render(request, 'map/map_details.html', context)
