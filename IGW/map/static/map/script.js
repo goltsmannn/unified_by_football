@@ -17,6 +17,7 @@ async function fetchAsync () {
 function render_placemark(plc_json){
   let pictures = [];
   let avg = 0.0, cnt = 0;
+
   plc_json.reviews.forEach(review=>{
     avg += review.rating;
     cnt += 1;
@@ -29,8 +30,8 @@ function render_placemark(plc_json){
 
   var placemark = new ymaps.Placemark([plc_json.x, plc_json.y], {
     balloonContentHeader: plc_json.description,
-    balloonContentBody: pictures,
-    balloonContentFooter: (cnt==0?"Нет рейтинга": avg/cnt),
+    balloonContentBody: pictures[0].image + ' потом переделаю в картинку пока лови адрес вбей сам)',
+    balloonContentFooter: (cnt==0?"Нет рейтинга": 'рейтинг: ' + avg/cnt),
   }, {});
   return placemark;
 }

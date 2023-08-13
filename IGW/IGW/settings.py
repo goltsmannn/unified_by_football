@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'map.apps.MapConfig',
     'api.apps.ApiConfig',
     'rest_framework',
+    'account.apps.AccountConfig'
 ]
 
 MIDDLEWARE = [

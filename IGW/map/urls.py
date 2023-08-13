@@ -3,6 +3,11 @@ from . import views
 from django.contrib.auth.views import LoginView
 from django.conf.urls.static import static
 from IGW.settings import MEDIA_ROOT, MEDIA_URL
+
+
+app_name ='map'
+
+
 urlpatterns = [
     path('login', views.MyLoginView.as_view(), name='login_page'),
     path('register', views.RegisterView.as_view(), name='register_page'),

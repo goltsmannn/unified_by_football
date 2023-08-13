@@ -20,11 +20,11 @@ class MainPageTemplateView(TemplateView):
 
     
 class MyLoginView(auth_views.LoginView):
-    next_page = reverse_lazy('main_page')
+    next_page = reverse_lazy('map:main_page')
 
 
 class MyLogoutView(auth_views.LogoutView):
-    next_page = reverse_lazy('main_page')
+    next_page = reverse_lazy('map:main_page')
 
 
 
@@ -32,7 +32,7 @@ class RegisterView(CreateView):
     template_name = 'registration/register.html'
     model = User
     form_class = MyCreationForm
-    success_url = reverse_lazy('main_page')
+    success_url = reverse_lazy('map:main_page')
 
 
 class ReviewsListView(DetailView):
