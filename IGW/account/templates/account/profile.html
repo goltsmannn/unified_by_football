@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {%block scriptsTitleMeta %}
+    {% endblock scriptsTitleMeta %}
+</head>
+
+<body>
+    <main>
+        <a href="{% url 'map:main_page' %}">На главную</a>
+        <div>
+            {{account.username}}
+        </div>
+        {% block content %}
+        {% endblock content %}
+    </main>
+</body>
+
+</html>
