@@ -2,8 +2,11 @@ let map;
 ymaps.ready(function(){
   map = new ymaps.Map(document.getElementById('map'), {
       center: [55.76, 37.64],
-      zoom: 10
-  });
+      zoom: 10,
+      controls: ['zoomControl'],
+  }, 
+  {suppressMapOpenBlock: true}
+  );
   renderMarkers();
 });
 
@@ -29,9 +32,14 @@ function render_placemark(plc_json){
   });
 
   var placemark = new ymaps.Placemark([plc_json.x, plc_json.y], {
-    balloonContentHeader: plc_json.description,
-    balloonContentBody: pictures[0].image + ' потом переделаю в картинку пока лови адрес вбей сам)',
-    balloonContentFooter: (cnt==0?"Нет рейтинга": 'рейтинг: ' + avg/cnt),
+    balloonContent: `
+      <div class="balloon">
+        <div class="object_description">${plc_json.description}</div>
+        <img src="${pictures.length?pictures[0].image:''}" style="height:100px; width:100px;"></img>
+        <a href="${plc_json.id}">Просмотреть точку</a>
+        <div class="object_rating">${cnt==0?"Нет рейтинга": 'рейтинг: ' + avg/cnt}</div>
+      </div>
+    `,
   }, {});
   return placemark;
 }

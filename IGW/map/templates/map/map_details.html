@@ -6,6 +6,8 @@
 
 
 {% block content %} 
+<a href="{% url 'map:main_page' %}">На главную</a>
+
 {% regroup pictures by review as reviews %}
   {% for review in reviews%}
     <div style='border: 1px solid black; margin: 20px; width:450px'>

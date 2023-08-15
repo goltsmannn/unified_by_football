@@ -32,7 +32,7 @@ class RegisterView(CreateView):
     template_name = 'registration/register.html'
     model = User
     form_class = MyCreationForm
-    success_url = reverse_lazy('map:main_page')
+    success_url = reverse_lazy('map:login_page')
 
 
 class ReviewsListView(DetailView):

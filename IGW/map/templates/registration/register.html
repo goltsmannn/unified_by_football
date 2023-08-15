@@ -1,7 +1,7 @@
 {% extends 'map/base.html' %}
 
 {% block content %}
-<form method="post" action="{% url 'register_page' %}">
+<form method="post" action="{% url 'map:register_page' %}">
 	{% csrf_token %}
 	{{ form.as_p }}		
 	<input type="submit" value="Register" />

@@ -5,7 +5,7 @@
 {% endif %}
 <div>{{ctx.user}}</div>
 
-<form method="post" action="{% url 'login_page' %}">
+<form method="post" action="{% url 'map:login_page' %}">
     {% csrf_token %}
     <table>
     <tr>
