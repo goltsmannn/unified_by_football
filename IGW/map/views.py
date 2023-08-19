@@ -21,6 +21,8 @@ class MainPageTemplateView(TemplateView):
     
 class MyLoginView(auth_views.LoginView):
     next_page = reverse_lazy('map:main_page')
+    redirect_authenticated_user = reverse_lazy('map:main_page')
+    
 
 
 class MyLogoutView(auth_views.LogoutView):

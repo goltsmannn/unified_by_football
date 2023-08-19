@@ -11,7 +11,7 @@
 {% regroup pictures by review as reviews %}
   {% for review in reviews%}
     <div style='border: 1px solid black; margin: 20px; width:450px'>
-      <p>{{review.grouper.author}}</p> <br>
+      <p>{{review.grouper.author.username}}</p> <br>
       <div>{{review.grouper.text}}</div> <br>
       <p> {{review.grouper.rating}} </p> <br>
   

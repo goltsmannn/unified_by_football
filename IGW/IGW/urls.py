@@ -19,6 +19,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 import IGW.settings as settings
 
+#handler403 = ""
+handler403 = "account.views.handler403"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),

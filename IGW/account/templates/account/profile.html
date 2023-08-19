@@ -12,7 +12,10 @@
     <main>
         <a href="{% url 'map:main_page' %}">На главную</a>
         <div>
-            {{account.username}}
+            {{profile.username}}
+        </div>
+        <div>
+            {{profile.id}}
         </div>
         {% block content %}
         {% endblock content %}

@@ -14,28 +14,29 @@ class PlacemarkAPIList(generics.ListCreateAPIView):
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
 
-class PlacemarkApiView(APIView):
-    def get(self, request):
-        data = Placemark.objects.all().prefetch_related('review', 'review__pictures')
-        return Response({'title':'bebra', 'placemarks':PlacemarkSerializer(data, many=True).data})
+
+# class PlacemarkApiView(APIView):
+#     def get(self, request):
+#         data = Placemark.objects.all().prefetch_related('review', 'review__pictures')
+#         return Response({'title':'bebra', 'placemarks':PlacemarkSerializer(data, many=True).data})
     
-    def post(self, request):
-        serializer = PlacemarkSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'placemark': serializer.data})
+#     def post(self, request):
+#         serializer = PlacemarkSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response({'placemark': serializer.data})
     
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        if not pk:
-            return Response({'Error': 'Put not allowed'})
+#     def put(self, request, *args, **kwargs):
+#         pk = kwargs.get('pk', None)
+#         if not pk:
+#             return Response({'Error': 'Put not allowed'})
         
-        try:
-            instance = Placemark.objects.get(pk=pk)
-        except:
-            return Response({'Error': 'Key undefined'})
+#         try:
+#             instance = Placemark.objects.get(pk=pk)
+#         except:
+#             return Response({'Error': 'Key undefined'})
         
-        serializer = PlacemarkSerializer(instance, request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'placemark': serializer.data})
+#         serializer = PlacemarkSerializer(instance, request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response({'placemark': serializer.data})
