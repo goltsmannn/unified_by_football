@@ -25,7 +25,6 @@ handler403 = "account.views.handler403"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),
-    path('api/', include('api.urls')),
     path('account/', include('account.urls'))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

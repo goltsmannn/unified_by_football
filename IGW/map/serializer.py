@@ -3,11 +3,7 @@ from rest_framework.renderers import JSONRenderer
 
 from map.models import Placemark, Review, ReviewPictures
 
-# class PlacemarkModel:
-#     def __init__(self, x, y, type) -> None:
-#         self.x = x 
-#         self.y = y
-#         self.type = type
+
 class ReviewPicturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewPictures
@@ -26,6 +22,8 @@ class PlacemarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Placemark
         fields = "__all__"
+
+
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

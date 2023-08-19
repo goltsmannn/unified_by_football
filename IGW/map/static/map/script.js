@@ -11,7 +11,7 @@ ymaps.ready(function(){
 });
 
 async function fetchAsync () {
-  let response = await fetch('/api/markers');
+  let response = await fetch('/map/api/markers');
   let data = await response.json();
   return data;
 }

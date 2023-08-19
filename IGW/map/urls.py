@@ -14,5 +14,7 @@ urlpatterns = [
     path('logout', views.MyLogoutView.as_view(), name='logout_page'),
     path('', views.MainPageTemplateView.as_view(), name='main_page'),
     path('<int:pk>', views.ReviewsListView.as_view(), name='detail_page'),
+    path('api/markers/', views.PlacemarkAPIList.as_view(), name='markers_api'),
+    path('api/marker/<int:pk>/' , views.PlacemarkAPIList.as_view(), name='markers_api_put'),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

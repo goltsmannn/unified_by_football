@@ -1,22 +1,24 @@
 from typing import Any, Dict, Optional
+
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
-from map.models import Placemark, ReviewPictures, Review
-from django.views.generic import TemplateView, CreateView, ListView, DetailView
-from django.contrib.auth import views as auth_views
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from map.forms import MyCreationForm
-from django.contrib.auth.models import User
+from map.models import Placemark, Review, ReviewPictures
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from map.serializer import PlacemarkSerializer
 
 
 class MainPageTemplateView(TemplateView):
     template_name = 'map/main_map.html'
-    # def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-    #     data= super().get_context_data(**kwargs)
-    #     print(data['view'].request.session.__dir__())
-    #     return data
 
     
 class MyLoginView(auth_views.LoginView):
@@ -48,5 +50,13 @@ class ReviewsListView(DetailView):
         context['pictures'] = context['object']
         del context['object']
         return context
+    
+
+
+
+
+class PlacemarkAPIList(generics.ListCreateAPIView):
+    queryset = Placemark.objects.all()
+    serializer_class = PlacemarkSerializer
 
 
