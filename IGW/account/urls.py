@@ -6,4 +6,5 @@ app_name = 'profile'
 
 urlpatterns = [
     path('<int:pk>/', views.ProfileInfoView.as_view(), name="profile_view_page"),
+    path('api/<int:pk>', views.ProfileApiDetail.as_view(), name="profile_detail_page_api")
 ]

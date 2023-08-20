@@ -4,12 +4,23 @@ from django.http import HttpResponseForbidden
 from django.views.generic import DetailView, UpdateView
 from django.contrib.auth.models import User# Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from rest_framework import generics
+from account.serializer import UserSerializer
+from account.permissions import IsCreatorOrReadOnly
 
 def handler403(request, *args, **kwargs):
     return HttpResponseForbidden('<h1>доступа нет</h1>')
 
-class ProfileInfoView(LoginRequiredMixin, DetailView, UpdateView):
+
+class ProfileApiDetail(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsCreatorOrReadOnly, )
+
+
+
+
+class ProfileInfoView(LoginRequiredMixin, DetailView):
     template_name = 'account/profile.html'
     model = User
     context_object_name = 'profile'

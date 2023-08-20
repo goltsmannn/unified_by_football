@@ -17,11 +17,11 @@
         <div>
             {{profile.id}}
         </div>
-        <form action="{% url profile:profile_view_page %}" method="POST">
+        {% comment %} <form action="{% url profile:profile_view_page %}" method="POST">
             {% csrf_token %}
             {{ form.as_p }}		
             <input type="submit" value="Сохранить">
-        </form>
+        </form> {% endcomment %}
         {% block content %}
         {% endblock content %}
     </main>
