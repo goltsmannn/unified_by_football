@@ -1,0 +1,14 @@
+{% extends 'account/base.html' %}
+{% block content %}
+    <div>
+        <p>Ваш профиль!</p> 
+        <p>Никнейм: {{user.username}}</p>
+        <p>Идентификатор: {{user.pk}}</p><br>
+    </div>
+    <form action="{% url 'profile:profile_detail_page_api' user.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}		
+        <input type="hidden" name="_method" value="put" />
+        <input type="submit" value="Сохранить">
+    </form>
+{% endblock content %}

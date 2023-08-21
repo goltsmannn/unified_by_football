@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-k3kwf_(wg#rqm_b84yz-fb!pl-@)&6glt)vsde%3p7)av^1j-1
 DEBUG = True
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = []
-
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 
 # Application definition
 
@@ -39,7 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'map.apps.MapConfig',
     'rest_framework',
-    'account.apps.AccountConfig'
+    'account.apps.AccountConfig',
+    'django_pdb',
+    "debug_toolbar",
+
 ]
 
 MIDDLEWARE = [
@@ -50,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
 ]
 
 ROOT_URLCONF = 'IGW.urls'

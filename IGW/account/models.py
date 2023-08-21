@@ -16,8 +16,9 @@ class Profile(models.Model):
 
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, default=None)
-    height = models.PositiveSmallIntegerField(default=None)
-    age = models.PositiveSmallIntegerField(default=None)
-    weight = models.PositiveSmallIntegerField(default=None)
+    region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, null=True, blank=True)
+    height = models.PositiveSmallIntegerField(null=True, blank=True)
+    age = models.PositiveSmallIntegerField( null=True, blank=True)
+    weight = models.PositiveSmallIntegerField( null=True, blank=True)
 #    profile_picture = models.ImageField()
+        

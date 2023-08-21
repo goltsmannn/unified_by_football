@@ -1,19 +1,21 @@
 from typing import Any, Dict, Optional
-
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
+from django.forms.models import BaseModelForm
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, FormView
+from django.views.generic.detail import DetailView
+from django.views.generic.base import TemplateView
 from map.forms import MyCreationForm
 from map.models import Placemark, Review, ReviewPictures
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from account.models import Profile
 from map.serializer import PlacemarkSerializer
 
 
@@ -33,6 +35,13 @@ class MyLogoutView(auth_views.LogoutView):
 
 
 class RegisterView(CreateView):
+    def form_valid(self, form):
+        self.object = form.save()
+        profile = Profile.objects.create(user=self.object)
+        profile.save()
+        return redirect(self.get_success_url())
+        
+
     template_name = 'registration/register.html'
     model = User
     form_class = MyCreationForm
@@ -58,5 +67,5 @@ class ReviewsListView(DetailView):
 class PlacemarkAPIList(generics.ListCreateAPIView):
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
-
+    
 

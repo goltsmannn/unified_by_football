@@ -23,8 +23,10 @@ import IGW.settings as settings
 handler403 = "account.views.handler403"
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),
     path('profile/', include('account.urls'))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

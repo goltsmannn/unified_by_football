@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'map/style.css'%}">
+    {%block scriptsTitleMeta %}
+    {% endblock scriptsTitleMeta %}
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'map:main_page' %}">Map</a>
+                    <a href="{% url 'map:main_page' %}">На главную</a>
+                    <a href="{% url 'map:logout_page' %}"> Выйти </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+</body>
+
+</html>
