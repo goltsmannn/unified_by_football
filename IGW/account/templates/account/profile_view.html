@@ -1,0 +1,11 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+    <div class="userinfo-">
+        <div class="userfield">Вес: {{profile.weight}}</div>
+        <div class="userfield">Возраст: {{profile.age }}</div>
+        <div class="userfield">Рост: {{profile.height }}</div>
+        <div class="userfield">Регион: {{profile.region }}</div>
+        <div class="userfield">Никнейм: {{profile.user.username }}</div>
+    </div>
+{% endblock %}

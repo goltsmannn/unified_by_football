@@ -16,18 +16,23 @@ def handler403(request, *args, **kwargs):
     return HttpResponseForbidden('<h1>доступа нет</h1>')
 
 
+class UserApiDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class ProfileApiDetail(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = (IsCreatorOrReadOnly, )
 
+    
     def dispatch(self, request, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
         request = self.initialize_request(request, *args, **kwargs)
         self.request = request
         self.headers = self.default_response_headers  # deprecate?
-        
         try:
             self.initial(request, *args, **kwargs)
 
@@ -42,7 +47,7 @@ class ProfileApiDetail(generics.RetrieveUpdateAPIView):
                 else:
                     handler = self.http_method_not_allowed
 
-                response = handler(request, *args, **kwargs)
+            response = handler(request, *args, **kwargs)
 
         except Exception as exc:
             response = self.handle_exception(exc)
@@ -65,7 +70,10 @@ def profile_view(request, pk):
         return render(request, creator_profile, context)
     else:
         if user.is_authenticated:
-            return render(request, viewer_profile)
+            context = {
+                'profile': requested_user.profile,
+            }
+            return render(request, viewer_profile, context)
         else:
             return render(request, error_profile, status=401)
     
