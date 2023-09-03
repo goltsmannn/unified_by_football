@@ -21,4 +21,9 @@ class Profile(models.Model):
     age = models.PositiveSmallIntegerField( null=True, blank=True)
     weight = models.PositiveSmallIntegerField( null=True, blank=True)
 #    profile_picture = models.ImageField()
-        
+
+
+class Subscriptions(models.Model):
+    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="target_user")
+    friend_id = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friend_user")
+    
