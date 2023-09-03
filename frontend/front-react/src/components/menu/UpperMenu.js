@@ -27,6 +27,7 @@ class UpperMenu extends React.Component{
         return(
 
                 <>
+                <p>a</p>
                 {this.state.data.map(placemark=>(
                     <div>
                         <p>x: {placemark.x}</p>

@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'account.apps.AccountConfig',
+    'frontend.apps.FrontendConfig',
     'django_pdb',
     "debug_toolbar",
 
@@ -71,7 +74,9 @@ ROOT_URLCONF = 'IGW.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [#os.path.join(BASE_DIR.parent, 'frontend/front-react/build'),
+                os.path.join(BASE_DIR.parent, 'frontend/front-react/public')],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

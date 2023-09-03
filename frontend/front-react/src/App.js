@@ -1,7 +1,8 @@
 import UpperMenu from "./components/menu/UpperMenu";
 
 const App = () => (
-    <UpperMenu />
+  <p>a</p>
+   // <UpperMenu />
   );
 
 export default App;
