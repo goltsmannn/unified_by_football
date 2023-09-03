@@ -1,6 +1,10 @@
 import React from "react";
 import LoggedUserUpperMenu from "./LoggedUserUpperMenu";
 import UnloggedUserUpperMenu from "./UnloggedUserUpperMenu";
+import getAPIURL from "../../utils/getAPIURL";
+
+const api_urls = await getAPIURL();
+
 
 class UpperMenu extends React.Component{
     constructor(props){
@@ -11,7 +15,7 @@ class UpperMenu extends React.Component{
     }
     async componentDidMount(){
         try{
-            const request = await fetch('http://localhost:8000/map/api/markers');
+            const request = await fetch(`${api_urls['profile']}`);
             const request_json = await request.json();
             this.setState({
                 data: request_json,
@@ -27,14 +31,12 @@ class UpperMenu extends React.Component{
         return(
 
                 <>
-                <p>a</p>
                 {this.state.data.map(placemark=>(
                     <div>
                         <p>x: {placemark.x}</p>
                         <p>y: {placemark.y}</p>
                         <p>type: {placemark.type}</p>
                         <p>description: {placemark.description}</p>
-                        <p>a</p>
                     </div>
                 ))}
                 </>

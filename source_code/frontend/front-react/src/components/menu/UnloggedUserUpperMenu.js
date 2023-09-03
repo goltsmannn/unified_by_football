@@ -2,7 +2,6 @@ import React from "react";
 import getAPIURL from "../../utils/getAPIURL";
 
 const api_urls = await getAPIURL();
-console.log(api_urls);
 
 
 class UnloggedUserUpperMenu extends React.Component{
