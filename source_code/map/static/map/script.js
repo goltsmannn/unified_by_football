@@ -1,21 +1,28 @@
-let map;
-ymaps.ready(function(){
-  map = new ymaps.Map(document.getElementById('map'), {
-      center: [55.76, 37.64],
-      zoom: 10,
-      controls: ['zoomControl'],
-  }, 
-  {suppressMapOpenBlock: true}
-  );
-  renderMarkers();
-});
-
 async function fetchAsync () {
   let response = await fetch('/map/api/markers');
   let data = await response.json();
   return data;
 }
 
+function getBalloonData(plc_json){
+  let pictures = [];
+  let avg = 0.0, cnt = 0;
+
+  plc_json.reviews.forEach(review=>{
+    avg += review.rating;
+    cnt += 1;
+    review.pictures.forEach(picture=>{
+      if(pictures.length < 3){
+        pictures.push(picture);
+      }
+    });
+  });
+  data = {
+    pictures: pictures,
+    rating: avg/cnt,
+  }
+  return data
+}
 
 function render_placemark(plc_json){
   let pictures = [];

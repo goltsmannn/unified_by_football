@@ -2,6 +2,7 @@ import React from "react";
 import LoggedUserUpperMenu from "./LoggedUserUpperMenu";
 import UnloggedUserUpperMenu from "./UnloggedUserUpperMenu";
 import getAPIURL from "../../utils/getAPIURL";
+import axios from "axios";
 
 const api_urls = await getAPIURL();
 
@@ -15,7 +16,7 @@ class UpperMenu extends React.Component{
     }
     async componentDidMount(){
         try{
-            const request = await fetch(`${api_urls['profile']}`);
+            const request = await +axios.get(`${api_urls['profile']}`);
             const request_json = await request.json();
             this.setState({
                 data: request_json,
