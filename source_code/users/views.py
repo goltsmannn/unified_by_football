@@ -3,33 +3,22 @@ from typing import List, Optional
 from django.shortcuts import get_object_or_404, render, HttpResponse
 from django.http import HttpResponseForbidden
 from django.views.generic import DetailView, UpdateView
-from django.contrib.auth.models import User# Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
-from account.models import Profile
-from account.serializer import UserSerializer, ProfileSerializer
-from account.permissions import IsCreatorOrReadOnly
-from account.forms import AccountAlterationForm
+from users.models import User
+from users.serializer import UserSerializer
+from users.permissions import IsCreatorOrReadOnly
+from users.forms import UserAlterationForm
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
-class ProfileViewSet(ModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    permission_classes = (IsCreatorOrReadOnly, )
-
-    @action(detail=True, methods=['GET'])
-    def user(self, request, pk=None):
-        user = get_object_or_404(User, pk=pk)
-        serializer = UserSerializer(instance=user)
-        return Response(serializer.data)
-
-
-class UserApiDetail(generics.RetrieveAPIView):
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsCreatorOrReadOnly, )
+
 
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):

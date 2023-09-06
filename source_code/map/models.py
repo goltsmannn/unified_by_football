@@ -1,8 +1,6 @@
 from django.db import models
 from rest_framework import serializers
-# Create your models here.
-from django.contrib.auth.models import User
-
+from users.models import User
 
 class Placemark(models.Model):
     x = models.FloatField()

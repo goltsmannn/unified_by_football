@@ -18,7 +18,7 @@ class UpperMenu extends React.Component{
     }
     async componentDidMount(){
         try{
-            const request = await axios.get(`${api_urls['profile']}`);
+            const request = await axios.get(`${api_urls['users']}`);
             const request_json = await request.json();
             this.setState({
                 data: request_json,

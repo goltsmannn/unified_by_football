@@ -1,7 +1,7 @@
 from django.forms import ModelForm
-from account.models import Profile
+from users.models import User
 
-class AccountAlterationForm(ModelForm):
+class UserAlterationForm(ModelForm):
     class Meta:
-        model = Profile
+        model = User
         fields = ["weight", "age", "region", "height"]

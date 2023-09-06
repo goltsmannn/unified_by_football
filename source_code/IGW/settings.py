@@ -39,6 +39,7 @@ INTERNAL_IPS = [
 ]
 
 # Application definition
+AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'map.apps.MapConfig',
     'rest_framework',
     'corsheaders',
-    'account.apps.AccountConfig',
+    'users.apps.UsersConfig',
     'frontend.apps.FrontendConfig',
     'django_pdb',
     "debug_toolbar",

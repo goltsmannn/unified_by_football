@@ -1,6 +1,5 @@
 from typing import Any, Dict, Optional
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
@@ -15,7 +14,7 @@ from map.models import Placemark, Review, ReviewPictures
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from account.models import Profile
+from users.models import User
 from map.serializer import PlacemarkSerializer
 
 
@@ -37,8 +36,8 @@ class MyLogoutView(auth_views.LogoutView):
 class RegisterView(CreateView):
     def form_valid(self, form):
         self.object = form.save()
-        profile = Profile.objects.create(user=self.object)
-        profile.save()
+        user = User.objects.create(user=self.object)
+        user.save()
         return redirect(self.get_success_url())
         
 
