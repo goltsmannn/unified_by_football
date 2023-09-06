@@ -1,5 +1,7 @@
 import React from "react";
 import getAPIURL from "../../utils/getAPIURL";
+import { Link } from "react-router-dom";
+
 
 const api_urls = await getAPIURL();
 
@@ -8,9 +10,19 @@ class UnloggedUserUpperMenu extends React.Component{
     render(){
         return(
             <>
-            <li><a href={api_urls.profile}>Регистрация</a></li>
-            <li><a href="">Войти</a></li>
-            <li><a href="">Карта</a></li>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="register">Регистрация</Link>
+                    </li>
+                    <li>
+                        <Link to="login">Войти</Link>
+                    </li>
+                    <li>
+                        <Link to="map">Карта</Link>
+                    </li>
+                </ul>
+            </nav>
             </>
         );
     }

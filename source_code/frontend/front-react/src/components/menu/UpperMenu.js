@@ -3,6 +3,8 @@ import LoggedUserUpperMenu from "./LoggedUserUpperMenu";
 import UnloggedUserUpperMenu from "./UnloggedUserUpperMenu";
 import getAPIURL from "../../utils/getAPIURL";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 const api_urls = await getAPIURL();
 
@@ -16,7 +18,7 @@ class UpperMenu extends React.Component{
     }
     async componentDidMount(){
         try{
-            const request = await +axios.get(`${api_urls['profile']}`);
+            const request = await axios.get(`${api_urls['profile']}`);
             const request_json = await request.json();
             this.setState({
                 data: request_json,
@@ -28,20 +30,21 @@ class UpperMenu extends React.Component{
     }
 
     render() {
-
-        return(
-
+        let is_authenticated = true;
+        if (is_authenticated){
+            return(          
                 <>
-                {this.state.data.map(placemark=>(
-                    <div>
-                        <p>x: {placemark.x}</p>
-                        <p>y: {placemark.y}</p>
-                        <p>type: {placemark.type}</p>
-                        <p>description: {placemark.description}</p>
-                    </div>
-                ))}
+                    <LoggedUserUpperMenu></LoggedUserUpperMenu>
                 </>
         );
+        }
+        else{
+            return(
+                <>
+                    <UnloggedUserUpperMenu></UnloggedUserUpperMenu>
+                </>
+            );
+        }
     }
 }
 
