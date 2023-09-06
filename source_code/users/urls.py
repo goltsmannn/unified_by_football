@@ -9,7 +9,7 @@ router.register(r'users', views.UserViewSet, basename="users")
 #print(router.urls)
 
 urlpatterns = [
-    path('api/', include((router.urls)))
+    path('api/', include((router.urls))),
 ] 
 
 # urlpatterns = [

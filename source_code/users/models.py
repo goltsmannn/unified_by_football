@@ -2,8 +2,8 @@ from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
-from jwt import encode, decode
-import datetime
+from jwt import encode
+from datetime import datetime, timedelta, timezone
 from IGW.settings import SECRET_KEY
 # Create your models here.
 
@@ -73,20 +73,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     weight = models.PositiveSmallIntegerField( null=True, blank=True)
 # #    profile_picture = models.ImageField()
 
-    @property
-    def token(self):
-        return self._generate_jwt()
+    # @property
+    # def token(self):
+    #     return self._generate_jwt()
     
-    def _generate_jwt(self):
-        exp = datetime.datetime.now() + datetime.timedelta(days=1)
-        payload = {
-            'uid': self.pk,
-            'exp': exp.strftime('%s')
-        }
-        token = encode(payload, SECRET_KEY, "HS256")
-        print(token)
-        print(token.decode('utf-8'))
-        return token.decode('utf-8')
+    # def _generate_jwt(self):
+    #     exp = datetime.now() + timedelta(days=1)
+    #     payload = {
+    #         'uid': self.pk,
+    #         'exp': int(round(exp.timestamp())),
+    #     }
+    #     token = encode(payload, SECRET_KEY, "HS256")
+    #     return token.decode('utf-8')
 
 
 
