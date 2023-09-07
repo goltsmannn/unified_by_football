@@ -21,7 +21,9 @@ FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000'
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -70,8 +72,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
     'SIGNING_KEY': SECRET_KEY,  
     'ALGORITHM': 'HS256',
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
+    'ROTATE_REFRESH_TOKENS': True, #???
+    'BLACKLIST_AFTER_ROTATION': True, #Чтобы после запроса на refresh предыдущие токены кидались в чс
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
