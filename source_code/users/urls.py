@@ -10,6 +10,9 @@ router.register(r'users', views.UserViewSet, basename="users")
 
 urlpatterns = [
     path('api/', include((router.urls))),
+    path('api/auth/register', views.RegisterUserAPIView.as_view(), name='register-api'),
+    path('api/auth/login', views.LogoutUserAPIView.as_view(), name='login-api'),
+    path('api/auth/logout', views.LogoutUserAPIView.as_view(), name='logout-api'),
 ] 
 
 # urlpatterns = [

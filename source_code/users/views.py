@@ -1,26 +1,64 @@
 import pdb
 from typing import List, Optional
-from django.shortcuts import get_object_or_404, render, HttpResponse
-from django.http import HttpResponseForbidden
-from django.views.generic import DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
 from users.models import User
-from users.serializer import UserSerializer
+from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer
 from users.permissions import IsCreatorOrReadOnly
 from users.forms import UserAlterationForm
-from rest_framework.viewsets import ModelViewSet
+import rest_framework.viewsets as viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
+from rest_framework.views import APIView
+from django.contrib.auth import login, logout
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
-class UserViewSet(ModelViewSet):
+class UserViewSet(RetrieveModelMixin, 
+                  UpdateModelMixin,
+                  ListModelMixin, 
+                  viewsets.GenericViewSet):
+    
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsCreatorOrReadOnly, )
+    #permission_classes = (IsCreatorOrReadOnly, )
+
+
+class RegisterUserAPIView(generics.CreateAPIView):
+    serializer_class = UserRegisterSerializer
+
+
+class LoginUserAPIView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.check_user(request.data)
+        login(request, user)
+        return Response(serializer.data)
+
+
+class LogoutUserAPIView(APIView):
+    def post(self, request):
+        logout(request)
 
 
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['email'] = user.email
+
+        return token
+    
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()
 #     serializer_class = ProfileSerializer
