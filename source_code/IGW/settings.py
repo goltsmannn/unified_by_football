@@ -11,11 +11,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -43,13 +49,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'map.apps.MapConfig',
     'rest_framework',
+    'corsheaders',
     'account.apps.AccountConfig',
+    'frontend.apps.FrontendConfig',
     'django_pdb',
     "debug_toolbar",
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,7 +75,11 @@ ROOT_URLCONF = 'IGW.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                os.path.join(BASE_DIR, 'frontend/front-react/build'),
+                #os.path.join(BASE_DIR, 'frontend/front-react/public'),
+                ],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,3 +147,7 @@ MEDIA_URL = 'media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/front-react/build/static'),
+    os.path.join(BASE_DIR, 'frontend/front-react/src/')
+]

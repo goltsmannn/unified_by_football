@@ -20,13 +20,14 @@ from django.conf.urls.static import static
 import IGW.settings as settings
 
 #handler403 = ""
-handler403 = "account.views.handler403"
+#handler403 = "account.views.handler403"
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),
-    path('profile/', include('account.urls'))
+    path('profile/', include('account.urls')),
+    path('', include('frontend.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
