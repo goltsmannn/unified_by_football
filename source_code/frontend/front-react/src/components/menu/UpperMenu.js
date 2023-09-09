@@ -35,8 +35,7 @@ class UpperMenu extends React.Component{
 
     render() {
         
-        let is_authenticated = false;
-        if (is_authenticated){
+        if (this.context.user){
             return(          
                 <>
                     <LoggedUserUpperMenu></LoggedUserUpperMenu>
@@ -46,7 +45,7 @@ class UpperMenu extends React.Component{
         else{
             return(
                 <>
-                <p>{this.context.user?this.context.user.email:228+"fuck no user"}</p>
+                <p>{this.context.user?this.context.user.email: "no user"}</p>
                     <UnloggedUserUpperMenu></UnloggedUserUpperMenu>
                 </>
             );

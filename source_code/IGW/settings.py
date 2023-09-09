@@ -22,8 +22,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:8000'
-
+    'http://127.0.0.1:8000',
+    'http://localhost:8080'
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -73,13 +73,12 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,  
     'ALGORITHM': 'HS256',
     'ROTATE_REFRESH_TOKENS': True, #ПРИ ЗАХОДЕ НА САЙТ ОБНОВЛЯЕТСЯ EXPIRATION
-    'BLACKLIST_AFTER_ROTATION': True,
+    'BLACKLIST_AFTER_ROTATION': True, #Чтобы после запроса на refresh предыдущие токены кидались в чс
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
- 
 }
 
 
