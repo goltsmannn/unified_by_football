@@ -1,6 +1,8 @@
 import { YMaps, Map, Placemark} from "@pbe/react-yandex-maps";
 import React from "react";
 import axios from "axios";
+import Balloon from "./Balloon";
+import { renderToString } from 'react-dom/server';
 
 async function requestPlacemarks(){
     let response = await axios.get('http://localhost:8000/map/api/markers');
@@ -24,6 +26,7 @@ function prepareBalloonData(plc_json){
         pictures: pictures,
         rating: avg/cnt,
     }
+    console.log(data);
     return data;
 }
 
@@ -38,7 +41,7 @@ class MyMap extends React.Component{
         }
     }
     render(){
-        console.log(this.state.placemarks);
+        console.log(this.state.placemarks[0].reviews);
         return(
             <YMaps>
                 <Map defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
@@ -47,11 +50,8 @@ class MyMap extends React.Component{
                         modules={["geoObject.addon.balloon"]}
                         geometry={[placemark.x, placemark.y]}
                         properties={{
-                            balloonContent: `
-                                <div class="balloon">
-                                    a
-                                </div>
-                                `,
+                            balloonContent: renderToString(
+                            <Balloon data={prepareBalloonData(placemark)}/>),
                         }}
                     />
                 ))}   
