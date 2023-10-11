@@ -3,6 +3,8 @@ import React from "react";
 import axios from "axios";
 import Balloon from "./Balloon";
 import { renderToString } from 'react-dom/server';
+import { Link } from "react-router-dom";
+
 
 async function requestPlacemarks(){
     let response = await axios.get('http://localhost:8000/map/api/markers');
@@ -26,7 +28,6 @@ function prepareBalloonData(plc_json){
         pictures: pictures,
         rating: avg/cnt,
     }
-    console.log(data);
     return data;
 }
 
@@ -41,7 +42,6 @@ class MyMap extends React.Component{
         }
     }
     render(){
-        console.log(this.state.placemarks[0].reviews);
         return(
             <YMaps>
                 <Map defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
@@ -51,7 +51,8 @@ class MyMap extends React.Component{
                         geometry={[placemark.x, placemark.y]}
                         properties={{
                             balloonContent: renderToString(
-                            <Balloon data={prepareBalloonData(placemark)}/>),
+                            <Balloon placemark_id={placemark.id}
+                             data={prepareBalloonData(placemark), context=}/>),
                         }}
                     />
                 ))}   
