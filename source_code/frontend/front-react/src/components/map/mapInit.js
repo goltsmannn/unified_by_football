@@ -43,6 +43,7 @@ class MyMap extends React.Component{
     }
     render(){
         return(
+
             <YMaps>
                 <Map defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
                 {placemarks.map(placemark=>(
@@ -52,7 +53,7 @@ class MyMap extends React.Component{
                         properties={{
                             balloonContent: renderToString(
                             <Balloon placemark_id={placemark.id}
-                             data={prepareBalloonData(placemark), context=}/>),
+                             data={prepareBalloonData(placemark)}/>),
                         }}
                     />
                 ))}   

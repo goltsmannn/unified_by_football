@@ -19,7 +19,7 @@ class UnloggedUserUpperMenu extends React.Component{
                         <Link to="login">Войти</Link>
                     </li>
                     <li>
-                        <Link to="map">Карта</Link>
+                        <Link to="/">Карта</Link>
                     </li>
                 </ul>
             </nav>
