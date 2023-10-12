@@ -46,12 +46,17 @@ export const AuthProvider = ({children}) => {
     useEffect(()=>{
         if(authToken){
             async function fetchData(){
-                const response = await axios.post('http://127.0.0.1:8000/users/api/auth/user_by_token', null, {
-                    headers: {
-                        Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
-                    }
-                });
-                setUser(response.data);
+                try{
+                        const response = await axios.post('http://127.0.0.1:8000/users/api/auth/user_by_token', null, {
+                        headers: {
+                            Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
+                        }
+                    });
+                    setUser(response.data);
+                }
+                catch (error){
+                    console.log(error);
+                }
             }
             fetchData(); //синхронный вызов async функции, замыкание, didmount->useeffect->вызов, setuser известен
         }
