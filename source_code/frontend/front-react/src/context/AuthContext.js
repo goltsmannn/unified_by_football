@@ -30,8 +30,8 @@ export const AuthProvider = ({children}) => {
 
         if (response.status === 200){
             setAuthToken(response.data);
-            setUser(jwtDecode(response.data.access));
-            localStorage.setItem('authToken',JSON.stringify(response.data));
+            setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser
+            localStorage.setItem('authToken',JSON.stringify(response.data)); //переписать под ключ - значение
             navigate('/');
         }
         else{

@@ -1,16 +1,18 @@
 import React from "react";
 import { BrowserRouter, Link, Routes } from "react-router-dom";
+import NavigateButton from "utils/NavigateButton";
+
 
 const Balloon = (props) => {
-    let links = [];
+    let imageLinks = [];
     for(let picture of props.data.pictures){
-        links.push(picture.image);
+        imageLinks.push(picture.image);
     }
-    let images = links.map((link)=><img src={link} style={{height:100, width:'30%'}}></img>);
+    let images = imageLinks.map((link)=><img src={link} style={{height:100, width:'30%'}}></img>);
     return(
         <>
             <div>Rating: {props.data.rating}</div> 
-            <a href="/placemark">Метки</a>
+            <Link to={"placemarks/" + props.placemark_id}>Детали</Link>
             {images}
         </>
     ); 

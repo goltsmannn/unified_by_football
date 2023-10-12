@@ -21,7 +21,7 @@ class App extends React.Component{
           <Routes>
               <Route path="/" element = {<MyMap />} exact></Route>
               <Route path="/login" element = { <Login/> }></Route>
-              <Route path="/placemark" element = { <PlacemarkMain/> }></Route>
+              <Route path="/placemarks/:placemark_id" element = { <PlacemarkMain/> }></Route>
           </Routes>
         </AuthProvider>
       </>
