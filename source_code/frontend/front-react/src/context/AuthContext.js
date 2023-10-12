@@ -9,8 +9,8 @@ let urls = await getAPIURL();
 
 export default AuthContext;
 export const AuthProvider = ({children}) => {
-    let [user, setUser] = useState(()=> localStorage.getItem('authToken')?JSON.parse(localStorage.getItem('authToken')):null);
-    let [authToken, setAuthToken] = useState(()=> localStorage.getItem('authToken')?jwtDecode(localStorage.getItem('authToken')):null) ;
+    let [user, setUser] = useState(null);
+    let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
 
 
@@ -29,9 +29,12 @@ export const AuthProvider = ({children}) => {
         );
 
         if (response.status === 200){
-            setAuthToken(response.data);
+            console.log(response.data);
+            setAuthToken(response.data.access);
             setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser
-            localStorage.setItem('authToken',JSON.stringify(response.data)); //переписать под ключ - значение
+            localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); //переписать под ключ - значение DONE
+            localStorage.setItem('refreshToken',JSON.stringify(response.data['refresh'])); 
+
             navigate('/');
         }
         else{
@@ -40,8 +43,23 @@ export const AuthProvider = ({children}) => {
 
     }
     
+    useEffect(()=>{
+        if(authToken){
+            async function fetchData(){
+                const response = await axios.post('http://127.0.0.1:8000/users/api/auth/user_by_token', null, {
+                    headers: {
+                        Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
+                    }
+                });
+                setUser(response.data);
+            }
+            fetchData(); //синхронный вызов async функции, замыкание, didmount->useeffect->вызов, setuser известен
+        }
+    }, [authToken]);
+    
     let logoutUser = () => {
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         setUser(null);
         setAuthToken(null);
         navigate('/');

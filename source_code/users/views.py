@@ -14,7 +14,8 @@ from rest_framework.views import APIView
 from django.contrib.auth import login, logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework.decorators import api_view
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class UserViewSet(RetrieveModelMixin, 
                   UpdateModelMixin,
@@ -58,7 +59,23 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
-    
+
+@api_view(['POST'])
+def user_by_token(request):
+    # token = request.headers.get('Authorization')
+    # if token is None:
+    #     response = Response('Incorrect JSON format')
+    #     response.status_code = 400
+    #     return response 
+    #return Response(request.headers.get('Authorization'))
+    print(request.headers.get('Authorization'))
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request)
+    if response is None:
+        return Response('No user')
+    return Response(UserSerializer(response[0]).data)
+
+
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()
 #     serializer_class = ProfileSerializer

@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "components/auth/Login";
 import { AuthProvider } from "context/AuthContext";
 import PlacemarkMain from "components/placemarks/PlacemarkMain";
+import ProfileMain from "components/profile/ProfileMain";
 
 
 class App extends React.Component{
@@ -22,6 +23,7 @@ class App extends React.Component{
               <Route path="/" element = {<MyMap />} exact></Route>
               <Route path="/login" element = { <Login/> }></Route>
               <Route path="/placemarks/:placemark_id" element = { <PlacemarkMain/> }></Route>
+              <Route path="/profile/:user_id" element = {<ProfileMain/>}/>
           </Routes>
         </AuthProvider>
       </>
