@@ -8,12 +8,13 @@ import axios from "axios";
 
 const ProfileMain = () => {
     const authContext = useContext(AuthContext);
+    const user = authContext.user;
     const page_id = useParams().user_id;
     const [pageUser, setPageUser] = useState(null); //хорошо ли так ? спросить надо
     const location = useLocation();
     const navigate = useNavigate();
 
-    useEffect((page_id)=>{
+    useEffect(()=>{
         const fetchData = async ()=>{
             const response = await axios.get(`http://127.0.0.1:8000/users/api/users/${page_id}`);
             if(response.data){
@@ -23,7 +24,7 @@ const ProfileMain = () => {
             console.log(response.data);
         }
         fetchData();
-    },[])
+    },[page_id])
     if(pageUser){
     return(
         <div id="user-info-wrapper">
@@ -36,7 +37,7 @@ const ProfileMain = () => {
                 <div id="user-email">Почта: {pageUser.email}</div>
             </div>
             <div id="user-info-fields-buttons">
-                {(location.pathname===`/profile/${page_id}`) && (authContext.user) && (Number(pageUser.id) === authContext.user.id) &&
+                {(location.pathname===`/profile/${page_id}`) && (authContext.user) && (pageUser.id == authContext.user.id) &&
             <Link to={`edit`}>Изменить</Link>}   
             </div>
             <div id="user-edit-outler">

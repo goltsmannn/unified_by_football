@@ -1,5 +1,5 @@
 import AuthContext from "context/AuthContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,6 +8,20 @@ const EditProfileForm = () => {
     const navigate = useNavigate();
     const authContext = useContext(AuthContext);
     const user = authContext.user;
+    const [inputFields, setInputFields] = useState({
+        weight: user.weight,
+        height: user.height,
+        age: user.age, 
+        region: user.region,
+    });
+
+
+    const inputHandler = (e) => {
+        console.log('changing input)')
+        setInputFields({
+            [e.target.name]: e.target.value,
+        });
+    }
     const saveAndGoBack = async (e) => {
         e.preventDefault();
         const config = {
@@ -38,7 +52,7 @@ const EditProfileForm = () => {
     <form onSubmit={saveAndGoBack}>
         {Object.keys(user).map((key)=>
             <>
-                <input type="text" name={`${key}`} value={user[key]} id={`${key}`+"-field"}></input>
+                <input onChange={inputHandler} type="text" name={`${key}`} value={inputFields[key]} id={`${key}`+"-field"}></input>
                 <label htmlFor={`${key}`+"-field"}>{key} поле</label>
                 <br></br>
             </>

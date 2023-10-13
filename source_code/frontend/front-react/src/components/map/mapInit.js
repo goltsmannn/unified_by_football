@@ -8,7 +8,7 @@ import { createPortal } from "react-dom";
 
 
 async function requestPlacemarks(){
-    let response = await axios.get('http://localhost:8000/map/api/markers');
+    let response = await axios.get('http://127.0.0.1:8000/map/api/map');
     return response.data;
 }
 

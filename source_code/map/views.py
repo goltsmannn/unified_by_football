@@ -16,55 +16,53 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
 from map.serializer import PlacemarkSerializer
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
+import rest_framework.viewsets as viewsets
 
 
-class MainPageTemplateView(TemplateView):
-    template_name = 'map/main_map.html'
+# class MainPageTemplateView(TemplateView):
+#     template_name = 'map/main_map.html'
 
     
-class MyLoginView(auth_views.LoginView):
-    next_page = reverse_lazy('map:main_page')
-    redirect_authenticated_user = reverse_lazy('map:main_page')
+# class MyLoginView(auth_views.LoginView):
+#     next_page = reverse_lazy('map:main_page')
+#     redirect_authenticated_user = reverse_lazy('map:main_page')
     
 
 
-class MyLogoutView(auth_views.LogoutView):
-    next_page = reverse_lazy('map:main_page')
+# class MyLogoutView(auth_views.LogoutView):
+#     next_page = reverse_lazy('map:main_page')
 
 
 
-class RegisterView(CreateView):
-    def form_valid(self, form):
-        self.object = form.save()
-        user = User.objects.create(user=self.object)
-        user.save()
-        return redirect(self.get_success_url())
+# class RegisterView(CreateView):
+#     def form_valid(self, form):
+#         self.object = form.save()
+#         user = User.objects.create(user=self.object)
+#         user.save()
+#         return redirect(self.get_success_url())
         
 
-    template_name = 'registration/register.html'
-    model = User
-    form_class = MyCreationForm
-    success_url = reverse_lazy('map:login_page')
+#     template_name = 'registration/register.html'
+#     model = User
+#     form_class = MyCreationForm
+#     success_url = reverse_lazy('map:login_page')
 
 
-class ReviewsListView(DetailView):
-    template_name ='map/map_details.html'  
+# class ReviewsListView(DetailView):
+#     template_name ='map/map_details.html'  
 
-    def get_object(self) -> Review:
-        return ReviewPictures.objects.select_related('review', 'review__placemark').filter(review__placemark__pk=self.kwargs['pk'])
+#     def get_object(self) -> Review:
+#         return ReviewPictures.objects.select_related('review', 'review__placemark').filter(review__placemark__pk=self.kwargs['pk'])
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['pictures'] = context['object']
-        del context['object']
-        return context
+#     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+#         context = super().get_context_data(**kwargs)
+#         context['pictures'] = context['object']
+#         del context['object']
+#         return context
     
 
 
-
-
-class PlacemarkAPIList(generics.ListCreateAPIView):
+class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
-    
-
