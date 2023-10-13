@@ -71,6 +71,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     height = models.PositiveSmallIntegerField(null=True, blank=True)
     age = models.PositiveSmallIntegerField( null=True, blank=True)
     weight = models.PositiveSmallIntegerField( null=True, blank=True)
+    def __str__(self) -> str:
+        print(self.id, self.username)
+        return super().__str__()
 # #    profile_picture = models.ImageField()
 
     # @property

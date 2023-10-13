@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import EditProfileForm from "./EditProfileForm";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation, useNavigate, useParams } from "react-router-dom";
+import AuthContext from "context/AuthContext";
 
 const EditProfile = () => {
-    const location = useLocation();
-    return(
-    <>
-        <EditProfileForm/>
-    </>
-    );
+    const params = useParams();
+    const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        navigate('/');
+    });
+    if(authContext.user && (authContext.user.id == Number(params.user_id))){
+        console.log('rendering edit form');
+        return(
+            <EditProfileForm/>
+        );
+    }
 }
 
 export default EditProfile;

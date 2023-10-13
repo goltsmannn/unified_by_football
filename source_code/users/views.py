@@ -18,7 +18,6 @@ from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class UserViewSet(RetrieveModelMixin, 
-                  UpdateModelMixin,
                   ListModelMixin, 
                   viewsets.GenericViewSet):
     
@@ -61,19 +60,30 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 @api_view(['POST'])
-def user_by_token(request):
-    # token = request.headers.get('Authorization')
-    # if token is None:
-    #     response = Response('Incorrect JSON format')
-    #     response.status_code = 400
-    #     return response 
-    #return Response(request.headers.get('Authorization'))
+def retrieve_user_by_token(request):
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request)
     print(request.headers.get('Authorization'))
+    if response is None:
+        return Response('No user')
+    return Response(UserSerializer(response[0]).data)
+
+
+@api_view(['POST'])
+def update_user_by_token(request):
     authenticator = JWTAuthentication()
     response = authenticator.authenticate(request)
     if response is None:
         return Response('No user')
-    return Response(UserSerializer(response[0]).data)
+    pk = response[0].id 
+    user = User.objects.get(pk=pk)
+
+    for key, value in request.data.items():
+        if value != user.__getattribute__(key) and not (value=="" and user.__getattribute__(key) is None):
+            user.__setattr__(key,value)
+    user.save()
+    return Response(UserSerializer(user).data)
+
 
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
