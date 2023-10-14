@@ -8,11 +8,13 @@ const Balloon = (props) => {
     for(let picture of props.data.pictures){
         imageLinks.push(picture.image);
     }
-    let images = imageLinks.map((link)=><img src={link} style={{height:100, width:'30%'}}></img>);
+    let images = imageLinks.map((link)=><img src={link} style={{height:100, width:'25%'}}></img>);
     return(
         <>
             <div>Rating: {props.data.rating}</div> 
-            <Link to={"placemarks/" + props.placemark_id}>Детали</Link>
+            <div>
+                <Link to={"placemarks/" + props.placemark_id}>Детали</Link>
+            </div>
             {images}
         </>
     ); 

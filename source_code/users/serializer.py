@@ -42,3 +42,11 @@ class LoginSerializer(serializers.ModelSerializer):
         if not user:
             raise serializers.ValidationError('User not found')
         return user
+    
+
+
+class BasicUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "region"]
+        read_only_fields = ["id", "username", "region"]

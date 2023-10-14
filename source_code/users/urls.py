@@ -14,7 +14,8 @@ urlpatterns = [
     path('api/auth/login', views.LogoutUserAPIView.as_view(), name='login-api'),
     path('api/auth/logout', views.LogoutUserAPIView.as_view(), name='logout-api'),
     path('api/auth/retrieve_user_by_token', views.retrieve_user_by_token, name='retrieve_user_by_token'),
-    path('api/auth/update_user_by_token', views.update_user_by_token, name='update_user_by_token')
+    path('api/auth/update_user_by_token', views.update_user_by_token, name='update_user_by_token'),
+    path('api/users/retrieve_users_basic_info', views.ListUserBasicInfo.as_view(), name='retrieve_users_basic_info')
 ] 
 
 # urlpatterns = [

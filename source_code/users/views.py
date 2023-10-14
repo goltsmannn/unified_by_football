@@ -3,7 +3,7 @@ from typing import List, Optional
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
 from users.models import User
-from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer
+from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer
 from users.permissions import IsCreatorOrReadOnly
 from users.forms import UserAlterationForm
 import rest_framework.viewsets as viewsets
@@ -24,6 +24,11 @@ class UserViewSet(RetrieveModelMixin,
     queryset = User.objects.all()
     serializer_class = UserSerializer
     #permission_classes = (IsCreatorOrReadOnly, )
+
+
+class ListUserBasicInfo(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = BasicUserInfoSerializer
 
 
 class RegisterUserAPIView(generics.CreateAPIView):
