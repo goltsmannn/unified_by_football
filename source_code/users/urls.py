@@ -11,7 +11,7 @@ print(router.urls)
 urlpatterns = [
     path('', include((router.urls))),
     path('auth/register', views.RegisterUserAPIView.as_view(), name='register-api'),
-    path('auth/login', views.LogoutUserAPIView.as_view(), name='login-api'),
+    path('auth/login', views.LoginUserAPIView.as_view(), name='login-api'),
     path('auth/logout', views.LogoutUserAPIView.as_view(), name='logout-api'),
     path('auth/retrieve_user_by_token', views.retrieve_user_by_token, name='retrieve_user_by_token'),
     path('auth/update_user_by_token', views.update_user_by_token, name='update_user_by_token'),

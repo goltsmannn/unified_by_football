@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "username", "is_staff", "email"]
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.Serializer):
 
     email = serializers.EmailField(required=True)
     username = serializers.CharField(required=True)
@@ -22,15 +22,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError('Passwords do not match')
+        elif User.objects.filter(email=attrs['email']).first() is not None:
+            raise serializers.ValidationError('Email is not unique')
+        elif User.objects.filter(username=attrs['username']).first() is not None:
+            raise serializers.ValidationError('Username is not unique')
+
         return attrs
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            email=validated_data.email,
-            password=validated_data.password,
-            username=validated_data.username
+            email=validated_data['email'],
+            username=validated_data['username']
         )
-        return user
+        user.set_password(validated_data['password'])
+        return user 
         
 
 class LoginSerializer(serializers.ModelSerializer):

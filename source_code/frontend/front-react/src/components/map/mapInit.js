@@ -57,7 +57,7 @@ const MyMap = () => {
     return(
 
         <YMaps>
-            <Map defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
+            <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
             {placemarks.map(placemark=>(
                 <>
                 <Placemark
