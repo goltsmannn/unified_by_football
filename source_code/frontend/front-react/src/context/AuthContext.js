@@ -47,7 +47,7 @@ export const AuthProvider = ({children}) => {
         if(authToken){
             async function fetchData(){
                 try{
-                        const response = await axios.post('http://127.0.0.1:8000/users/api/auth/retrieve_user_by_token', null, {
+                        const response = await axios.post('http://127.0.0.1:8000/api/users/auth/retrieve_user_by_token', null, {
                         headers: {
                             Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
                         }

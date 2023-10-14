@@ -8,7 +8,7 @@ from rest_framework import routers
 
 app_name ='map'
 router = routers.DefaultRouter()
-router.register(r'map', views.PlacemarkViewSet, basename="map")
+router.register(r'placemarks', views.PlacemarkViewSet, basename="map")
 
 urlpatterns = [
     # path('login', views.MyLoginView.as_view(), name='login_page'),
@@ -16,6 +16,6 @@ urlpatterns = [
     # path('logout', views.MyLogoutView.as_view(), name='logout_page'),
     # path('', views.MainPageTemplateView.as_view(), name='main_page'),
     # path('<int:pk>', views.ReviewsListView.as_view(), name='detail_page'),
-    path('api/', include((router.urls))),
+    path('', include((router.urls))),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

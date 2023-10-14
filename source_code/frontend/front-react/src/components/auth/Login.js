@@ -9,7 +9,8 @@ class Login extends React.Component{
             <>
             <form onSubmit={this.context.loginUser}>
                 <input type="text" name="email" placeholder="Введите почту"></input>
-                <input type="text" name="password" placeholder="Введите пароль"></input>
+                <input type="password" name="password" placeholder="Введите пароль"></input> 
+                {/* type=password всегда чтобы не было видно вводимые данные */}
                 <input type="submit" />
             </form>
             </>

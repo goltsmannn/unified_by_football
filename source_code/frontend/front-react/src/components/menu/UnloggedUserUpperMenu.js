@@ -3,9 +3,6 @@ import getAPIURL from "../../utils/getAPIURL";
 import { Link } from "react-router-dom";
 
 
-const api_urls = await getAPIURL();
-
-
 class UnloggedUserUpperMenu extends React.Component{
     render(){
         return(

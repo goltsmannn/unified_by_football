@@ -8,7 +8,7 @@ const PlacemarkMain = ()=>{
     
     useEffect(()=>{
         const fetchData = async () => {
-            const response = await axios.get(`http://127.0.0.1:8000/map/api/map/${placemark_id}`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/map/placemarks/${placemark_id}`);
             if(response.status===200){
                 console.log('Placemark response correct');
                 setPlacemark(response.data);

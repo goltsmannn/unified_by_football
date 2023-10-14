@@ -5,17 +5,17 @@ from rest_framework import routers
 app_name = 'users'
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet, basename="users")
-#print(router.urls)
+router.register(r'', views.UserViewSet, basename="users")
+print(router.urls)
 
 urlpatterns = [
-    path('api/', include((router.urls))),
-    path('api/auth/register', views.RegisterUserAPIView.as_view(), name='register-api'),
-    path('api/auth/login', views.LogoutUserAPIView.as_view(), name='login-api'),
-    path('api/auth/logout', views.LogoutUserAPIView.as_view(), name='logout-api'),
-    path('api/auth/retrieve_user_by_token', views.retrieve_user_by_token, name='retrieve_user_by_token'),
-    path('api/auth/update_user_by_token', views.update_user_by_token, name='update_user_by_token'),
-    path('api/users/retrieve_users_basic_info', views.ListUserBasicInfo.as_view(), name='retrieve_users_basic_info')
+    path('', include((router.urls))),
+    path('auth/register', views.RegisterUserAPIView.as_view(), name='register-api'),
+    path('auth/login', views.LogoutUserAPIView.as_view(), name='login-api'),
+    path('auth/logout', views.LogoutUserAPIView.as_view(), name='logout-api'),
+    path('auth/retrieve_user_by_token', views.retrieve_user_by_token, name='retrieve_user_by_token'),
+    path('auth/update_user_by_token', views.update_user_by_token, name='update_user_by_token'),
+    path('retrieve_users_basic_info', views.ListUserBasicInfo.as_view(), name='retrieve_users_basic_info')
 ] 
 
 # urlpatterns = [

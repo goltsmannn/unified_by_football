@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 
@@ -10,14 +9,14 @@ const SearchMain = () => {
     const authContext = useContext(AuthContext);
     const filteredUsers = users.filter((user) => {
         return (user.username.toLowerCase().includes(searchValue.toLowerCase()) && user.id !==authContext.user.id); 
-    });
-
+    }); //переписать потом под серверный поиск (для реализации в декабре) (или виртуальным скроллом) !!!
+    //поиск юзеров
     useEffect(()=>{
         const fetchData = async ()=>{
-            const response = await axios.get('http://127.0.0.1:8000/users/api/users/retrieve_users_basic_info')
+            const response = await axios.get('http://127.0.0.1:8000/api/users/retrieve_users_basic_info')
             if(response.status === 200){
                 console.log('successful user basic info request');
-                setUsers(response.data); //СПРОСИТЬ ЗАЧЕМ ТУТ USESTATE
+                setUsers(response.data); //СПРОСИТЬ ЗАЧЕМ ТУТ USESTATE (done)
             }
             else{
                 console.log('failed user basic info request');
@@ -25,7 +24,10 @@ const SearchMain = () => {
         }
         fetchData();
     }, []);
-
+    
+    useEffect(()=>{
+        //сюда переписать filteredusers, filteredusers - state
+    }, [searchValue]);
 
     return(
         <>

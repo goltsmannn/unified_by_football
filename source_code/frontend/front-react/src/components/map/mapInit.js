@@ -2,13 +2,12 @@ import { YMaps, Map, Placemark} from "@pbe/react-yandex-maps";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Balloon from "./Balloon";
-import { renderToString } from 'react-dom/server';
 import { Link } from "react-router-dom";
 import { createPortal } from "react-dom";
 
 
 async function requestPlacemarks(){
-    let response = await axios.get('http://127.0.0.1:8000/map/api/map');
+    let response = await axios.get('http://127.0.0.1:8000/api/map/placemarks');
     return response.data;
 }
 

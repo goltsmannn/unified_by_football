@@ -16,7 +16,7 @@ const ProfileMain = () => {
 
     useEffect(()=>{
         const fetchData = async ()=>{
-            const response = await axios.get(`http://127.0.0.1:8000/users/api/users/${page_id}`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/users/${page_id}`);
             if(response.data){
                 setPageUser(response.data);
             }
