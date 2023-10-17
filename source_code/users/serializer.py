@@ -1,7 +1,6 @@
-#from django.forms import ValidationError
 from rest_framework import serializers 
 from rest_framework.fields import empty
-from users.models import User
+from users.models import User, Message
 from django.contrib.auth import get_user_model, authenticate
 
 
@@ -32,9 +31,10 @@ class UserRegisterSerializer(serializers.Serializer):
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
-            username=validated_data['username']
+            username=validated_data['username'],
+            password=validated_data['password']
         )
-        user.set_password(validated_data['password'])
+
         return user 
         
 
@@ -51,7 +51,17 @@ class LoginSerializer(serializers.ModelSerializer):
 
 
 class BasicUserInfoSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = User
         fields = ["id", "username", "region"]
         read_only_fields = ["id", "username", "region"]
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    sender_id = UserSerializer()
+    recipient_id = UserSerializer()
+
+    class Meta:
+        model = Message
+        fields = "__all__"

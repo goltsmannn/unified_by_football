@@ -24,7 +24,7 @@ const ProfileMain = () => {
             console.log(response.data);
         }
         fetchData();
-    },[page_id])
+    },[page_id, authContext.user])
     if(pageUser){
     return(
         <div id="user-info-wrapper">

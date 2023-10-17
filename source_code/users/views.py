@@ -1,9 +1,8 @@
 import pdb
 from typing import List, Optional
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
-from users.models import User
-from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer
+from users.models import User, Message
+from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer
 from users.permissions import IsCreatorOrReadOnly
 from users.forms import UserAlterationForm
 import rest_framework.viewsets as viewsets
@@ -16,10 +15,11 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import exceptions
 
 class UserViewSet(RetrieveModelMixin, 
-                  ListModelMixin, 
-                  viewsets.GenericViewSet):
+                ListModelMixin, 
+                viewsets.GenericViewSet):
     
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -49,14 +49,11 @@ class LogoutUserAPIView(APIView):
         logout(request)
 
 
-
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token['email'] = user.email
-
         return token
     
 
@@ -68,9 +65,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 def retrieve_user_by_token(request):
     authenticator = JWTAuthentication()
     response = authenticator.authenticate(request)
-    print(request.headers.get('Authorization'))
     if response is None:
-        return Response('No user')
+        return exceptions.AuthenticationFailed('No user found with given JWT token')
     return Response(UserSerializer(response[0]).data)
 
 
@@ -79,7 +75,7 @@ def update_user_by_token(request):
     authenticator = JWTAuthentication()
     response = authenticator.authenticate(request)
     if response is None:
-        return Response('No user')
+        raise exceptions.AuthenticationFailed('No user found with given JWT token or token is incorrect')
     pk = response[0].id 
     user = User.objects.get(pk=pk)
 
@@ -90,7 +86,43 @@ def update_user_by_token(request):
     return Response(UserSerializer(user).data)
 
 
+class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там долбаться потом допишу 
+    def post(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+        user = User.objects.get(pk=response[0].id)
+        try:
+            recipient = User.objects.get(pk=request.recipient_id)
+            message = Message.objects.create(
+                sender_id=user,
+                recipient_id=recipient,
+                message_text=request.message_text,
+                message_topic=request.message_topic,
+            )
+            return Response('Succesfully created message instance')
+        except User.DoesNotExist:
+            raise exceptions.ValidationError('Recipient user not found while sending the message')
 
+
+class ListMessagesAPIView(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    def get_queryset(self):
+        return Message.objects.filter(recipient_id=self.kwargs['recipient_id'])
+
+    
+
+@api_view(['GET'])
+def retrieve_message(request, message_id):
+    try:
+        message = Message.objects.get(pk=message_id)
+        response = MessageSerializer(message)
+        return Response(response.data)
+    except Message.DoesNotExist:
+        raise exceptions.NotFound('Message not found')
+    
+    
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()
 #     serializer_class = ProfileSerializer

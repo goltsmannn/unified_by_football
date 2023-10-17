@@ -5,12 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from jwt import encode
 from datetime import datetime, timedelta, timezone
 from IGW.settings import SECRET_KEY
-# Create your models here.
-
-
-# class User(AbstractUser):
-#     class Meta:
-#         verbose_name = "User"
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -95,3 +90,10 @@ class Subscriptions(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target_user")
     friend_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="friend_user")
     
+
+class Message(models.Model):
+    sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    recipient_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
+    message_topic = models.TextField(max_length=200)
+    message_text = models.TextField(max_length=2000)
+    message_datetime = models.DateTimeField(auto_now_add=timezone.now())

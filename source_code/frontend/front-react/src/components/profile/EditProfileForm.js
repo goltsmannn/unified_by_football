@@ -34,7 +34,6 @@ const EditProfileForm = () => {
             weight: e.target.weight.value,
             height: e.target.height.value,
             region: e.target.region.value,
-            username: e.target.username.value,
         }
         const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', data, config);
         if (response.status === 200){
