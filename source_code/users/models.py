@@ -92,8 +92,8 @@ class Subscriptions(models.Model):
     
 
 class Message(models.Model):
-    sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-    recipient_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
     message_topic = models.TextField(max_length=200)
     message_text = models.TextField(max_length=2000)
     message_datetime = models.DateTimeField(auto_now_add=timezone.now())

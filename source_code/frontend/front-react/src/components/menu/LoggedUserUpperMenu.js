@@ -18,6 +18,12 @@ const LoggedUserUpperMenu = () => {
                 <li>
                     <Link to="/" onClick={authContext.logoutUser}>Выйти</Link>
                 </li>
+                <li>
+                    <Link to="search">Найти пользователя</Link>
+                </li>
+                <li>
+                    <Link to="email">Почта</Link>
+                </li>
             </ul>
         </nav>
         </>

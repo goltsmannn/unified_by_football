@@ -8,7 +8,6 @@ import axios from "axios";
 
 const ProfileMain = () => {
     const authContext = useContext(AuthContext);
-    const user = authContext.user;
     const page_id = useParams().user_id;
     const [pageUser, setPageUser] = useState(null); //хорошо ли так ? спросить надо
     const location = useLocation();
@@ -24,7 +23,8 @@ const ProfileMain = () => {
             console.log(response.data);
         }
         fetchData();
-    },[page_id, authContext.user])
+    },[page_id, authContext.user]);
+
     if(pageUser){
     return(
         <div id="user-info-wrapper">

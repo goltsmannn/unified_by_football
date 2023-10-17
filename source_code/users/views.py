@@ -96,8 +96,8 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
         try:
             recipient = User.objects.get(pk=request.recipient_id)
             message = Message.objects.create(
-                sender_id=user,
-                recipient_id=recipient,
+                sender=user,
+                recipient=recipient,
                 message_text=request.message_text,
                 message_topic=request.message_topic,
             )
@@ -109,7 +109,7 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
 class ListMessagesAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
     def get_queryset(self):
-        return Message.objects.filter(recipient_id=self.kwargs['recipient_id'])
+        return Message.objects.filter(recipient=self.kwargs['recipient_id']) #!!!!!!!ДОБАВИТЬ VALUES LIST
 
     
 
@@ -122,7 +122,7 @@ def retrieve_message(request, message_id):
     except Message.DoesNotExist:
         raise exceptions.NotFound('Message not found')
     
-    
+
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()
 #     serializer_class = ProfileSerializer

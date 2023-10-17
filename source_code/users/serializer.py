@@ -59,8 +59,8 @@ class BasicUserInfoSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    sender_id = UserSerializer()
-    recipient_id = UserSerializer()
+    sender = UserSerializer()
+    recipient = UserSerializer()
 
     class Meta:
         model = Message

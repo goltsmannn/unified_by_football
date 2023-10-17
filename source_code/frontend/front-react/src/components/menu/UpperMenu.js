@@ -39,7 +39,6 @@ class UpperMenu extends React.Component{
             return(          
                 <>
                     <LoggedUserUpperMenu></LoggedUserUpperMenu>
-                    <Link to="search">Найти пользователя</Link>
                 </>
         );
         }

@@ -26,7 +26,7 @@ class App extends React.Component{
               <Route path="register" element = {<Register/>}></Route>
               <Route path="search" element = { <SearchMain></SearchMain>}></Route>
               <Route path="placemarks/:placemark_id" element = { <PlacemarkMain/> }></Route>
-              <Route path="email" element={<EmailMain/>}>Почта</Route>
+              <Route path="email" element={<EmailMain/>}></Route>
               <Route path="profile/:user_id" element = {<ProfileMain/>}>
                 <Route path="edit" element = {<EditProfile/>}></Route>
               </Route>
