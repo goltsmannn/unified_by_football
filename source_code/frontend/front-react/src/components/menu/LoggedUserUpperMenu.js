@@ -22,7 +22,7 @@ const LoggedUserUpperMenu = () => {
                     <Link to="search">Найти пользователя</Link>
                 </li>
                 <li>
-                    <Link to="email">Почта</Link>
+                    <Link to="message">Почта</Link>
                 </li>
             </ul>
         </nav>

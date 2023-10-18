@@ -29,7 +29,6 @@ export const AuthProvider = ({children}) => {
         );
 
         if (response.status === 200){
-            console.log(response.data);
             setAuthToken(response.data.access);
             setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser
             localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); //переписать под ключ - значение DONE

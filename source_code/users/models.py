@@ -7,7 +7,6 @@ from datetime import datetime, timedelta, timezone
 from IGW.settings import SECRET_KEY
 from django.utils import timezone
 
-
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **kwargs):
         if username is None or email is None:
@@ -96,4 +95,4 @@ class Message(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
     message_topic = models.TextField(max_length=200)
     message_text = models.TextField(max_length=2000)
-    message_datetime = models.DateTimeField(auto_now_add=timezone.now())
+    message_datetime = models.DateTimeField(auto_now_add=datetime.timestamp(timezone.now()))
