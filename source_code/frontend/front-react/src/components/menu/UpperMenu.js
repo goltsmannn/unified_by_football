@@ -4,21 +4,26 @@ import UnloggedUserUpperMenu from "./UnloggedUserUpperMenu";
 import getAPIURL from "../../utils/getAPIURL";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import AuthContext from "context/AuthContext";
 
+//здесь импортнуть стили
 
 const api_urls = await getAPIURL();
 
 
 class UpperMenu extends React.Component{
+    static contextType = AuthContext;
+
     constructor(props){
         super(props);
         this.state = {
             data: [],
         }
     }
+
     async componentDidMount(){
         try{
-            const request = await axios.get(`${api_urls['profile']}`);
+            const request = await axios.get(`${api_urls['users']}`);
             const request_json = await request.json();
             this.setState({
                 data: request_json,
@@ -30,8 +35,8 @@ class UpperMenu extends React.Component{
     }
 
     render() {
-        let is_authenticated = true;
-        if (is_authenticated){
+        
+        if (this.context.user){
             return(          
                 <>
                     <LoggedUserUpperMenu></LoggedUserUpperMenu>
@@ -41,6 +46,7 @@ class UpperMenu extends React.Component{
         else{
             return(
                 <>
+                <p>{this.context.user?this.context.user.email: "no user"}</p>
                     <UnloggedUserUpperMenu></UnloggedUserUpperMenu>
                 </>
             );

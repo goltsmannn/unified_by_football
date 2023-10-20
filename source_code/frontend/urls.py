@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
+regex = r"^(?!api).*$"
 
 urlpatterns = [
-    path('', views.index),
+    re_path(regex, views.index),
+  #  path('', views.index),
 ]

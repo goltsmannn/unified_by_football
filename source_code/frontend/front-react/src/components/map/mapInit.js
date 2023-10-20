@@ -1,9 +1,13 @@
 import { YMaps, Map, Placemark} from "@pbe/react-yandex-maps";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Balloon from "./Balloon";
+import { Link } from "react-router-dom";
+import { createPortal } from "react-dom";
+
 
 async function requestPlacemarks(){
-    let response = await axios.get('http://localhost:8000/map/api/markers');
+    let response = await axios.get('http://127.0.0.1:8000/api/map/placemarks');
     return response.data;
 }
 
@@ -28,37 +32,51 @@ function prepareBalloonData(plc_json){
 }
 
 
-const placemarks = await requestPlacemarks();
 
-class MyMap extends React.Component{
-    constructor(props){
-        super(props);
-        this.state= {
-            placemarks: placemarks,
+const Portal = ({placemark}) => {
+    return createPortal(<Balloon 
+    placemark_id={placemark.id}
+    data={prepareBalloonData(placemark)}/>,
+    document.getElementById('placemark_balloon'));
+}
+
+const MyMap = () => {
+    const [placemarks, setPlacemarks] = useState([]);
+    const [activePortal, setActivePortal] = useState(false);
+
+
+    useEffect( ()=>{
+        async function await_placemarks(){
+            const placemarks = await requestPlacemarks();
+            setPlacemarks(placemarks);
         }
-    }
-    render(){
-        console.log(this.state.placemarks);
-        return(
-            <YMaps>
-                <Map defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
-                {placemarks.map(placemark=>(
-                    <Placemark
-                        modules={["geoObject.addon.balloon"]}
-                        geometry={[placemark.x, placemark.y]}
-                        properties={{
-                            balloonContent: `
-                                <div class="balloon">
-                                    a
-                                </div>
-                                `,
-                        }}
-                    />
-                ))}   
-                </Map>
-            </YMaps>
-        );
-    }
+        await_placemarks();
+    }, []);
+
+
+    return(
+
+        <YMaps>
+            <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
+            {placemarks.map(placemark=>(
+                <>
+                <Placemark
+                    modules={["geoObject.addon.balloon"]}
+                    geometry={[placemark.x, placemark.y]}
+                    properties={{
+                        balloonContent: `<div id="placemark_balloon" style="height:500px; width:100%;"></div>`,
+                    }}
+                    onClick={ ()=>{
+                        setTimeout(() => { setActivePortal(true)}, 0)
+                    }}
+                />
+                {activePortal && <Portal placemark={placemark}/>}
+                </>           
+            ))}   
+            </Map>
+        </YMaps>
+    );
+    
 }
 
 export default MyMap;

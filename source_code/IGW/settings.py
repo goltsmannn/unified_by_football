@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -18,10 +19,13 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = [
+CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+    'http://localhost:8080'
 ]
+#APPEND_SLASH = False
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -39,6 +43,7 @@ INTERNAL_IPS = [
 ]
 
 # Application definition
+AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,12 +55,33 @@ INSTALLED_APPS = [
     'map.apps.MapConfig',
     'rest_framework',
     'corsheaders',
-    'account.apps.AccountConfig',
+    'users.apps.UsersConfig',
     'frontend.apps.FrontendConfig',
     'django_pdb',
     "debug_toolbar",
-
+    'rest_framework_simplejwt.token_blacklist',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
+    'SIGNING_KEY': SECRET_KEY,  
+    'ALGORITHM': 'HS256',
+    'ROTATE_REFRESH_TOKENS': True, #ПРИ ЗАХОДЕ НА САЙТ ОБНОВЛЯЕТСЯ EXPIRATION
+    'BLACKLIST_AFTER_ROTATION': True, #Чтобы после запроса на refresh предыдущие токены кидались в чс
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    "TOKEN_OBTAIN_SERIALIZER": "users.serializers.CustomTokenObtainPairSerializer",
+}
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -77,7 +103,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
                 os.path.join(BASE_DIR, 'frontend/front-react/build'),
-                #os.path.join(BASE_DIR, 'frontend/front-react/public'),
+                os.path.join(BASE_DIR, 'frontend/front-react/public'),
                 ],
 
         'APP_DIRS': True,
