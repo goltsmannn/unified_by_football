@@ -11,8 +11,8 @@ How to start the app:
 Now you have to open one more bash window in unified_by_football.
 Set up working directory as .../unified_by_football/source_code in both:
 In the first one:
-1) python manage.py runserver
+1) python manage.py runserver <br>
 In the second one:
 1) cd frontend/front-react/
-2) npm init
+2) npm install
 3) npm start
