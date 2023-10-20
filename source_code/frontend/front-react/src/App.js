@@ -14,7 +14,7 @@ import MessageMain from "components/email/MessageMain";
 import PostMessage from "components/email/PostMessage";
 import MessageList from "components/email/MessageList";
 import GetMessage from "components/email/GetMessage";
-
+import "./_style.css";
 
 class App extends React.Component{
 

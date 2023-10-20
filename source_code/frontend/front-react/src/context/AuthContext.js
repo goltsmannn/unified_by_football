@@ -54,6 +54,7 @@ export const AuthProvider = ({children}) => {
                     setUser(response.data);
                 }
                 catch (error){
+                    alert('Авторизация закончилась')
                     console.log(error);
                 }
             }

@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 
+//здесь импортнуть стили
 
 const api_urls = await getAPIURL();
 

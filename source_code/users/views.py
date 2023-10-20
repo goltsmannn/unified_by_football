@@ -1,8 +1,8 @@
 import pdb
 from typing import List, Optional
 from rest_framework import generics
-from users.models import User, Message
-from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer
+from users.models import User, Message, Subscriptions
+from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer, SubscriptionSerializer
 from users.permissions import IsCreatorOrReadOnly
 from users.forms import UserAlterationForm
 import rest_framework.viewsets as viewsets
@@ -122,6 +122,42 @@ def retrieve_message(request, message_id):
     except Message.DoesNotExist:
         raise exceptions.NotFound('Message not found')
     
+
+class SubscriptionsAPIView(generics.ListCreateAPIView):
+    serializer_class = SubscriptionSerializer
+    def get(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+        subscriptions = Subscriptions.objects.filter(user_from=response[0].id)
+        response = SubscriptionSerializer(subscriptions, many=True)
+        return Response(response.data)
+    
+    def post(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+        
+        try:
+            user_from = User.objects.get(pk=request.data.get('user_from_id'))
+            user_to = User.objects.get(pk=request.data.get('user_to_id'))
+        except User.DoesNotExist:
+            raise exceptions.bad_request('Not found user by given id or bad request')
+        
+        if request.data.get('delete'):
+            try:
+                Subscriptions.objects.get(user_from=user_from, user_to=user_to).delete()
+            except Exception as e:
+                print(e)
+        else:
+            Subscriptions.objects.create(user_from=user_from, 
+                                        user_to=user_to)
+            
+        subscriptions = Subscriptions.objects.filter(user_from=response[0].id)
+        response = SubscriptionSerializer(subscriptions, many=True)       
+        return Response(response.data)
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()

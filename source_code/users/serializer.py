@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 from rest_framework.fields import empty
-from users.models import User, Message
+from users.models import User, Message, Subscriptions
 from django.contrib.auth import get_user_model, authenticate
 
 
@@ -54,8 +54,8 @@ class BasicUserInfoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ["id", "username", "region"]
-        read_only_fields = ["id", "username", "region"]
+        fields = ["id", "username", "email", "region"]
+        read_only_fields = ["id", "username", "email", "region"]
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -65,3 +65,11 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = "__all__"
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    user_to = BasicUserInfoSerializer()
+
+    class Meta:
+        model = Subscriptions
+        fields = ("user_to", "id")

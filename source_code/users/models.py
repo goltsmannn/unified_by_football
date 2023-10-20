@@ -86,8 +86,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Subscriptions(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target_user")
-    friend_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="friend_user")
+    user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_from")
+    user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to")
     
 
 class Message(models.Model):
