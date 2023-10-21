@@ -1,8 +1,7 @@
-{
+  {
   "name": "front-react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
   "dependencies": {
     "@pbe/react-yandex-maps": "^1.2.4",
     "@testing-library/jest-dom": "^5.17.0",
@@ -39,8 +38,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.3.3"
   }
 }

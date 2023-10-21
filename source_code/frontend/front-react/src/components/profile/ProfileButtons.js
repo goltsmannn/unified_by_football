@@ -23,7 +23,7 @@ const ProfileButtons = ({pageUser}) =>{
                 setIsSubscribed(true);  
             }
         })
-    }, [subscriptions]);
+    }, [subscriptions, page_id]);
 
     useEffect(()=>{
         console.log(isSubscribed);
@@ -47,7 +47,7 @@ const ProfileButtons = ({pageUser}) =>{
             }
         }
         fetchData();
-    }, [isSubscribed]);
+    }, [isSubscribed, authContext.authToken, authContext.user, pageUser]);
 
 
     if((location.pathname===`/profile/${page_id}`) && (authContext.user)){

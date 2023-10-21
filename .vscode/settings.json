@@ -1,3 +1,4 @@
 {
-    "html-to-css-autocompletion.triggerCharacters": false
+    "html-to-css-autocompletion.triggerCharacters": false,
+    "git.ignoreLimitWarning": true
 }
