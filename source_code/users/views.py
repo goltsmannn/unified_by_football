@@ -94,12 +94,12 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
             raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
         user = User.objects.get(pk=response[0].id)
         try:
-            recipient = User.objects.get(pk=request.recipient_id)
+            recipient = User.objects.get(username=request.data.get('recipient_username'))
             message = Message.objects.create(
                 sender=user,
                 recipient=recipient,
-                message_text=request.message_text,
-                message_topic=request.message_topic,
+                message_text=request.data.get('message_text'),
+                message_topic=request.data.get('message_topic'),
             )
             return Response('Succesfully created message instance')
         except User.DoesNotExist:

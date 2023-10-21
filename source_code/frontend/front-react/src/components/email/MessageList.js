@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const MessageList = ()=>{
     const [messages, setMessages] = useState([]);
@@ -25,11 +27,15 @@ const MessageList = ()=>{
 
 
     return(
+        <>
+        <div id="write-message">
+            <Link to="post">Написать сообщение</Link>
+        </div>
         <div id="message-section-wrapper">
             <div id="message-list">
                 {messages.map((message)=> {
                     return(
-                    <div id="message-wrapper" style={{border: '1px solid black', margin:10 }} onClick={()=>navigate(`${message.id}`)}>
+                    <div id="message-wrapper" key={message.id} onClick={()=>navigate(`${message.id}`)}>
                         <div id="message-topic">Тема сообщения: {message.message_topic}</div>
                         <div id="message-sender">Никнейм отправителя: {message.sender.username}</div>
                         <div id="message-date">Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
@@ -40,6 +46,7 @@ const MessageList = ()=>{
                 {/* will be needed for pagination in the future */}
             </div>
         </div>
+        </>
     );
 }
 

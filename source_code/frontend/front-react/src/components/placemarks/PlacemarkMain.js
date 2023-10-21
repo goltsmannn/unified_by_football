@@ -40,7 +40,7 @@ const PlacemarkMain = ()=>{
                                         </div>
                                         <div id="review-pictures">
                                             {review.pictures.map((picture)=>
-                                                <img src={picture.image} alt="" style={{width:100}} />
+                                                <img src={picture.image} alt="" />
                                             )}
                                         </div>
                                     </div>

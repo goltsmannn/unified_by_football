@@ -26,7 +26,6 @@ const useSubscriptions = ()=>{
             fetchData();
         }
     },[authContext.user, authContext.authToken]);
-
     return subscriptions;
 }
 

@@ -27,7 +27,9 @@ const ProfileMain = () => {
                 console.log(error);
             }
         }
-        fetchData();
+        if(authContext.user){
+            fetchData();
+        }
     },[page_id, authContext.user]);
 
 

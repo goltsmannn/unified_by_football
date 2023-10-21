@@ -8,9 +8,11 @@ const SearchMain = () => {
     const [searchValue, setSearchValue] = useState("");
     const authContext = useContext(AuthContext);
     const filteredUsers = users.filter((user) => {
-        return (user.username.toLowerCase().includes(searchValue.toLowerCase()) && user.id !==authContext.user.id); 
+        return (user.username.toLowerCase().includes(searchValue.toLowerCase()) && (authContext.user?(user.id !== authContext.user.id): true)); 
     }); //переписать потом под серверный поиск (для реализации в декабре) (или виртуальным скроллом) !!!
     //поиск юзеров
+
+    
     useEffect(()=>{
         const fetchData = async ()=>{
             const response = await axios.get('http://127.0.0.1:8000/api/users/retrieve_users_basic_info')
@@ -38,7 +40,7 @@ const SearchMain = () => {
 
             <>{
                 filteredUsers.map((user)=>
-                <div id="user-card">
+                <div id="user-card" classNameName="border-solid border-4 mg-8">
                     <div>Username: {user.username} </div>
                     <div>Region: {user.region}</div>
                     <Link to={`/profile/${user.id}`}>Страничка пользователя</Link>
