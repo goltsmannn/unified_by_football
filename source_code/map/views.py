@@ -15,10 +15,12 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
-
+from rest_framework.decorators import api_view
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import exceptions
 
 # class MainPageTemplateView(TemplateView):
 #     template_name = 'map/main_map.html'
@@ -66,3 +68,23 @@ import rest_framework.viewsets as viewsets
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
+
+
+@api_view(['POST'])
+def post_review(request):
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request=request)
+    if response is None:
+        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+    if request.data.get('placemark_id') is None:
+        raise exceptions.ValidationError('Placemark id is not specified')
+    try:
+        placemark = Placemark.objects.get(pk=request.data.get('placemark_id'))
+    except Placemark.DoesNotExist:
+        return Response({'error': 'Placemark does not exist'})
+    try:
+        response = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
+    except Exception as e:
+        return Response({'error': e})   
+    return Response('created succesfully')
+    

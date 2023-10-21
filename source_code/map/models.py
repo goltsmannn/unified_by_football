@@ -17,5 +17,5 @@ class Review(models.Model):
 
 
 class ReviewPictures(models.Model):
-    image = models.ImageField(upload_to='review_pictures/') 
+    image = models.ImageField(upload_to='review_pictures/', blank=True) 
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="pictures")

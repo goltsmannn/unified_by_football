@@ -158,6 +158,12 @@ class SubscriptionsAPIView(generics.ListCreateAPIView):
         subscriptions = Subscriptions.objects.filter(user_from=response[0].id)
         response = SubscriptionSerializer(subscriptions, many=True)       
         return Response(response.data)
+    
+
+    
+
+
+
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()

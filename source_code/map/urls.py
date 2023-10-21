@@ -17,5 +17,6 @@ urlpatterns = [
     # path('', views.MainPageTemplateView.as_view(), name='main_page'),
     # path('<int:pk>', views.ReviewsListView.as_view(), name='detail_page'),
     path('', include((router.urls))),
+    path('review/post', views.post_review, name='review-post'),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
