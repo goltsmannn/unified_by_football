@@ -2,7 +2,7 @@ import { YMaps, Map } from "@pbe/react-yandex-maps";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import PlacemarkForm from "./PlacemarkForm";
+import ModalPlacemarkWrapper from "./ModalPlacemarkWrapper";
 
 
 const ProposePlacemark = () => {
@@ -16,6 +16,10 @@ const ProposePlacemark = () => {
         setCoordinates(event.get('coords'));
         console.log(coordinates);
         setModal(true);
+    }
+
+    const closeModal = () => {
+        setModal(false);
     }
 
     useEffect(()=>{
@@ -34,7 +38,7 @@ const ProposePlacemark = () => {
                 </YMaps>
             </div>
             <div id="modal-form">
-                {modal && <PlacemarkForm coordinates={coordinates}/>}
+                {modal && <ModalPlacemarkWrapper coordinates={coordinates} onClose={closeModal}/>}
             </div>
         </div>
     )

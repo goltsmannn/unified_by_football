@@ -42,12 +42,10 @@ def post_review(request):
         return Response({'error': 'Placemark does not exist'})
     try:
         review = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
-        if request.data.get('pictures') is not None:
-            review.pictures.create(image=request.data.get('picture'))
-            review.save()
     except Exception as e:
-        return Response({'error': e})   
-    return Response('created succesfully')
+        raise Exception(e)
+     
+    return Response(ReviewSerializer(review).data)
     
 
 @api_view(['POST'])
@@ -65,7 +63,18 @@ def post_placemark(request):
         raise Exception(e)
 
 
-
+@api_view(['POST'])
+def post_picture(request):
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request=request)
+    if response is None:
+        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+    review = Review.objects.get(pk=request.data.get('review_id'))
+    try:
+        review.pictures.create(picture=request.data.get('picture')) 
+        return Response(ReviewSerializer(review).data)
+    except Exception as e:
+        raise Exception(e)
 
 # class MainPageTemplateView(TemplateView):
 #     template_name = 'map/main_map.html'

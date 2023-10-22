@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
@@ -21,20 +21,29 @@ const ReviewForm = () => {
                     Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                 }
             };
+
             const data = {
                 text: reviewText,
                 rating: reviewRating,
-                picture: reviewPicture,
                 placemark_id: placemark_id,
-            }
-            console.log(reviewPicture);
+            }       
+
             try{
                 const response = await axios.post('http://localhost:8000/api/map/review/post', data, config);
                 navigate(-1);
+                console.log(response);
+
+                const formData = new FormData();
+                formData.append('picture', reviewPicture);
+                formData.append('review_id', response.data.id);
+
+                const config2 = {...config, headers: {...config.headers, 'Content-Type': 'multipart/form-data'}}; //жесть, но работает
+                const response2 = await axios.post('http://localhost:8000/api/map/review/picture/post', formData, config2);
+                console.log(response2); 
             }
             catch(error){
-                console.error('errpr while posting review',error);
-            }
+                console.error('error while posting review ',error);
+            }        
         }
         fetchData();
     };

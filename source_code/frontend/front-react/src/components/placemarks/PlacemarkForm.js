@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios';
 
 
-const PlacemarkForm = ({coordinates}) => {
+const PlacemarkForm = ({coordinates, onClose}) => {
     const [workingHours, setWorkingHours] = useState({
         from: '',
         to: '',
@@ -29,7 +29,7 @@ const PlacemarkForm = ({coordinates}) => {
                 data.working_hours = workingHours;
             }
 
-
+            console.log('abc')
             try{
                 const response = await axios.post('http://127.0.0.1:8000/api/map/placemark/post', data, config);
             }
@@ -38,6 +38,7 @@ const PlacemarkForm = ({coordinates}) => {
             }
         };
         fetchData();
+        onClose();
     };
 
 

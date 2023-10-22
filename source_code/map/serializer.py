@@ -14,7 +14,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     pictures = ReviewPicturesSerializer(many=True)
     class Meta:
         model = Review 
-        fields = ["author", "text", "rating", "pictures"]
+        fields = ["author", "text", "rating", "pictures", "id"]
 
 
 class PlacemarkSerializer(serializers.ModelSerializer):
