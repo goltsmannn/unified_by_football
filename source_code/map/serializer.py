@@ -24,6 +24,10 @@ class PlacemarkSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class PlacemarkPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Placemark
+        fields = "__all__"
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

@@ -24,6 +24,9 @@ const LoggedUserUpperMenu = () => {
             <li>
             <Link to="/" onClick={authContext.logoutUser} className="text-white hover:text-darkgreen">Выйти</Link>
             </li>
+            <li>
+            <Link to="propose" className="text-white hover:text-darkgreen">Предложить место</Link>
+            </li>
         </ul>
         </nav>
         </>

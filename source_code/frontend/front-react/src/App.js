@@ -16,6 +16,7 @@ import MessageList from "components/email/MessageList";
 import GetMessage from "components/email/GetMessage";
 import ReviewForm from "components/placemarks/ReviewForm";
 import PlacemarkInfo from "components/placemarks/PlacemarkInfo";
+import ProposePlacemark from "components/placemarks/ProposePlacemark";
 import "./_style.css";
 
 class App extends React.Component{
@@ -30,7 +31,7 @@ class App extends React.Component{
               <Route path="login" element = { <Login/> }></Route>
               <Route path="register" element = {<Register/>}></Route>
               <Route path="search" element = { <SearchMain></SearchMain>}></Route>
-
+              <Route path="propose" element = { <ProposePlacemark/> }></Route>
               <Route path="placemarks/:placemark_id" element = { <PlacemarkMain/> }>
                 <Route index element = {<PlacemarkInfo/>}></Route>
                 <Route path="post" element = {<ReviewForm/>}></Route>

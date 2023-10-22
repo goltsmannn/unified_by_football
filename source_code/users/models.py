@@ -59,12 +59,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    last_proposed = models.DateTimeField(null=True)
 
     region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, null=True, blank=True)
     height = models.PositiveSmallIntegerField(null=True, blank=True)
     age = models.PositiveSmallIntegerField( null=True, blank=True)
     weight = models.PositiveSmallIntegerField( null=True, blank=True)
+    
     def __str__(self) -> str:
         print(self.id, self.username)
         return super().__str__()

@@ -58,8 +58,9 @@ const MyMap = () => {
 
         <YMaps>
             <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
-            {placemarks.map(placemark=>(
-                <>
+            {placemarks.map(placemark=>{
+                if(placemark.verified===true){
+                return(<>
                 <Placemark
                     modules={["geoObject.addon.balloon"]}
                     geometry={[placemark.x, placemark.y]}
@@ -71,8 +72,8 @@ const MyMap = () => {
                     }}
                 />
                 {activePortal && <Portal placemark={placemark}/>}
-                </>           
-            ))}   
+                </>)}               
+            })}   
             </Map>
         </YMaps>
     );

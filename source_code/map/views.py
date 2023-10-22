@@ -15,12 +15,57 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import exceptions
+
+    
+class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
+    queryset = Placemark.objects.all()
+    serializer_class = PlacemarkSerializer
+
+
+@api_view(['POST'])
+def post_review(request):
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request=request)
+    if response is None:
+        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+    if request.data.get('placemark_id') is None:
+        raise exceptions.ValidationError('Placemark id is not specified')
+    try:
+        placemark = Placemark.objects.get(pk=request.data.get('placemark_id'))
+    except Placemark.DoesNotExist:
+        return Response({'error': 'Placemark does not exist'})
+    try:
+        review = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
+        if request.data.get('pictures') is not None:
+            review.pictures.create(image=request.data.get('picture'))
+            review.save()
+    except Exception as e:
+        return Response({'error': e})   
+    return Response('created succesfully')
+    
+
+@api_view(['POST'])
+def post_placemark(request):
+    authenticator = JWTAuthentication()
+    response = authenticator.authenticate(request=request)
+    if response is None:
+        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+    try:
+        serializer = PlacemarkPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        placemark = serializer.save()
+        return Response(PlacemarkPostSerializer(placemark).data)
+    except Exception as e:
+        raise Exception(e)
+
+
+
 
 # class MainPageTemplateView(TemplateView):
 #     template_name = 'map/main_map.html'
@@ -62,32 +107,3 @@ from rest_framework import exceptions
 #         context['pictures'] = context['object']
 #         del context['object']
 #         return context
-    
-
-
-class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
-    queryset = Placemark.objects.all()
-    serializer_class = PlacemarkSerializer
-
-
-@api_view(['POST'])
-def post_review(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request=request)
-    if response is None:
-        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
-    if request.data.get('placemark_id') is None:
-        raise exceptions.ValidationError('Placemark id is not specified')
-    try:
-        placemark = Placemark.objects.get(pk=request.data.get('placemark_id'))
-    except Placemark.DoesNotExist:
-        return Response({'error': 'Placemark does not exist'})
-    try:
-        review = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
-        if request.data.get('pictures') is not None:
-            review.pictures.create(image=request.data.get('picture'))
-            review.save()
-    except Exception as e:
-        return Response({'error': e})   
-    return Response('created succesfully')
-    
