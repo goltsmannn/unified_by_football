@@ -83,7 +83,10 @@ def post_review(request):
     except Placemark.DoesNotExist:
         return Response({'error': 'Placemark does not exist'})
     try:
-        response = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
+        review = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
+        if request.data.get('pictures') is not None:
+            review.pictures.create(image=request.data.get('picture'))
+            review.save()
     except Exception as e:
         return Response({'error': e})   
     return Response('created succesfully')

@@ -1,14 +1,17 @@
 import AuthContext from "context/AuthContext";
 import React from "react";
 import { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const Login = () => {
     const authContext = useContext(AuthContext);
     const {state} = useLocation();
+    const navigate = useNavigate();
 
-
+    if(authContext.user){
+        navigate('/');
+    }
     return(
         <>
         <div id="redirect-error">

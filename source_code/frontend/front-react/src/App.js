@@ -14,6 +14,8 @@ import MessageMain from "components/email/MessageMain";
 import PostMessage from "components/email/PostMessage";
 import MessageList from "components/email/MessageList";
 import GetMessage from "components/email/GetMessage";
+import ReviewForm from "components/placemarks/ReviewForm";
+import PlacemarkInfo from "components/placemarks/PlacemarkInfo";
 import "./_style.css";
 
 class App extends React.Component{
@@ -28,15 +30,22 @@ class App extends React.Component{
               <Route path="login" element = { <Login/> }></Route>
               <Route path="register" element = {<Register/>}></Route>
               <Route path="search" element = { <SearchMain></SearchMain>}></Route>
-              <Route path="placemarks/:placemark_id" element = { <PlacemarkMain/> }></Route>
+
+              <Route path="placemarks/:placemark_id" element = { <PlacemarkMain/> }>
+                <Route index element = {<PlacemarkInfo/>}></Route>
+                <Route path="post" element = {<ReviewForm/>}></Route>
+              </Route>
+
               <Route path="message" element={<MessageMain/>}>
                 <Route index element={<MessageList/>}></Route>
                 <Route path=":message_id" element={<GetMessage/>}></Route>
                 <Route path="post" element={<PostMessage/>}></Route>
               </Route>
+
               <Route path="profile/:user_id" element = {<ProfileMain/>}>
                 <Route path="edit" element = {<EditProfile/>}></Route>
               </Route>
+
               <Route path="*" element={<Page404/>}></Route> 
           </Routes>
         </AuthProvider>
