@@ -86,6 +86,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Subscriptions(models.Model):
+    class Meta:
+        unique_together = ('user_from', 'user_to')
+
     user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_from")
     user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to")
     

@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(null);
     let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
-
+    const readOnlyFields = ['email', 'id', 'is_staff', 'username'];
     
     let loginUser = async (e ) => {
         e.preventDefault();
@@ -54,13 +54,13 @@ export const AuthProvider = ({children}) => {
                     setUser(response.data);
                 }
                 catch (error){
-                    alert('Авторизация закончилась')
-                    console.log(error);
+                    console.log('сессия истекла, переадресую на login');     
+                    navigate('/login', { state: { error: 'Session expired'} });
                 }
             }
             fetchData(); //синхронный вызов async функции, замыкание, didmount->useeffect->вызов, setuser известен
         }
-    }, [authToken]);
+    }, [authToken, navigate]);
     
     let logoutUser = () => {
         localStorage.removeItem('accessToken');
@@ -77,6 +77,7 @@ export const AuthProvider = ({children}) => {
         setUser: setUser,
         logoutUser: logoutUser,
         authToken: authToken,
+        readOnlyFields: readOnlyFields,
     };
     
     return(

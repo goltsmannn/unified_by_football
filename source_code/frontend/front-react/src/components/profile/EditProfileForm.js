@@ -22,6 +22,7 @@ const EditProfileForm = () => {
             [e.target.name]: e.target.value,
         });
     }
+
     const saveAndGoBack = async (e) => {
         e.preventDefault();
         const config = {
@@ -46,16 +47,21 @@ const EditProfileForm = () => {
         navigate(-1);
     }
 
-
+    console.log(authContext.readOnlyFields);
     return(
     <form onSubmit={saveAndGoBack}>
-        {Object.keys(user).map((key)=>
-            <>
-                <input onChange={inputHandler} type="text" name={`${key}`} value={inputFields[key]} id={`${key}`+"-field"}></input>
-                <label htmlFor={`${key}`+"-field"}>{key} поле</label>
-                <br></br>
-            </>
+        {Object.keys(user).map((key)=> {
+                //проверим, что поле не входит в список readOnlyFields
+                return ((authContext.readOnlyFields.indexOf(key) === -1) && 
+                <>
+                    <input onChange={inputHandler} type="text" name={`${key}`} value={inputFields[key]} id={`${key}`+"-field"}></input>
+                    <label htmlFor={`${key}`+"-field"}>{key} поле</label>
+                    <br></br>
+                </>)
+                }
         )}
+
+        
         {/* <label htmlFor="username-field">Имя пользователя</label>
         <input type="text" name="username" id="username-field" value={user.username}></input>
         <input type="text" name="email" id="email-field"value={user.email}/>
