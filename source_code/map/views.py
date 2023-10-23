@@ -21,8 +21,11 @@ import rest_framework.viewsets as viewsets
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import exceptions
+from django.core.files.base import ContentFile
+import base64
 
-    
+
+
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
@@ -70,13 +73,19 @@ def post_picture(request):
     if response is None:
         raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
     review = Review.objects.get(pk=request.data.get('review_id'))
+
     try:
-        review.pictures.create(picture=request.data.get('picture')) 
+        # Decode the base64 encoded image data
+   #     image_data = base64.b64decode(request.data.get('picture'))
+        # Create a ContentFile object from the decoded image data
+    #    image_file = ContentFile(image_data)
+        # Create a ReviewPicture instance and save it to the database
+     #   picture = ReviewPictures.objects.create(image=request.data.get('picture'))
+        review.pictures.create(image=request.data.get('picture'))
         return Response(ReviewSerializer(review).data)
     except Exception as e:
         raise Exception(e)
 
-# class MainPageTemplateView(TemplateView):
 #     template_name = 'map/main_map.html'
 
     
@@ -116,3 +125,10 @@ def post_picture(request):
 #         context['pictures'] = context['object']
 #         del context['object']
 #         return context
+    
+
+
+class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
+    queryset = Placemark.objects.all()
+    serializer_class = PlacemarkSerializer
+

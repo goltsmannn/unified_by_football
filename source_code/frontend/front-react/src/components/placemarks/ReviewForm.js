@@ -31,12 +31,11 @@ const ReviewForm = () => {
             try{
                 const response = await axios.post('http://localhost:8000/api/map/review/post', data, config);
                 navigate(-1);
-                console.log(response);
 
                 const formData = new FormData();
                 formData.append('picture', reviewPicture);
                 formData.append('review_id', response.data.id);
-
+                console.log(response.data);
                 const config2 = {...config, headers: {...config.headers, 'Content-Type': 'multipart/form-data'}}; //жесть, но работает
                 const response2 = await axios.post('http://localhost:8000/api/map/review/picture/post', formData, config2);
                 console.log(response2); 
