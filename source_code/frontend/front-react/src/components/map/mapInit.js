@@ -1,9 +1,8 @@
 import { YMaps, Map, Placemark} from "@pbe/react-yandex-maps";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Balloon from "./Balloon";
 import { Link } from "react-router-dom";
-import { createPortal } from "react-dom";
+import Portal from "./Portal";
 
 
 async function requestPlacemarks(){
@@ -11,39 +10,11 @@ async function requestPlacemarks(){
     return response.data;
 }
 
-function prepareBalloonData(plc_json){
-    let pictures = [];
-    let avg = 0.0, cnt = 0;
-
-    plc_json.reviews.forEach(review=>{
-        avg += review.rating;
-        cnt += 1;
-        review.pictures.forEach(picture=>{
-            if(pictures.length < 3){
-            pictures.push(picture);
-            }
-        });
-    });
-    const data = {
-        pictures: pictures,
-        rating: avg/cnt,
-    }
-    return data;
-}
-
-
-
-const Portal = ({placemark}) => {
-    return createPortal(<Balloon 
-    placemark_id={placemark.id}
-    data={prepareBalloonData(placemark)}/>,
-    document.getElementById('placemark_balloon'));
-}
 
 const MyMap = () => {
     const [placemarks, setPlacemarks] = useState([]);
-    const [activePortal, setActivePortal] = useState(false);
-
+    const [activePortal,    setActivePortal] = useState(false);
+    const [currentPlacemark, setCurrentPlacemark] = useState(null);
 
     useEffect( ()=>{
         async function await_placemarks(){
@@ -53,6 +24,11 @@ const MyMap = () => {
         await_placemarks();
     }, []);
 
+    const handleClose= () => {
+        setActivePortal(false);
+        document.getElementById('placemark_balloon').innerHTML = '';
+        console.log('closing portal');
+    }
 
     return(
 
@@ -68,13 +44,17 @@ const MyMap = () => {
                         balloonContent: `<div id="placemark_balloon" style="height:500px; width:100%;"></div>`,
                     }}
                     onClick={ ()=>{
-                        setTimeout(() => { setActivePortal(true)}, 0)
+                        setTimeout(() => {
+                            setActivePortal(true)
+                            setCurrentPlacemark(placemark);
+                        }, 0);
                     }}
-                />
-                {activePortal && <Portal placemark={placemark}/>}
-                </>)}               
+                />                
+                {/* {activePortal && <Portal placemark={placemark} onClose={()=>handleClose()}/>} не работало */} 
+                </>)}   
             })}   
             </Map>
+            {activePortal && <Portal placemark={currentPlacemark} onClose={()=>handleClose()}/>}         
         </YMaps>
     );
     

@@ -12,6 +12,7 @@ const Balloon = (props) => {
     return(
         <>
             <div>Rating: {props.data.rating}</div> 
+            <div>{props.placemark_id}</div>
             <div>
                 <Link to={"placemarks/" + props.placemark_id}>Детали</Link>
             </div>
