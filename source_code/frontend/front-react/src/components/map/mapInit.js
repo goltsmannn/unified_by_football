@@ -49,6 +49,7 @@ const MyMap = () => {
                             setCurrentPlacemark(placemark);
                         }, 0);
                     }}
+                    key={placemark.id}
                 />                
                 {/* {activePortal && <Portal placemark={placemark} onClose={()=>handleClose()}/>} не работало */} 
                 </>)}   

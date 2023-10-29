@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
-
+from users.serializer import BasicUserInfoSerializer
 from map.models import Placemark, Review, ReviewPictures
 
 
@@ -28,6 +28,15 @@ class PlacemarkPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Placemark
         fields = "__all__"
+
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    placemark = PlacemarkSerializer()
+    user = BasicUserInfoSerializer()
+    class Meta:
+        model = Placemark
+        fields = "__all__"
+        
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

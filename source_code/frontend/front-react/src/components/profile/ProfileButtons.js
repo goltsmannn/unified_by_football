@@ -11,17 +11,61 @@ const ProfileButtons = ({pageUser}) =>{
     const subscriptions = useSubscriptions();
     const blacklistedUsers = useBlackList();
     const page_id= useParams().user_id;
-    const [isSubscribed, setIsSubscribed] = useState(false);
-    const [isBlackListed, setIsBlackListed] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(null);
+    const [isBlackListed, setIsBlackListed] = useState(null);
 
     const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
-        setIsSubscribed(!isSubscribed);
+        const check = !isSubscribed;
+        setIsSubscribed(check);
+        const fetchData = async ()=>{
+            const data = {
+                user_from_id: authContext.user.id,
+                user_to_id: pageUser.id,
+                delete: !check
+            }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
+                }
+            }
+            try{
+                console.log(data);
+                const response = await axios.post('http://127.0.0.1:8000/api/users/subscriptions', data, config);
+                console.log(response.data);
+            }
+            catch(error){
+                console.error('caught error while subscribing', error);
+            }
+        }
+        await fetchData();
     }
 
     const handleBlackListClick = async (e)=>{
         e.preventDefault();
-        setIsBlackListed(!isBlackListed);        
+        const check = !isBlackListed;
+        setIsBlackListed(check);  
+        const fetchData = async ()=>{
+            const data = {
+                user_from_id: authContext.user.id,
+                user_to_id: pageUser.id,
+                delete: !check,
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
+                }
+            }
+            try{
+                const response = await axios.post('http://127.0.0.1:8000/api/users/blacklist', data, config);
+                console.log(response.data);
+            }
+            catch(error){
+                console.error('caught error while blacklisting', error);
+            }
+        }
+        await fetchData();      
     }
 
 
@@ -42,53 +86,9 @@ const ProfileButtons = ({pageUser}) =>{
         })
     }, [blacklistedUsers, page_id]);
 
-    useEffect(()=>{
-        const fetchData = async ()=>{
-            const data = {
-                user_from_id: authContext.user.id,
-                user_to_id: pageUser.id,
-                delete: !isSubscribed
-            }
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
-                }
-            }
-            try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/subscriptions', data, config);
-                console.log(response.data);
-            }
-            catch(error){
-                console.error('caught error while subscribing', error);
-            }
-        }
-        fetchData();
-    }, [isSubscribed, authContext.authToken, authContext.user, pageUser]);
 
 
-    useEffect(()=>{
-        const fetchData = async ()=>{
-            const data = {
-                user_from_id: authContext.user.id,
-                user_to_id: pageUser.id,
-                delete: !isBlackListed,
-            }
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
-                }
-            }
-            try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/blacklist', data, config);
-                console.log(response.data);
-            }
-            catch(error){
-                console.error('caught error while blacklisting', error);
-            }
-        }
-        fetchData();
-    }, [isBlackListed, authContext.authToken, authContext.user, pageUser]);
 
 
 

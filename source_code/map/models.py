@@ -32,3 +32,12 @@ class Review(models.Model):
 class ReviewPictures(models.Model):
     image = models.ImageField(upload_to='review_pictures/', null=True) 
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="pictures")
+
+
+class Favorites(models.Model):
+
+    class Meta:
+        unique_together = (("user", "placemark"),)
+        
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+    placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="favorites")

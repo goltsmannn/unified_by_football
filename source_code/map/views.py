@@ -10,12 +10,12 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from map.forms import MyCreationForm
-from map.models import Placemark, Review, ReviewPictures
+from map.models import Placemark, Review, ReviewPictures, Favorites
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, FavoritesSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework.decorators import api_view
@@ -86,6 +86,43 @@ def post_picture(request):
     except Exception as e:
         raise Exception(e)
 
+
+
+class FavoritesAPIView(generics.ListCreateAPIView):
+    serializer_class = FavoritesSerializer
+
+    def get(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while getting favorites')
+        favorites = Favorites.objects.filter(user=response[0].id)
+        response = FavoritesSerializer(favorites, many=True)
+        return Response(response.data)
+    
+
+    def post(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while adding to favorites')
+        
+        user = response[0]
+        if request.data.get('delete'):
+            try:
+                Favorites.objects.get(user=user, placemark__id=request.data.get('placemark_id')).delete()
+            except Exception as e:
+                raise e 
+        else:
+            Favorites.objects.create(user=user, 
+                                        placemark=Placemark.objects.get(id=request.data.get('placemark_id')))
+            
+        favorites = Favorites.objects.filter(user=response[0].id)
+        response = FavoritesSerializer(favorites, many=True)       
+        return Response(response.data)
+    
+
+    
 #     template_name = 'map/main_map.html'
 
     

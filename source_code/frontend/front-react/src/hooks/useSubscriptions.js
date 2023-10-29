@@ -8,7 +8,7 @@ const useSubscriptions = ()=>{
     const authContext = useContext(AuthContext);
 
     useEffect(()=>{
-        if(authContext.user?.id){ //читать про это) опциональная цепочка
+        if(authContext.user?.id){ 
             const fetchData = async()=>{
                 try{
                     const config = {

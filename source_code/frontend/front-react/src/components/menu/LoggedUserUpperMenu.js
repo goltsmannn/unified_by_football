@@ -27,6 +27,9 @@ const LoggedUserUpperMenu = () => {
             <li>
             <Link to="propose" className="text-white hover:text-darkgreen">Предложить место</Link>
             </li>
+            <li>
+            <Link to="favorites" className="text-white hover:text-darkgreen">Избранное</Link>
+            </li>
         </ul>
         </nav>
         </>
