@@ -40,7 +40,7 @@ const SearchMain = () => {
 
             <>{
                 filteredUsers.map((user)=>
-                <div id="user-card" classNameName="border-solid border-4 mg-8">
+                <div id="user-card" className=" mg-8">
                     <div>Username: {user.username} </div>
                     <div>Region: {user.region}</div>
                     <Link to={`/profile/${user.id}`}>Страничка пользователя</Link>

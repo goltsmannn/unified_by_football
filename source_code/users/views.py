@@ -1,8 +1,8 @@
 import pdb
 from typing import List, Optional
 from rest_framework import generics
-from users.models import User, Message, Subscriptions
-from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer, SubscriptionSerializer
+from users.models import User, Message, Subscriptions, BlackList
+from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer, BlackListSerializer, SubscriptionSerializer
 from users.permissions import IsCreatorOrReadOnly
 from users.forms import UserAlterationForm
 import rest_framework.viewsets as viewsets
@@ -160,7 +160,48 @@ class SubscriptionsAPIView(generics.ListCreateAPIView):
         return Response(response.data)
     
 
+
+class BlackListAPIView(generics.ListCreateAPIView):
+    serializer_class = BlackListSerializer
+
+    def get(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+        blacklisted_users = BlackList.objects.filter(user_from=response[0].id)
+        response = BlackListSerializer(blacklisted_users, many=True)
+        return Response(response.data)
     
+
+    def post(self, request):
+        authenticator = JWTAuthentication()
+        response = authenticator.authenticate(request=request)
+        if response is None:
+            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
+        
+        try:
+            user_from = User.objects.get(pk=request.data.get('user_from_id'))
+            user_to = User.objects.get(pk=request.data.get('user_to_id'))
+            if user_to.id == user_from.id:
+                raise exceptions.bad_request('You can not blacklist yourself')
+        except User.DoesNotExist:
+            raise exceptions.bad_request('Not found user by given id or bad request')
+        
+        if request.data.get('delete'):
+            try:
+                BlackList.objects.get(user_from=user_from, user_to=user_to).delete()
+            except Exception as e:
+                raise e 
+        else:
+            BlackList.objects.create(user_from=user_from, 
+                                        user_to=user_to)
+            
+        blacklisted_users = BlackList.objects.filter(user_from=response[0].id)
+        response = BlackListSerializer(blacklisted_users, many=True)       
+        return Response(response.data)
+    
+
 
 
 

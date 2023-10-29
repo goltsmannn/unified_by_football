@@ -3,19 +3,27 @@ import useSubscriptions from "hooks/useSubscriptions";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-
+import useBlackList from "hooks/useBlackList";
 
 const ProfileButtons = ({pageUser}) =>{
     const location = useLocation();
     const authContext = useContext(AuthContext);
     const subscriptions = useSubscriptions();
+    const blacklistedUsers = useBlackList();
     const page_id= useParams().user_id;
     const [isSubscribed, setIsSubscribed] = useState(false);
+    const [isBlackListed, setIsBlackListed] = useState(false);
 
-    const handleClick = (e)=>{
+    const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
         setIsSubscribed(!isSubscribed);
     }
+
+    const handleBlackListClick = async (e)=>{
+        e.preventDefault();
+        setIsBlackListed(!isBlackListed);        
+    }
+
 
     useEffect(()=>{
         subscriptions.forEach((subscription)=>{
@@ -26,7 +34,15 @@ const ProfileButtons = ({pageUser}) =>{
     }, [subscriptions, page_id]);
 
     useEffect(()=>{
-        console.log(isSubscribed);
+        console.log(blacklistedUsers);
+        blacklistedUsers.forEach((blacklistedUser)=>{
+            if(blacklistedUser.user_to.id === Number(page_id)){
+                setIsBlackListed(true);
+            }
+        })
+    }, [blacklistedUsers, page_id]);
+
+    useEffect(()=>{
         const fetchData = async ()=>{
             const data = {
                 user_from_id: authContext.user.id,
@@ -43,11 +59,37 @@ const ProfileButtons = ({pageUser}) =>{
                 console.log(response.data);
             }
             catch(error){
-                console.error('caught error while getting subs', error);
+                console.error('caught error while subscribing', error);
             }
         }
         fetchData();
     }, [isSubscribed, authContext.authToken, authContext.user, pageUser]);
+
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            const data = {
+                user_from_id: authContext.user.id,
+                user_to_id: pageUser.id,
+                delete: !isBlackListed,
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
+                }
+            }
+            try{
+                const response = await axios.post('http://127.0.0.1:8000/api/users/blacklist', data, config);
+                console.log(response.data);
+            }
+            catch(error){
+                console.error('caught error while blacklisting', error);
+            }
+        }
+        fetchData();
+    }, [isBlackListed, authContext.authToken, authContext.user, pageUser]);
+
 
 
     if((location.pathname===`/profile/${page_id}`) && (authContext.user)){
@@ -59,7 +101,8 @@ const ProfileButtons = ({pageUser}) =>{
         else{
             return(
                 <>
-                <button onClick={handleClick}>{isSubscribed?"Отписаться":"Подписаться"}</button>
+                <button onClick={handleSubscriptionClick}>{isSubscribed?"Отписаться":"Подписаться"}</button> <br></br>
+                <button onClick={handleBlackListClick}>{isBlackListed?"Убрать из черного списка":"Добавить в черный список"}</button>
                 </>
             );
         }

@@ -46,7 +46,6 @@ class UpperMenu extends React.Component{
         else{
             return(
                 <>
-                <p>{this.context.user?this.context.user.email: "no user"}</p>
                     <UnloggedUserUpperMenu></UnloggedUserUpperMenu>
                 </>
             );

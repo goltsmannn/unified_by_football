@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 from rest_framework.fields import empty
-from users.models import User, Message, Subscriptions
+from users.models import User, Message, Subscriptions, BlackList
 from django.contrib.auth import get_user_model, authenticate
 
 
@@ -72,4 +72,12 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscriptions
+        fields = ("user_to", "id")
+
+
+class BlackListSerializer(serializers.ModelSerializer):
+    user_to = BasicUserInfoSerializer()
+
+    class Meta:
+        model = BlackList
         fields = ("user_to", "id")

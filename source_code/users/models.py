@@ -60,7 +60,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_proposed = models.DateTimeField(null=True)
-
+    show_activity = models.BooleanField(default=True)
+    
     region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, null=True, blank=True)
     height = models.PositiveSmallIntegerField(null=True, blank=True)
     age = models.PositiveSmallIntegerField( null=True, blank=True)
@@ -93,6 +94,14 @@ class Subscriptions(models.Model):
     user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_from")
     user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to")
     
+
+
+class BlackList(models.Model):
+    class Meta:
+        unique_together = ('user_from', 'user_to')
+
+    user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_from_blacklist")
+    user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to_blacklist")
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')

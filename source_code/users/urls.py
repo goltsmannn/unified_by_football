@@ -18,7 +18,8 @@ urlpatterns = [
     path('messages/details/<int:message_id>', views.retrieve_message, name='get-message-details'),
     path('messages/all/<int:recipient_id>', views.ListMessagesAPIView.as_view(), name='get-user-messages'),
     path('messages/create', views.CreateMessageAPIView.as_view(), name='create-message'),
-    path('subscriptions', views.SubscriptionsAPIView.as_view(), name='subscription_get_post')
+    path('subscriptions', views.SubscriptionsAPIView.as_view(), name='subscription_get_post'),
+    path('blacklist', views.BlackListAPIView.as_view(), name='blacklist_get_post'),
 ] 
 
 # urlpatterns = [ 
