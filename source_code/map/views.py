@@ -1,32 +1,23 @@
+import base64
 from typing import Any, Dict, Optional
-from django.contrib.auth import views as auth_views
-from django.db import models
-from django.db.models.query import QuerySet
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic.edit import CreateView, FormView
-from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
-from map.forms import MyCreationForm
-from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
-from rest_framework import generics
+
+import rest_framework.viewsets as viewsets
+from map.models import Activity, Favorites, Placemark, Review, ReviewPictures
+from map.serializer import (GetActivitySerializer, GetFavoritesSerializer,
+                            PlacemarkPostSerializer, PlacemarkSerializer,
+                            PostActivitySerializer, PostFavoritesSerializer,
+                            ReviewSerializer)
+from rest_framework import exceptions, generics
+from rest_framework.decorators import api_view, authentication_classes
+# from users.authentication import JWTAuthentication
+from rest_framework.exceptions import (AuthenticationFailed, ParseError,
+                                       ValidationError)
+from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
+                                   UpdateModelMixin)
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
-import rest_framework.viewsets as viewsets
-from rest_framework import exceptions
-from django.core.files.base import ContentFile
-import base64
-# from users.authentication import JWTAuthentication
-from rest_framework.exceptions import ParseError, AuthenticationFailed, ValidationError
-from rest_framework.decorators import api_view, authentication_classes
-
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from users.models import User
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
@@ -107,15 +98,33 @@ class FavoritesAPIView(generics.ListCreateAPIView):
 class GetActivity(generics.ListAPIView):
     serializer_class = GetActivitySerializer
     authentication_classes = [JWTAuthentication]
-    def get_queryset(self):
-        if self.request.get('') == 'placemark':
-            return Activity.objects.filter(placemark__id=self.request.get('placemark_id'))
-        elif self.request.get('') == 'user':
-            return Activity.objects.filter(user__id=self.request.get('user_id'))
     
+    def get(self, request):    
+        response = None
+        print(request.query_params)
+        if request.query_params.get('get_by') == 'placemark':
+            response = Activity.objects.filter(placemark__id=request.query_params.get('placemark_id'))
+        elif request.query_params.get('get_by') == 'user':
+            response = Activity.objects.filter(user__id=request.query_params.get('user_id'))
+        if response is None:
+            raise exceptions.ValidationError('Lacking data for filtering')
+        return Response(GetActivitySerializer(response, many=True).data)
 #     template_name = 'map/main_map.html'
 
     
+
+# from django.contrib.auth import views as auth_views
+# from django.core.files.base import ContentFile
+# from django.db import models
+# from django.db.models.query import QuerySet
+# from django.forms.models import BaseModelForm
+# from django.http import HttpResponse
+# from django.shortcuts import get_object_or_404, redirect, render
+# from django.urls import reverse, reverse_lazy
+# from django.views.generic.base import TemplateView
+# from django.views.generic.detail import DetailView
+# from django.views.generic.edit import CreateView, FormView
+# from map.forms import MyCreationForm
 # class MyLoginView(auth_views.LoginView):
 #     next_page = reverse_lazy('map:main_page')
 #     redirect_authenticated_user = reverse_lazy('map:main_page')

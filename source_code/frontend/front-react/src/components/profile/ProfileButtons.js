@@ -13,6 +13,8 @@ const ProfileButtons = ({pageUser}) =>{
     const page_id= useParams().user_id;
     const [isSubscribed, setIsSubscribed] = useState(null);
     const [isBlackListed, setIsBlackListed] = useState(null);
+    const [isHidden, setIsHidden] = useState(authContext.user.show_activity);
+
 
     const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
@@ -69,6 +71,27 @@ const ProfileButtons = ({pageUser}) =>{
     }
 
 
+    const handleIsHiddenChange = () => {
+        const check = !isHidden;
+        setIsHidden(check);
+        const fetchData = async () => {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
+                }
+            }
+            const tmpUser = authContext.user;
+            tmpUser.show_activity = check;
+            try{
+                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', tmpUser, config);
+            }
+            catch(error){
+                console.error('error while updating activity boolean value')
+            }
+        }
+        fetchData();
+    }
+
     useEffect(()=>{
         subscriptions.forEach((subscription)=>{
             if(subscription.user_to.id === Number(page_id)){
@@ -95,9 +118,12 @@ const ProfileButtons = ({pageUser}) =>{
     if((location.pathname===`/profile/${page_id}`) && (authContext.user)){
         if(pageUser.id === authContext.user.id){
             return(
+                <>
                 <Link 
                    className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
                    to="edit">Изменить</Link>
+                <button onClick={handleIsHiddenChange}>{isHidden?"Показать активность":"Скрыть активность"}</button>
+                </>
             );
         }
         else{

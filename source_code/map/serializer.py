@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from users.serializer import BasicUserInfoSerializer
-from map.models import Placemark, Review, ReviewPictures
+from map.models import Placemark, Review, ReviewPictures, Activity
 
 
 class ReviewPicturesSerializer(serializers.ModelSerializer):
@@ -53,9 +53,11 @@ class PostActivitySerializer(serializers.ModelSerializer):
         depth = 1
 
 class GetActivitySerializer(serializers.ModelSerializer):
+    user = BasicUserInfoSerializer()
     class Meta:
         fields = "__all__"
-        depth = 2
+        model = Activity
+        depth = 1
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

@@ -13,7 +13,7 @@ const Portal = ({placemark, onClose}) => {
     />;
     const mount = document.getElementById('placemark_balloon');
     const temporaryElement = document.createElement('div');
-
+    
     useEffect(() => {
         // добавляем свой див к искомому элементу
         if (mount) mount.appendChild(temporaryElement)

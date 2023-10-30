@@ -1,22 +1,23 @@
 import pdb
-from typing import List, Optional
-from rest_framework import generics
-from users.models import User, Message, Subscriptions, BlackList
-from users.serializer import UserSerializer, UserRegisterSerializer, LoginSerializer, BasicUserInfoSerializer, MessageSerializer, BlackListSerializer, SubscriptionSerializer
-from users.permissions import IsCreatorOrReadOnly
-from users.forms import UserAlterationForm
+
 import rest_framework.viewsets as viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
-from rest_framework.views import APIView
 from django.contrib.auth import login, logout
+from rest_framework import exceptions, generics
+from rest_framework.decorators import action, api_view, authentication_classes
+from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
+                                   UpdateModelMixin)
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.decorators import api_view, authentication_classes
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework import exceptions
-
+from users.forms import UserAlterationForm
+from users.models import BlackList, Message, Subscriptions, User
+from users.permissions import IsCreatorOrReadOnly
+from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
+                              LoginSerializer, MessageSerializer,
+                              SubscriptionSerializer, UserRegisterSerializer,
+                              UserSerializer)
 
 
 class UserViewSet(RetrieveModelMixin, 

@@ -20,6 +20,7 @@ urlpatterns = [
     path('review/post', views.post_review, name='review-post'),
     path('placemark/post', views.post_placemark, name='placemark-post'),
     path('review/picture/post', views.post_picture, name='picture-post'),
-    path('favorites', views.FavoritesAPIView.as_view(), name='favorites')
+    path('favorites', views.FavoritesAPIView.as_view(), name='favorites'),
+    path('activity/get', views.GetActivity.as_view(), name='activity-get')
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

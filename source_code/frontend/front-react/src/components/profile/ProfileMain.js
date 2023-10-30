@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import useSubscriptions from "hooks/useSubscriptions";
 import ProfileButtons from "./ProfileButtons";
+import ProfileActivity from "./ProfileActivity";
+
 
 const ProfileMain = () => {
     const authContext = useContext(AuthContext);
@@ -75,6 +77,9 @@ const ProfileMain = () => {
                 <ProfileButtons 
                     pageUser={pageUser}
                 />
+            </div>
+            <div id='profile-activity'>
+                <ProfileActivity pageUser={pageUser}></ProfileActivity>
             </div>
             <div id="user-edit-outler">
                 <Outlet></Outlet>
