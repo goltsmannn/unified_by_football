@@ -31,13 +31,19 @@ class PlacemarkPostSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class FavoritesSerializer(serializers.ModelSerializer):
-    placemark = PlacemarkSerializer()
+class PostFavoritesSerializer(serializers.ModelSerializer):
     user = BasicUserInfoSerializer()
+    placemark_id = serializers.ReadOnlyField(source='placemark.id')
     class Meta:
         model = Placemark
-        fields = "__all__"
+        fields = ("user", "placemark_id")
         
+class GetFavoritesSerializer(serializers.ModelSerializer):
+    user = BasicUserInfoSerializer()
+    placemark = PlacemarkSerializer()
+    class Meta:
+        model = Placemark
+        fields = ("user", "placemark")
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

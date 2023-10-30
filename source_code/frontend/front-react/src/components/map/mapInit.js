@@ -24,8 +24,9 @@ const MyMap = () => {
         await_placemarks();
     }, []);
 
-    const handleClose= () => {
+    const handleClose = () => {
         setActivePortal(false);
+        setCurrentPlacemark(null);
         document.getElementById('placemark_balloon').innerHTML = '';
         console.log('closing portal');
     }
@@ -47,8 +48,9 @@ const MyMap = () => {
                     }}
                     onClick={ ()=>{
                         setTimeout(() => {
-                            setActivePortal(true)
+                            console.log(activePortal, placemark)
                             setCurrentPlacemark(placemark);
+                            setActivePortal(true);
                         }, 0);
                     }}
                     key={placemark.id}
@@ -57,7 +59,7 @@ const MyMap = () => {
                 </>)}   
             })}   
             </Map>
-            {activePortal && <Portal placemark={currentPlacemark} onClose={()=>handleClose()}/>}         
+            {activePortal && <Portal placemark={currentPlacemark} onClose={handleClose}/>}         
         </YMaps>
         // </div>
     );

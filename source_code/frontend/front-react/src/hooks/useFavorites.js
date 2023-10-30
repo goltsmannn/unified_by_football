@@ -12,7 +12,7 @@ const useFavorites = ()=>{
             const fetchData = async ()=>{
                 const config = {
                     headers: {
-                        headers: { Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` }
+                        Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                     }
                 }
                 try{

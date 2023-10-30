@@ -27,33 +27,34 @@ const PlacemarkMain = ()=>{
 
     useEffect(()=>{
         favoritePlacemarks.forEach((favorite)=>{
-            if(favorite.id===placemark_id){
+            if(favorite.placemark_id===Number(placemark_id)){
                 setIsFavorite(true);
             }
         })
+        console.log(isFavorite);
     }, [favoritePlacemarks]);
 
 
     const handleAddToFavorites = async (e) => {
         e.preventDefault();
-        setIsFavorite(!isFavorite);
-    }
-    
-    useEffect(()=>{
+        const check = !isFavorite;
+        setIsFavorite(check);
         const fetchData = async () => {
             const config = {
                 headers: {
-                    Authozization: `Bearer ${authContext.accessToken}`
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                 }
             }
             try{
-                const response = await axios.post(`http://127.0.0.1:8000/api/map/favorites/`, {placemark_id: placemark_id}, config);
+                const response = await axios.post(`http://127.0.0.1:8000/api/map/favorites`, {placemark_id: placemark_id, delete: !check}, config);
             }
             catch (error){
                 console.error('Error while adding to favorites', error);
             }
         }
-    }, [isFavorite]);
+        fetchData();
+    }
+    
 
     return(
         <div className="w-full h-[calc(100vh-56px)] flex justify-center ">

@@ -15,7 +15,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, FavoritesSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework.decorators import api_view
@@ -89,7 +89,7 @@ def post_picture(request):
 
 
 class FavoritesAPIView(generics.ListCreateAPIView):
-    serializer_class = FavoritesSerializer
+    serializer_class = PostFavoritesSerializer
 
     def get(self, request):
         authenticator = JWTAuthentication()
@@ -97,7 +97,7 @@ class FavoritesAPIView(generics.ListCreateAPIView):
         if response is None:
             raise exceptions.AuthenticationFailed('JWT authentication failed while getting favorites')
         favorites = Favorites.objects.filter(user=response[0].id)
-        response = FavoritesSerializer(favorites, many=True)
+        response = GetFavoritesSerializer(favorites, many=True)
         return Response(response.data)
     
 

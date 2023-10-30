@@ -67,6 +67,8 @@ const PlacemarkForm = ({coordinates, onClose}) => {
                     onChange={(event) => setDescription(event.target.value)}
                 />
             </div>
+
+            
             <div className='flex flex-col mt-[15px]'>
                 <label  className="bg-navbar text-[#ffff] rounded-md p-2 cursor-pointer mt-[15px] flex flex-col font-medium">
                     Фото площадки...
@@ -78,6 +80,8 @@ const PlacemarkForm = ({coordinates, onClose}) => {
                 />
                 </label>
             </div>
+
+
             <div className='flex flex-col mt-[15px]'>
                 <input
                     className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'

@@ -9,7 +9,7 @@ const Portal = ({placemark, onClose}) => {
     const element = <Balloon 
         placemark_id={placemark.id}
         data={prepareBalloonData(placemark)}
-        onClose={()=>onClose()}
+        onClose={onClose}
     />;
     const mount = document.getElementById('placemark_balloon');
     const temporaryElement = document.createElement('div');
