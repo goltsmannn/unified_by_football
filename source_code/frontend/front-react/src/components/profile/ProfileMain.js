@@ -15,7 +15,10 @@ const ProfileMain = () => {
   //  const location = useLocation();
   //  const navigate = useNavigate();
    // const subscriptions = useSubscriptions();
-    
+    const location = useLocation()
+
+    console.log(location.pathname.includes('edit'));
+
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
@@ -42,23 +45,42 @@ const ProfileMain = () => {
 
     if(pageUser){
     return(
-        <div id="user-info-wrapper">
+        <div 
+            id="user-info-wrapper"
+            className="h-[calc(100vh-56px)] w-full font-medium flex items-start justify-center"
+        >
+            <div 
+                className="px-[20px] py-[30px] max-w-md w-full mt-[100px] text-navbar flex flex-col justify-around rounded-lg border border-solid border-navbar"
+            >
+            <h1 className="text-center text-2xl text-navbar font-bold">
+                Профиль пользователя
+            </h1>
+
             <div id="subscription-block">
             </div>
-            <div id="user-info-fields">
-                <div id="user-age">Возраст: {pageUser.age}</div>
-                <div id="user-weight">Вес: {pageUser.weight}</div>
-                <div id="user-height">Рост: {pageUser.height}</div>
-                <div id="user-region">Регион: {pageUser.region}</div>
-                <div id="user-username">Никнейм: {pageUser.username}</div>
-                <div id="user-email">Почта: {pageUser.email}</div>
+            <div 
+                id="user-info-fields"
+                className="mt-[20px]"
+            >
+                <div id="user-age">Возраст: {pageUser.age ?? '----'}</div>
+                <div id="user-weight">Вес: {pageUser.weight ?? '----'}</div>
+                <div id="user-height">Рост: {pageUser.height ?? '----'}</div>
+                <div id="user-region">Регион: {pageUser.region ?? '----'}</div>
+                <div id="user-username">Никнейм: {pageUser.username ?? '----'}</div>
+                <div id="user-email">Почта: {pageUser.email ?? '----'}</div>
             </div>
-            <div id="user-info-fields-buttons">
-                <ProfileButtons pageUser={pageUser}></ProfileButtons>
+            <div 
+                id="user-info-fields-buttons"
+            >
+                <ProfileButtons 
+                    pageUser={pageUser}
+                />
             </div>
             <div id="user-edit-outler">
                 <Outlet></Outlet>
             </div>
+            </div>
+
         </div>
     )
     }

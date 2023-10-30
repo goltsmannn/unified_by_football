@@ -56,20 +56,21 @@ const PlacemarkMain = ()=>{
     }, [isFavorite]);
 
     return(
-        <>
-            <div id="placemark-info-wrapper">
-                <div id="placemark-info-section">
+        <div className="w-full h-[calc(100vh-56px)] flex justify-center ">
+            <div id="placemark-info-wrapper" className=" max-w-md h-fit text-navbar mt-[40px]">
+                {/* <div id="placemark-info-section">
 
-                </div>
-                {authContext.user && <div id="placemark-buttons">
-                    <Link to="post">Оставить отзыв</Link> <br></br>
-                    <button onClick={handleAddToFavorites}>{isFavorite?"Убрать из избранного":"Добавить в избранное"}</button>
+                </div> */}
+                {authContext.user && <div id="placemark-buttons" className="flex justify-between items-center ">
+                    <Link to="post" className="px-2 py-1 rounded-lg border border-solid border-navbar">Оставить отзыв</Link> <br></br>
+                    <button className="ml-4 bg-active px-2 py-1 rounded-lg text-[#ffff]" onClick={handleAddToFavorites}>{isFavorite?"Убрать из избранного":"Добавить в избранное"}</button>
                 </div>}
-                <div id="placemark-reviews-section">
+                <div >
+                <div id="placemark-reviews-section" className="mt-[25px] ">
                     {placemark && (
                         <>
                             {placemark.reviews.map((review)=>
-                                <div id="review-section">
+                                <div id="review-section" className="font-medium mt-[30px] p-[30px] rounded-lg border border-solid border-navbar">
                                     <div id="review-header">
                                         Author: {review.author}
                                     </div>
@@ -77,23 +78,25 @@ const PlacemarkMain = ()=>{
                                         <div id="review-text">
                                             Text: {review.text}
                                         </div>
+                                        <div id="review-footer">
+                                            Rating: {review.rating}
+                                        </div>
                                         <div id="review-pictures">
                                             {review.pictures.map((picture)=>
                                                 <img src={picture.image} alt="" />
                                             )}
                                         </div>
                                     </div>
-                                    <div id="review-footer">
-                                        Rating: {review.rating}
-                                    </div>
+
                                 </div>
                             )}
                         </>
                     )}
+                    </div>
                 </div>
             </div>
             <Outlet></Outlet>
-        </>
+        </div>
     )
 
 }

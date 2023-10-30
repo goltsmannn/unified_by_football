@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.overlay {
+/* .overlay {
     display: flex;
     position: absolute;
     top: 0;
@@ -22,4 +22,4 @@
 img{
     width: 400px;
     height: 400px
-}
+} */

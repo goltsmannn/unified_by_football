@@ -48,41 +48,55 @@ const ReviewForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Review Text:
-                <input
-                    type="text"
-                    value={reviewText}
-                    onChange={(event) => setReviewText(event.target.value)}
-                />
-            </label>
-            <br />
-            <label>
-                Review Rating:
-                <select
-                    value={reviewRating}
-                    onChange={(event) => setReviewRating(event.target.value)}
-                >
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                </select>
-            </label>
-            <br />
-            <label>
-                Review Picture:
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(event) => setReviewPicture(event.target.files[0])}
-                />
-            </label>
-            <br />
-            <button type="submit">Submit Review</button>
-        </form>
+        <div className="h-screen w-full flex items-start justify-center">  
+            <div
+                className="w-full max-w-md p-[30px] max-h-[450px] rounded-lg border border-solid border-navbar text-navbar flex h-full mt-[100px] flex-col justify-around"
+            >
+                <h1 className="text-center text-2xl text-navbar font-bold">Отзыв</h1>
+                <form onSubmit={handleSubmit} className="mt-[30px] h-full flex flex-col">
+                    <div className="mt-[15px] flex flex-col font-medium">
+                        <label> Review Text:</label>
+                        <input
+                            className=' rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
+                            type="text"
+                            value={reviewText}
+                            onChange={(event) => setReviewText(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="mt-[15px] flex flex-col font-medium">
+                        <label>
+                            Review Rating:
+                        </label>
+
+                        <select
+                            className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
+                            value={reviewRating}
+                            onChange={(event) => setReviewRating(event.target.value)}
+                        >
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label  className="bg-navbar text-[#ffff] rounded-md p-2 cursor-pointer mt-[15px] flex flex-col font-medium">
+                            Review Picture...
+                        <input
+                            className="hidden"
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) => setReviewPicture(event.target.files[0])}
+                        />
+                        </label>
+                    </div>
+                    <button className="mt-[40px] bg-active px-1 py-1 rounded-lg text-[#ffff]" type="submit">Submit Review</button>
+                </form>
+            </div>
+        </div>
     );
 };
 

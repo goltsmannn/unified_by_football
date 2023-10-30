@@ -1,28 +1,26 @@
 import React from "react";
 import getAPIURL from "../../utils/getAPIURL";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 
-class UnloggedUserUpperMenu extends React.Component{
-    render(){
-        return(
-            <>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="register">Регистрация</Link>
-                    </li>
-                    <li>
-                        <Link to="login">Войти</Link>
-                    </li>
-                    <li>
-                        <Link to="/">Карта</Link>
-                    </li>
-                </ul>
-            </nav>
-            </>
-        );
-    }
+const UnloggedUserUpperMenu = () => {
+    return (
+        <>
+        <nav className="bg-navbar flex justify-end">
+            <ul className="flex justify-between items-center py-4 px-10 w-[30%] text-white ">
+                <li>
+                    <NavLink className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""} to="/">Карта</NavLink>
+                </li>
+                <li>
+                    <NavLink className={({ isActive }) => isActive ? "text-red" : ""} to="register">Регистрация</NavLink>
+                </li>
+                <li>
+                    <NavLink to="login">Войти</NavLink>
+                </li>
+            </ul>
+        </nav>
+        </>
+    );
 }
 
 export default UnloggedUserUpperMenu;

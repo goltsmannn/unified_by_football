@@ -43,26 +43,32 @@ const PlacemarkForm = ({coordinates, onClose}) => {
 
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
+        <form 
+            onSubmit={handleSubmit}
+            className='mt-[20px] w-full w-max-md'
+        >
+            <div className='flex flex-col'>
                 <label htmlFor="name">Name:</label>
                 <input
+                    className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     type="text"
                     id="name"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                 />
             </div>
-            <div>
+            <div className='flex flex-col mt-[15px]'>
                 <label htmlFor="description">Description:</label>
                 <textarea
+                    className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     id="description"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                 />
             </div>
-            <div>
+            <div className='flex flex-col mt-[15px]'>
                 <input
+                    className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     type="text"
                     name="from"
                     value={workingHours.from}
@@ -71,6 +77,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
                     placeholder="From (hh:mm)"
                 />
                 <input
+                    className='mt-[10px] rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     type="text"
                     name="to"
                     value={workingHours.to}
@@ -81,7 +88,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
             </div>
 
             
-            <button type="submit">Submit</button>
+            <button className='w-full text-center mt-[30px] bg-active px-1 py-1 rounded-lg text-[#ffff]' type="submit">Submit</button>
         </form>
     );
 };

@@ -25,23 +25,27 @@ const GetMessage = () => {
 
     if(message){
         return(
-            <>
-                <div id="message-details-block">
-                    <div id="header">
-                        <div id="message-topic">Тема письма: {message.message_topic}</div>
-                        <div id="message-sender">Отправитель: {message.sender.username}</div>
+            <div className="h-screen w-full flex items-start justify-center">
+                <div 
+                    className="w-full max-w-md px-[40px] py-[30px] max-h-[200px] rounded-lg border border-solid border-navbar border-2 text-navbar flex h-full mt-[100px] flex-col justify-around"
+                >
+                    <div id="message-navlinks">
+                        <Link className="font-semibold text-[#ffff] bg-navbar px-4 py-2 rounded-md" to="/message">{'<< Назад'}</Link>
                     </div>
-                    <div id="body">
-                        <div id="message-text">Текст: {message.message_text}</div>
-                    </div>
-                    <div id="footer">
-                        <div id="message-datetime">Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                    <div id="message-details-block" className="mt-[20px] font-medium">
+                        <div id="header">
+                            <div id="message-topic">Тема письма: {message.message_topic}</div>
+                            <div id="message-sender">Отправитель: {message.sender.username}</div>
+                        </div>
+                        <div id="body">
+                            <div id="message-text">Текст: {message.message_text}</div>
+                        </div>
+                        <div id="footer">
+                            <div id="message-datetime">Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                        </div>
                     </div>
                 </div>
-                <div id="message-navlinks">
-                    <Link to="/message">Назад</Link>
-                </div>
-            </>
+            </div>
         )
     }
 }

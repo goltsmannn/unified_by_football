@@ -31,9 +31,11 @@ const MyMap = () => {
     }
 
     return(
-
+        // <div className="w-full h-full mt-[40px] flex items-center justify-center">
         <YMaps>
-            <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
+            <Map style={{width:'100%', height:'calc(100vh - 56px)'}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}> 
+            {/* <Map style={{width:900, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }}>  */}
+            
             {placemarks.map(placemark=>{
                 if(placemark.verified===true){
                 return(<>
@@ -41,7 +43,7 @@ const MyMap = () => {
                     modules={["geoObject.addon.balloon"]}
                     geometry={[placemark.x, placemark.y]}
                     properties={{
-                        balloonContent: `<div id="placemark_balloon" style="height:500px; width:100%;"></div>`,
+                        balloonContent: `<div id="placemark_balloon" style="height:200px; width:200px; padding:10px"></div>`,
                     }}
                     onClick={ ()=>{
                         setTimeout(() => {
@@ -57,6 +59,7 @@ const MyMap = () => {
             </Map>
             {activePortal && <Portal placemark={currentPlacemark} onClose={()=>handleClose()}/>}         
         </YMaps>
+        // </div>
     );
     
 }

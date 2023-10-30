@@ -13,7 +13,7 @@ function prepareBalloonData(plc_json){
     });
     const data = {
         pictures: pictures,
-        rating: avg/cnt,
+        rating: cnt?avg/cnt: null,
     }
     return data;
 }

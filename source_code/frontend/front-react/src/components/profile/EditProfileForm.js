@@ -49,13 +49,22 @@ const EditProfileForm = () => {
 
     console.log(authContext.readOnlyFields);
     return(
-    <form onSubmit={saveAndGoBack}>
+    <form 
+        onSubmit={saveAndGoBack}
+        className="bg-active mt-[20px] text-[#ffff] rounded-md p-4"
+    >
         {Object.keys(user).map((key)=> {
                 //проверим, что поле не входит в список readOnlyFields
                 return ((authContext.readOnlyFields.indexOf(key) === -1) && 
                 <>
-                    <input onChange={inputHandler} type="text" name={`${key}`} value={inputFields[key]} id={`${key}`+"-field"}></input>
-                    <label htmlFor={`${key}`+"-field"}>{key} поле</label>
+                    <input
+                        className='mt-[10px] text-[#000] rounded-lg px-1 py-1 border border-solid border-navbar focus:outline-active'
+                        onChange={inputHandler} type="text" 
+                        name={`${key}`} 
+                        value={inputFields[key]} 
+                        id={`${key}`+"-field"}
+                    />
+                    <label className="ml-[10px]" htmlFor={`${key}`+"-field"}>{key} поле</label>
                     <br></br>
                 </>)
                 }
@@ -69,7 +78,7 @@ const EditProfileForm = () => {
         <input type="text" name="age" id="age-field" value={user.age}/>
         <input type="text" name="weight" id="weight-field" value={user.weight}/>
         <input type="text" name="region" id="region-field"value={user.region}/> */}
-        <input type="submit" value="Отправить" />
+        <input className="mt-[30px] bg-[#ffff] text-navbar font-medium rounded-md py-1 text-center w-full" type="submit" value="Отправить" />
     </form>
     );
 }

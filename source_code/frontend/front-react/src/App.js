@@ -1,6 +1,6 @@
 import React from "react";
 import UpperMenu from "./components/menu/UpperMenu";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "components/auth/Login";
 import { AuthProvider } from "context/AuthContext";
 import PlacemarkMain from "components/placemarks/PlacemarkMain";
@@ -19,6 +19,7 @@ import PlacemarkInfo from "components/placemarks/PlacemarkInfo";
 import ProposePlacemark from "components/placemarks/ProposePlacemark";
 import FavoritePlacemarks from "components/placemarks/FavoritePlacemarks";
 import "./_style.css";
+import PageWrapper from "PageWrapper";
 
 class App extends React.Component{
 
@@ -26,11 +27,10 @@ class App extends React.Component{
     return(
       <>
         <AuthProvider>      
-          <UpperMenu />
+          {/* <UpperMenu /> */}
           <Routes>
-              <Route path="" element = {<MainPage />} exact></Route>
-              <Route path="login" element = { <Login/> }></Route>
-              <Route path="register" element = {<Register/>}></Route>
+            <Route path="/" element = {<PageWrapper />} exact>
+              <Route index element = {<MainPage />} exact></Route>
               <Route path="search" element = { <SearchMain></SearchMain>}></Route>
               <Route path="propose" element = { <ProposePlacemark/> }></Route>
               <Route path="favorites" element = {<FavoritePlacemarks></FavoritePlacemarks>}></Route>
@@ -48,8 +48,11 @@ class App extends React.Component{
               <Route path="profile/:user_id" element = {<ProfileMain/>}>
                 <Route path="edit" element = {<EditProfile/>}></Route>
               </Route>
+            </Route>
 
-              <Route path="*" element={<Page404/>}></Route> 
+            <Route path="/login" element = { <Login/> }></Route>
+            <Route path="/register" element = {<Register/>}></Route>
+            <Route path="*" element={<Page404/>}></Route> 
           </Routes>
         </AuthProvider>
       </>

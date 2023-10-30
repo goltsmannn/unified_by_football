@@ -32,22 +32,40 @@ const SearchMain = () => {
     }, [searchValue]);
 
     return(
-        <>
-            <form >
-                <label htmlFor="searchLine"></label>
-                <input type="text" id="searchLine" onChange={(e)=>setSearchValue(e.target.value)} />
+        <div
+            className="w-full flex flex-col items-center justify-center"
+        >
+            <div className="w-full max-w-md">
+                <form className="w-full mt-[20px] flex items-center mb-[50px]"  >
+                    <label className="font-medium text-navbar" htmlFor="searchLine">Найти пользователя:</label>
+                    <input 
+                        className='w-full max-w-[250px] ml-[20px] rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
+                        type="text" id="searchLine" onChange={(e)=>setSearchValue(e.target.value)} 
+                        placeholder="Введите имя пользователя"
+                    />
             </form>
 
             <>{
-                filteredUsers.map((user)=>
-                <div id="user-card" className=" mg-8">
+                filteredUsers?.length > 0 && filteredUsers.map((user)=>
+                <div
+                    id="user-card" 
+                    className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md"
+                >
                     <div>Username: {user.username} </div>
                     <div>Region: {user.region}</div>
-                    <Link to={`/profile/${user.id}`}>Страничка пользователя</Link>
+                    <div className="mt-[20px]">
+                        <Link 
+                            className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md"
+                            to={`/profile/${user.id}`}
+                        >
+                            Страничка пользователя
+                        </Link>
+                    </div>
                 </div>
             )}   
             </>
-        </>
+            </div>
+        </div>
     );
 }
 

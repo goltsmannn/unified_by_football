@@ -33,7 +33,8 @@ const ProposePlacemark = () => {
         <div id="proposal-page">
             <div id="proposal-map">
                 <YMaps>
-                <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }} onClick={handleClick}>       
+                <Map style={{width:'100%', height:'calc(100vh - 56px)'} } defaultState={{ center: [55.75, 37.57], zoom: 9 }} onClick={handleClick}>       
+                {/* <Map style={{width:600, height:600}} defaultState={{ center: [55.75, 37.57], zoom: 9 }} onClick={handleClick}>        */}
                 </Map>
                 </YMaps>
             </div>

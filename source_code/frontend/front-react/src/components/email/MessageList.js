@@ -33,28 +33,30 @@ const MessageList = ()=>{
     }, [blacklistedUsers]);
 
     return(
-        <>
-        <div id="write-message" className="my-2 max-w-fit bg-background text-text border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-            <Link to="post">Написать сообщение</Link>
-        </div>
-        <div id="message-section-wrapper">
-            <div id="message-list">
-                {messages.map((message)=> {
-                    if(!blackListedId.includes(message.sender.id)){
-                        return(
-                        <div id="message-wrapper" className="w-1/3 bg-background text-text border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border" key={message.id} onClick={()=>navigate(`${message.id}`)}>
-                            <div className="font-bold mb-2">Тема сообщения: {message.message_topic}</div>
-                            <div className="mb-2">Никнейм отправителя: {message.sender.username}</div>
-                            <div>Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
-                        </div>);    
-                    }
-                })}
+        <div className="h-[calc(100vh-56px)] w-full flex items-start justify-center">
+            <div className="w-full max-w-md">
+                <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                    <Link to="post">Написать сообщение</Link>
+                </div>
+                <div id="message-section-wrapper">
+                    <div id="message-list">
+                        {messages.map((message)=> {
+                            if(!blackListedId.includes(message.sender.id)){
+                                return(
+                                <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`${message.id}`)}>
+                                    <div className="font-bold mb-2">Тема сообщения: {message.message_topic}</div>
+                                    <div className="mb-2">Никнейм отправителя: {message.sender.username}</div>
+                                    <div>Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                                </div>);    
+                            }
+                        })}
+                    </div>
+                    <div id="navigation-links">
+                        {/* will be needed for pagination in the future */}
+                    </div>
+                </div>
             </div>
-            <div id="navigation-links">
-                {/* will be needed for pagination in the future */}
-            </div>
         </div>
-        </>
     );
 }
 

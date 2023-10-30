@@ -95,20 +95,22 @@ const ProfileButtons = ({pageUser}) =>{
     if((location.pathname===`/profile/${page_id}`) && (authContext.user)){
         if(pageUser.id === authContext.user.id){
             return(
-                <Link to="edit">Изменить</Link>
+                <Link 
+                   className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
+                   to="edit">Изменить</Link>
             );
         }
         else{
             return(
-                <>
-                <button onClick={handleSubscriptionClick}>{isSubscribed?"Отписаться":"Подписаться"}</button> <br></br>
-                <button onClick={handleBlackListClick}>{isBlackListed?"Убрать из черного списка":"Добавить в черный список"}</button>
-                </>
+                <div className="mt-[20px]">
+                    <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubscriptionClick}>{isSubscribed?"Отписаться":"Подписаться"}</button> <br></br>
+                    <button className="mt-[10px] bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={handleBlackListClick}>{isBlackListed?"Убрать из черного списка":"Добавить в черный список"}</button>
+                </div>
             );
         }
     }
     else{
-        return(<></>);
+        return <></>;
     }
 }   
 
