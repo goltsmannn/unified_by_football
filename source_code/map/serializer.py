@@ -38,12 +38,24 @@ class PostFavoritesSerializer(serializers.ModelSerializer):
         model = Placemark
         fields = ("user", "placemark_id")
         
+
 class GetFavoritesSerializer(serializers.ModelSerializer):
     user = BasicUserInfoSerializer()
     placemark = PlacemarkSerializer()
     class Meta:
         model = Placemark
         fields = ("user", "placemark")
+
+
+class PostActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = "__all__"
+        depth = 1
+
+class GetActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = "__all__"
+        depth = 2
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

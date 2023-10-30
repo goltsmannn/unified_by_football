@@ -27,11 +27,10 @@ const PlacemarkMain = ()=>{
 
     useEffect(()=>{
         favoritePlacemarks.forEach((favorite)=>{
-            if(favorite.placemark_id===Number(placemark_id)){
+            if(favorite.placemark.id===Number(placemark_id)){
                 setIsFavorite(true);
             }
         })
-        console.log(isFavorite);
     }, [favoritePlacemarks]);
 
 

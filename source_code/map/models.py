@@ -42,3 +42,9 @@ class Favorites(models.Model):
         
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="favorites")
+
+
+class Activity(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="activities")
+    placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="active_users")
+    expiry = models.SmallIntegerField()

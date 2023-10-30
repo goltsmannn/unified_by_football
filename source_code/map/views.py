@@ -10,41 +10,43 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from map.forms import MyCreationForm
-from map.models import Placemark, Review, ReviewPictures, Favorites
+from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
-from rest_framework.decorators import api_view
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import exceptions
 from django.core.files.base import ContentFile
 import base64
+# from users.authentication import JWTAuthentication
+from rest_framework.exceptions import ParseError, AuthenticationFailed, ValidationError
+from rest_framework.decorators import api_view, authentication_classes
+
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
+    #authentication_classes = [JWTAuthentication]
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
 
 
+
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 def post_review(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request=request)
-    if response is None:
-        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
     if request.data.get('placemark_id') is None:
-        raise exceptions.ValidationError('Placemark id is not specified')
+        raise exceptions.ParseError('Placemark id is not specified')
     try:
         placemark = Placemark.objects.get(pk=request.data.get('placemark_id'))
+        review = placemark.reviews.create(author=request.user, text=request.data.get('text'), rating=request.data.get('rating'))
+
     except Placemark.DoesNotExist:
-        return Response({'error': 'Placemark does not exist'})
-    try:
-        review = placemark.reviews.create(author=response[0], text=request.data.get('text'), rating=request.data.get('rating'))
+        raise exceptions.APIException('Placemark does not exist')
     except Exception as e:
         raise Exception(e)
      
@@ -52,11 +54,8 @@ def post_review(request):
     
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 def post_placemark(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request=request)
-    if response is None:
-        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
     try:
         serializer = PlacemarkPostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -67,20 +66,11 @@ def post_placemark(request):
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 def post_picture(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request=request)
-    if response is None:
-        raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
     review = Review.objects.get(pk=request.data.get('review_id'))
 
     try:
-        # Decode the base64 encoded image data
-   #     image_data = base64.b64decode(request.data.get('picture'))
-        # Create a ContentFile object from the decoded image data
-    #    image_file = ContentFile(image_data)
-        # Create a ReviewPicture instance and save it to the database
-     #   picture = ReviewPictures.objects.create(image=request.data.get('picture'))
         review.pictures.create(image=request.data.get('picture'))
         return Response(ReviewSerializer(review).data)
     except Exception as e:
@@ -90,38 +80,38 @@ def post_picture(request):
 
 class FavoritesAPIView(generics.ListCreateAPIView):
     serializer_class = PostFavoritesSerializer
-
+    authentication_classes = [JWTAuthentication]
     def get(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while getting favorites')
-        favorites = Favorites.objects.filter(user=response[0].id)
+        favorites = Favorites.objects.filter(user=request.user.id)
         response = GetFavoritesSerializer(favorites, many=True)
         return Response(response.data)
     
 
     def post(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while adding to favorites')
         
-        user = response[0]
         if request.data.get('delete'):
             try:
-                Favorites.objects.get(user=user, placemark__id=request.data.get('placemark_id')).delete()
+                Favorites.objects.get(user=request.user, placemark__id=request.data.get('placemark_id')).delete()
             except Exception as e:
                 raise e 
         else:
-            Favorites.objects.create(user=user, 
+            Favorites.objects.create(user=request.user, 
                                         placemark=Placemark.objects.get(id=request.data.get('placemark_id')))
             
-        favorites = Favorites.objects.filter(user=response[0].id)
-        response = FavoritesSerializer(favorites, many=True)       
+        favorites = Favorites.objects.filter(user=request.user)
+        response = GetFavoritesSerializer(favorites, many=True)       
         return Response(response.data)
     
 
+
+class GetActivity(generics.ListAPIView):
+    serializer_class = GetActivitySerializer
+    authentication_classes = [JWTAuthentication]
+    def get_queryset(self):
+        if self.request.get('') == 'placemark':
+            return Activity.objects.filter(placemark__id=self.request.get('placemark_id'))
+        elif self.request.get('') == 'user':
+            return Activity.objects.filter(user__id=self.request.get('user_id'))
     
 #     template_name = 'map/main_map.html'
 
@@ -163,9 +153,4 @@ class FavoritesAPIView(generics.ListCreateAPIView):
 #         del context['object']
 #         return context
     
-
-
-class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
-    queryset = Placemark.objects.all()
-    serializer_class = PlacemarkSerializer
 

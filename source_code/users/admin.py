@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Message, Subscriptions, BlackList
+from users.models import User, Message, Subscriptions, BlackList
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Message)

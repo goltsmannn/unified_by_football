@@ -13,9 +13,11 @@ from rest_framework.views import APIView
 from django.contrib.auth import login, logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import exceptions
+
+
 
 class UserViewSet(RetrieveModelMixin, 
                 ListModelMixin, 
@@ -62,23 +64,16 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 def retrieve_user_by_token(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request)
-    if response is None:
-        return exceptions.AuthenticationFailed('No user found with given JWT token')
-    return Response(UserSerializer(response[0]).data)
+    return Response(UserSerializer(request.user).data)
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 def update_user_by_token(request):
-    authenticator = JWTAuthentication()
-    response = authenticator.authenticate(request)
-    if response is None:
-        raise exceptions.AuthenticationFailed('No user found with given JWT token or token is incorrect')
-    pk = response[0].id 
-    user = User.objects.get(pk=pk)
 
+    user = request.user
     for key, value in request.data.items():
         if value != user.__getattribute__(key) and not (value=="" and user.__getattribute__(key) is None):
             user.__setattr__(key,value)
@@ -87,16 +82,13 @@ def update_user_by_token(request):
 
 
 class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там долбаться потом допишу 
+    authentication_classes = [JWTAuthentication]
+
     def post(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
-        user = User.objects.get(pk=response[0].id)
         try:
             recipient = User.objects.get(username=request.data.get('recipient_username'))
             message = Message.objects.create(
-                sender=user,
+                sender=request.user,
                 recipient=recipient,
                 message_text=request.data.get('message_text'),
                 message_topic=request.data.get('message_topic'),
@@ -125,20 +117,13 @@ def retrieve_message(request, message_id):
 
 class SubscriptionsAPIView(generics.ListCreateAPIView):
     serializer_class = SubscriptionSerializer
+    authentication_classes = [JWTAuthentication]
     def get(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
-        subscriptions = Subscriptions.objects.filter(user_from=response[0].id)
+        subscriptions = Subscriptions.objects.filter(user_from=request.user.id)
         response = SubscriptionSerializer(subscriptions, many=True)
         return Response(response.data)
     
     def post(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
         
         try:
             user_from = User.objects.get(pk=request.data.get('user_from_id'))
@@ -150,12 +135,12 @@ class SubscriptionsAPIView(generics.ListCreateAPIView):
             try:
                 Subscriptions.objects.get(user_from=user_from, user_to=user_to).delete()
             except Exception as e:
-                print(e)
+                raise (e)
         else:
             Subscriptions.objects.create(user_from=user_from, 
                                         user_to=user_to)
             
-        subscriptions = Subscriptions.objects.filter(user_from=response[0].id)
+        subscriptions = Subscriptions.objects.filter(user_from=request.user.id)
         response = SubscriptionSerializer(subscriptions, many=True)       
         return Response(response.data)
     
@@ -163,22 +148,15 @@ class SubscriptionsAPIView(generics.ListCreateAPIView):
 
 class BlackListAPIView(generics.ListCreateAPIView):
     serializer_class = BlackListSerializer
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
-        blacklisted_users = BlackList.objects.filter(user_from=response[0].id)
+        blacklisted_users = BlackList.objects.filter(user_from=request.user.id)
         response = BlackListSerializer(blacklisted_users, many=True)
         return Response(response.data)
     
 
     def post(self, request):
-        authenticator = JWTAuthentication()
-        response = authenticator.authenticate(request=request)
-        if response is None:
-            raise exceptions.AuthenticationFailed('JWT authentication failed while sending the message')
         
         try:
             user_from = User.objects.get(pk=request.data.get('user_from_id'))
@@ -197,7 +175,7 @@ class BlackListAPIView(generics.ListCreateAPIView):
             BlackList.objects.create(user_from=user_from, 
                                         user_to=user_to)
             
-        blacklisted_users = BlackList.objects.filter(user_from=response[0].id)
+        blacklisted_users = BlackList.objects.filter(user_from=request.user.id)
         response = BlackListSerializer(blacklisted_users, many=True)       
         return Response(response.data)
     
