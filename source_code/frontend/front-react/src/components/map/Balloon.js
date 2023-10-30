@@ -4,11 +4,12 @@ import NavigateButton from "utils/NavigateButton";
 
 
 const Balloon = (props) => {
-    let imageLinks = [];
-    for(let picture of props.data.pictures){
-        imageLinks.push(picture.image);
-    }
-    let images = imageLinks.map((link)=><img src={link} style={{height:100, width:'200px'}}></img>);
+    // let imageLinks = [];
+    // for(let picture of props.data.pictures){
+    //     imageLinks.push(picture.image);
+    // }
+    // let images = imageLinks.map((link)=><img src={link} style={{height:100, width:'200px'}}></img>);
+    let image = <img src={props.data.picture}/>;
     return(
         <>
             <div className="flex justify-between items-center mb-8">
@@ -18,7 +19,7 @@ const Balloon = (props) => {
                     <Link className="px-2 py-1 bg-active rounded-lg text-[#ffff]" to={"placemarks/" + props.placemark_id}>Детали</Link>
                 </div>
             </div>
-            {images}
+            {image}
         </>
     ); 
 };

@@ -12,7 +12,7 @@ function prepareBalloonData(plc_json){
         });
     });
     const data = {
-        pictures: pictures,
+        picture: plc_json.main_image,
         rating: cnt?avg/cnt: null,
     }
     return data;

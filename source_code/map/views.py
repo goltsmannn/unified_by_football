@@ -60,7 +60,7 @@ def post_placemark(request):
     try:
         serializer = PlacemarkPostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        placemark = serializer.save()
+        placemark = serializer.save()      
         return Response(PlacemarkPostSerializer(placemark).data)
     except Exception as e:
         raise Exception(e)

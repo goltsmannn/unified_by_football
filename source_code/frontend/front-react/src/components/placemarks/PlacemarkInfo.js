@@ -69,17 +69,19 @@ const PlacemarkMain = ()=>{
                 <div id="placemark-reviews-section" className="mt-[25px] ">
                     {placemark && (
                         <>
-                            {placemark.reviews.map((review)=>
-                                <div id="review-section" className="font-medium mt-[30px] p-[30px] rounded-lg border border-solid border-navbar">
+                            {placemark.reviews.map((review)=>{
+                                console.log(review);
+
+                                return (<div id="review-section" className="font-medium mt-[30px] p-[30px] rounded-lg border border-solid border-navbar">
                                     <div id="review-header">
-                                        Author: {review.author}
+                                        Автор: {review.author.username}
                                     </div>
                                     <div id="review-body">
                                         <div id="review-text">
-                                            Text: {review.text}
+                                            {review.text}
                                         </div>
                                         <div id="review-footer">
-                                            Rating: {review.rating}
+                                            Рейтинг: {review.rating}
                                         </div>
                                         <div id="review-pictures">
                                             {review.pictures.map((picture)=>
@@ -87,8 +89,8 @@ const PlacemarkMain = ()=>{
                                             )}
                                         </div>
                                     </div>
-
-                                </div>
+                                </div>);
+                            }
                             )}
                         </>
                     )}

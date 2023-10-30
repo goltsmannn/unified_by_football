@@ -10,6 +10,8 @@ const PlacemarkForm = ({coordinates, onClose}) => {
     });
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [placemarkPicture, setPlacemarkPicture] = useState(null);
+
     const authContext = useContext(AuthContext);
 
 
@@ -17,25 +19,24 @@ const PlacemarkForm = ({coordinates, onClose}) => {
         event.preventDefault();
         const fetchData = async () => {
             const config = {
-                headers: { Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` }
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
+                    'Content-Type': 'multipart/form-data',
+                }
             };
-            const data = {
-                x: coordinates[0],
-                y: coordinates[1],
-                name: name,
-                description: description,
-            }
-            if(workingHours.from && workingHours.to){
-                data.working_hours = workingHours;
-            }
 
-            console.log('abc')
-            try{
-                const response = await axios.post('http://127.0.0.1:8000/api/map/placemark/post', data, config);
+            const formData = new FormData();
+            formData.append('x', coordinates[0]);
+            formData.append('y', coordinates[1]);
+            formData.append('name', name);
+            formData.append('description', description);
+            if(workingHours.from && workingHours.to){
+                formData.append('working_hours', workingHours);
             }
-            catch(error){
-                console.error('error while posting placemark', error);
+            if(placemarkPicture){
+                formData.append('main_image', placemarkPicture);
             }
+            const response = await axios.post('http://127.0.0.1:8000/api/map/placemark/post', formData, config);
         };
         fetchData();
         onClose();
@@ -48,7 +49,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
             className='mt-[20px] w-full w-max-md'
         >
             <div className='flex flex-col'>
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="name">Название площадки:</label>
                 <input
                     className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     type="text"
@@ -58,13 +59,24 @@ const PlacemarkForm = ({coordinates, onClose}) => {
                 />
             </div>
             <div className='flex flex-col mt-[15px]'>
-                <label htmlFor="description">Description:</label>
+                <label htmlFor="description">Описание:</label>
                 <textarea
                     className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     id="description"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                 />
+            </div>
+            <div className='flex flex-col mt-[15px]'>
+                <label  className="bg-navbar text-[#ffff] rounded-md p-2 cursor-pointer mt-[15px] flex flex-col font-medium">
+                    Фото площадки...
+                <input
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => setPlacemarkPicture(event.target.files[0])}
+                />
+                </label>
             </div>
             <div className='flex flex-col mt-[15px]'>
                 <input

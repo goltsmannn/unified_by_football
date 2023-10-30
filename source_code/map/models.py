@@ -19,6 +19,7 @@ class Placemark(models.Model):
 
     type = models.CharField(max_length=1, default='b')
     verified = models.BooleanField(default=False)
+    main_image = models.ImageField(upload_to='placemark_main_images', null=True, blank=True)
     #fields set by admin
 
 

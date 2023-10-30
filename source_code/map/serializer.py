@@ -12,6 +12,7 @@ class ReviewPicturesSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     pictures = ReviewPicturesSerializer(many=True)
+    author = BasicUserInfoSerializer()
     class Meta:
         model = Review 
         fields = ["author", "text", "rating", "pictures", "id"]
