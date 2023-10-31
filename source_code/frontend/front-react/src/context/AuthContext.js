@@ -16,30 +16,23 @@ export const AuthProvider = ({children}) => {
     
     let loginUser = async (e ) => {
         e.preventDefault();
-        let response = await axios.post(urls['token-access'],
-        {
-            email: e.target.email.value,
-            password: e.target.password.value,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }         
-        }
-        );
-
-        if (response.status === 200){
+        try{
+            const response = await axios.post(urls['token-access'],{
+                email: e.target.email.value,
+                password: e.target.password.value,
+                    },{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+            }});
             setAuthToken(response.data.access);
             setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser
             localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); //переписать под ключ - значение DONE
             localStorage.setItem('refreshToken',JSON.stringify(response.data['refresh'])); 
-
             navigate('/');
         }
-        else{
-            alert('request went wrong');
+        catch (error) {
+            alert('Неверный логин или пароль')
         }
-
     }
     
     useEffect(()=>{

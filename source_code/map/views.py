@@ -1,19 +1,7 @@
 import base64
 from typing import Any, Dict, Optional
-
-import rest_framework.viewsets as viewsets
-from map.models import Activity, Favorites, Placemark, Review, ReviewPictures
-from map.serializer import (GetActivitySerializer, GetFavoritesSerializer,
-                            PlacemarkPostSerializer, PlacemarkSerializer,
-                            PostActivitySerializer, PostFavoritesSerializer,
-                            ReviewSerializer)
-from rest_framework import exceptions, generics
-from rest_framework.decorators import api_view, authentication_classes
-# from users.authentication import JWTAuthentication
-from rest_framework.exceptions import (AuthenticationFailed, ParseError,
-                                       ValidationError)
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin,
-                                   UpdateModelMixin)
+from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -21,7 +9,6 @@ from users.models import User
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
-    #authentication_classes = [JWTAuthentication]
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
 
