@@ -14,10 +14,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserRegisterSerializer(serializers.Serializer):
 
-    email = serializers.EmailField(required=True)
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True, write_only=True)
-    password2 = serializers.CharField(required=True, write_only=True)
+    email = serializers.EmailField(required=True, error_messages = {'blank': 'this field cannot be blank'})
+    username = serializers.CharField(required=True, error_messages = {'blank': 'this field cannot be blank'})
+    password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': 'this field cannot be blank'})
+    password2 = serializers.CharField(required=True, write_only=True, error_messages = {'blank': 'this field cannot be blank'})
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError('Passwords do not match')
@@ -36,6 +36,7 @@ class UserRegisterSerializer(serializers.Serializer):
         )
 
         return user 
+
         
 
 class LoginSerializer(serializers.ModelSerializer):

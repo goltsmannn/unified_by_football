@@ -8,7 +8,7 @@ const Login = () => {
     const authContext = useContext(AuthContext);
     const {state} = useLocation();
     const navigate = useNavigate();
-
+    
     if(authContext.user){
         navigate('/');
     }

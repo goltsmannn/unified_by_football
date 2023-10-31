@@ -1,15 +1,4 @@
 from typing import Any, Dict, Optional
-from django.contrib.auth import views as auth_views
-from django.db import models
-from django.db.models.query import QuerySet
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic.edit import CreateView, FormView
-from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
-from map.forms import MyCreationForm
 from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
 from rest_framework import generics
 from rest_framework.response import Response
@@ -19,18 +8,13 @@ from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostS
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework import exceptions
-from django.core.files.base import ContentFile
-import base64
-# from users.authentication import JWTAuthentication
 from rest_framework.exceptions import ParseError, AuthenticationFailed, ValidationError
 from rest_framework.decorators import api_view, authentication_classes
-
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
-    #authentication_classes = [JWTAuthentication]
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
 
@@ -107,12 +91,26 @@ class FavoritesAPIView(generics.ListCreateAPIView):
 class GetActivity(generics.ListAPIView):
     serializer_class = GetActivitySerializer
     authentication_classes = [JWTAuthentication]
-    def get_queryset(self):
+    def get_queryset(self)  :
         if self.request.get('') == 'placemark':
             return Activity.objects.filter(placemark__id=self.request.get('placemark_id'))
         elif self.request.get('') == 'user':
             return Activity.objects.filter(user__id=self.request.get('user_id'))
     
+
+
+
+# from django.contrib.auth import views as auth_views
+# from django.db import models
+# from django.db.models.query import QuerySet
+# from django.forms.models import BaseModelForm
+# from django.http import HttpResponse
+# from django.shortcuts import get_object_or_404, render, redirect
+# from django.urls import reverse, reverse_lazy
+# from django.views.generic.edit import CreateView, FormView
+# from django.views.generic.detail import DetailView
+# from django.views.generic.base import TemplateView
+# from map.forms import MyCreationForm
 #     template_name = 'map/main_map.html'
 
     
