@@ -1,9 +1,31 @@
 import base64
 from typing import Any, Dict, Optional
+from django.contrib.auth import views as auth_views
+from django.db import models
+from django.db.models.query import QuerySet
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic.edit import CreateView, FormView
+from django.views.generic.detail import DetailView
+from django.views.generic.base import TemplateView
+from map.forms import MyCreationForm
 from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from users.models import User
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
+import rest_framework.viewsets as viewsets
+from rest_framework import exceptions
+from django.core.files.base import ContentFile
+import base64
+# from users.authentication import JWTAuthentication
+from rest_framework.exceptions import ParseError, AuthenticationFailed, ValidationError
+from rest_framework.decorators import api_view, authentication_classes
+
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.models import User
 
@@ -85,16 +107,14 @@ class FavoritesAPIView(generics.ListCreateAPIView):
 class GetActivity(generics.ListAPIView):
     serializer_class = GetActivitySerializer
     authentication_classes = [JWTAuthentication]
-    
-    def get(self, request):    
+    def get(self, request):
         response = None
-        print(request.query_params)
         if request.query_params.get('get_by') == 'placemark':
             response = Activity.objects.filter(placemark__id=request.query_params.get('placemark_id'))
         elif request.query_params.get('get_by') == 'user':
             response = Activity.objects.filter(user__id=request.query_params.get('user_id'))
         if response is None:
-            raise exceptions.ValidationError('Lacking data for filtering')
+            raise exceptions.APIException('Lacking details')
         return Response(GetActivitySerializer(response, many=True).data)
 #     template_name = 'map/main_map.html'
 
@@ -105,7 +125,7 @@ class GetActivity(generics.ListAPIView):
 # from django.db import models
 # from django.db.models.query import QuerySet
 # from django.forms.models import BaseModelForm
-# from django.http import HttpResponse
+# frgom django.http import HttpResponse
 # from django.shortcuts import get_object_or_404, redirect, render
 # from django.urls import reverse, reverse_lazy
 # from django.views.generic.base import TemplateView
