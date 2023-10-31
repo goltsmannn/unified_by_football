@@ -40,14 +40,14 @@ const ProfileActivity = ({pageUser}) => {
     }
     else{
         return(
-            <>
+<>
             {(authContext.user.id === Number(user_id) || pageUser.show_activity )?
-                <div id="activity-wrapper">
+                <div id="activity-wrapper" className="bg-active mt-[20px] text-[#ffff] rounded-md p-4" > 
                     {activity.map((event)=>{
                         const date = new Date(event.created);
                         return(<div id="activity-block">
-                            <p>a</p>
-                            <div id="placemark-part">
+                            <p>Активность</p>
+                            <div id="placemark-part" className="mt-4">
                                 <p>Поле: {event.placemark.name}</p>
                                 <p>Начало: {date.toLocaleString()}</p>
                                 <p>Окончание: {new Date(date.setHours(date.getHours() + event.expiry)).toLocaleString()}</p>

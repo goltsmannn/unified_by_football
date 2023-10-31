@@ -49,7 +49,7 @@ const SearchMain = () => {
                 filteredUsers?.length > 0 && filteredUsers.map((user)=>
                 <div
                     id="user-card" 
-                    className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md"
+                    className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"
                 >
                     <div>Username: {user.username} </div>
                     <div>Region: {user.region}</div>

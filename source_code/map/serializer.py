@@ -25,6 +25,12 @@ class PlacemarkSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class BasicPlacemarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Placemark
+        fields = ("id", "name")
+
+
 class PlacemarkPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Placemark
@@ -54,10 +60,13 @@ class PostActivitySerializer(serializers.ModelSerializer):
 
 class GetActivitySerializer(serializers.ModelSerializer):
     user = BasicUserInfoSerializer()
+    placemark = BasicPlacemarkSerializer()
+
     class Meta:
         fields = "__all__"
         model = Activity
-        depth = 1
+
+        
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

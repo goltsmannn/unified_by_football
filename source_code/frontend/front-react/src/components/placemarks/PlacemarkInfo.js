@@ -65,7 +65,11 @@ const PlacemarkMain = ()=>{
                     <Link to="post" className="px-2 py-1 rounded-lg border border-solid border-navbar">Оставить отзыв</Link> <br></br>
                     <button className="ml-4 bg-active px-2 py-1 rounded-lg text-[#ffff]" onClick={handleAddToFavorites}>{isFavorite?"Убрать из избранного":"Добавить в избранное"}</button>
                 </div>}
-                <div >
+                <div>
+                    <div id="placemark-info">
+                        <div>Название поля: {placemark?.name}</div>
+                        <div>Описание поля: {placemark?.description}</div>
+                    </div>
                 <div id="placemark-reviews-section" className="mt-[25px] ">
                     {placemark && (
                         <>
