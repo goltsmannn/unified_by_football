@@ -40,7 +40,7 @@ const MessageList = ()=>{
                 </div>
                 <div id="message-section-wrapper">
                     <div id="message-list">
-                        {messages.map((message)=> {
+                        {messages.length>0?messages.map((message)=> {
                             if(!blackListedId.includes(message.sender.id)){
                                 return(
                                 <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`${message.id}`)}>
@@ -49,7 +49,7 @@ const MessageList = ()=>{
                                     <div>Received: {new Date(message.message_datetime).toLocaleString()}</div>
                                 </div>);    
                             }
-                        })}
+                        }): <div className="text-2xl text-center font-bold text-red shadow shadow-red p-5 mt-20">No messages yet</div>}
                     </div>
                     <div id="navigation-links">
                         {/* will be needed for pagination in the future */}

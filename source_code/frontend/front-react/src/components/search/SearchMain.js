@@ -58,7 +58,7 @@ const SearchMain = () => {
                             className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md"
                             to={`/profile/${user.id}`}
                         >
-                            Navigate to profile
+                            Navigate to the profile
                         </Link>
                     </div>
                 </div>

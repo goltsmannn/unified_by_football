@@ -52,7 +52,7 @@ const ReviewForm = () => {
             <div
                 className="w-full max-w-md p-[30px] max-h-[450px] rounded-lg border border-solid border-navbar text-navbar flex h-full mt-[100px] flex-col justify-around"
             >
-                <h1 className="text-center text-2xl text-navbar font-bold">Отзыв</h1>
+                <h1 className="text-center text-2xl text-navbar font-bold">Review</h1>
                 <form onSubmit={handleSubmit} className="mt-[30px] h-full flex flex-col">
                     <div className="mt-[15px] flex flex-col font-medium">
                         <label> Text:</label>

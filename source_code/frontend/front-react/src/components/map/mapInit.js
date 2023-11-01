@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Portal from "./Portal";
-
+import logo from '../../logo.png';
 
 async function requestPlacemarks(){
     let response = await axios.get('http://127.0.0.1:8000/api/map/placemarks');
@@ -52,6 +52,12 @@ const MyMap = () => {
                             setCurrentPlacemark(placemark);
                             setActivePortal(true);
                         }, 0);
+                    }}
+                    options={{
+                        iconLayout: "default#image",
+                        iconImageHref: logo,
+                        iconImageSize: [22, 22],
+                        iconImageOffset: [-15, -15]
                     }}
                     key={placemark.id}
                 />                

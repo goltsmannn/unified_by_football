@@ -124,6 +124,8 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
+            if serializer.validated_data['user']['id'] != request.user.id:
+                raise exceptions.APIException('User id does not match')
             if serializer.validated_data.get('delete'):
                 Activity.objects.get(user__id=serializer.validated_data['user']['id'], 
                                     placemark__id=serializer.validated_data['placemark']['id']).delete()

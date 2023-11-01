@@ -4,6 +4,8 @@ import axios from "axios";
 import AuthContext from "context/AuthContext";
 import useFavorites from "hooks/useFavorites";
 import closeIcon from '../../img/free-icon-close-4013407.png';
+import PlacemarkVisitors from "./PlacemarkVisitors";
+
 
 const PlacemarkMain = ()=>{
     const {placemark_id} = useParams();
@@ -119,8 +121,8 @@ const PlacemarkMain = ()=>{
                     <h1 className="text-center text-2xl text-navbar font-bold my-3">Information</h1>
                     <div className="font-medium">Pitch name: {placemark?.name}</div>
                     <div className="mt-2">Description: {placemark?.description}</div>
-                    <div id='working_hours' className="mt-2">Opening at: {placemark?.working_hours?placemark.working_hours.from:"Not mentioned"}</div>
-                    <div id='working_hours' className="mt-2">Closing at:  {placemark?.working_hours?placemark.working_hours.to:"Not mentioned"}</div>
+                    <div id='working_hours' className="mt-2">Opening at: {placemark?placemark.time_from:"Not mentioned"}</div>
+                    <div id='working_hours' className="mt-2">Closing at:  {placemark?placemark.time_to:"Not mentioned"}</div>
                     <img src={placemark?.main_image} alt="" className="w-full h-96 object-cover mt-4"/>
                 </div>
 
@@ -131,9 +133,12 @@ const PlacemarkMain = ()=>{
                     <Link to="post" className="rounded-lg border border-solid border-navbar h-full flex basis-[30%] justify-center items-center grow-0">Leave feedback</Link> 
                     <div className="h-full grow-0 basis-[30%] "><button className="bg-active rounded-lg text-[#ffff] h-full w-full" onClick={handleAddToFavorites}>{isFavorite?"Remove from Favorite":"Add to Favorite"}</button></div>
                     <div className="h-full grow-0 basis-[30%] ">
-                        <button className="rounded-lg border border-solid border-navbar h-full w-full" onClick={handleActivity}>I'm here...</button>
+                        <button className="rounded-lg border border-solid border-navbar h-full w-full" onClick={handleActivity}>I'm here now...</button>
                     </div>
                 </div>}
+                <div id="active-players">
+                    {placemark && <PlacemarkVisitors placemark={placemark}></PlacemarkVisitors>}
+                </div>
                 <div>
                     <div id="placemark-reviews-section" className="mt-[25px] ">
                         {placemark && (

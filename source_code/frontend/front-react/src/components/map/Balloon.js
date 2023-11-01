@@ -13,7 +13,7 @@ const Balloon = (props) => {
     return(
         <>
             <div className="flex justify-between items-center mb-8">
-                <div>Rating: {props.data.rating?props.data.rating.toPrecision(3): "Недостаточно отзывов"}</div> 
+                <div>Rating: {props.data.rating?props.data.rating.toPrecision(3): "No reviews"}</div> 
                 {/* <div>{props.placemark_id}</div> */}
                 <div>
                     <Link className="px-2 py-1 bg-active rounded-lg text-[#ffff]" to={"placemarks/" + props.placemark_id}>Details</Link>

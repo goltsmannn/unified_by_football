@@ -102,7 +102,7 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
 class ListMessagesAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
     def get_queryset(self):
-        return Message.objects.filter(recipient=self.kwargs['recipient_id']) #!!!!!!!ДОБАВИТЬ VALUES LIST
+        return Message.objects.filter(recipient=self.kwargs['recipient_id'])
 
     
 
