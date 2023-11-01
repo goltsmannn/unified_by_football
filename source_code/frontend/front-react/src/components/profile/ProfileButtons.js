@@ -13,13 +13,16 @@ const ProfileButtons = ({pageUser}) =>{
     const page_id= useParams().user_id;
     const [isSubscribed, setIsSubscribed] = useState(null);
     const [isBlackListed, setIsBlackListed] = useState(null);
-    const [isHidden, setIsHidden] = useState(authContext.user.show_activity);
+    const [isHidden, setIsHidden] = useState(!authContext.user.show_activity);
+
+    console.log(isHidden);
 
 
     const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
         const check = !isSubscribed;
         setIsSubscribed(check);
+
         const fetchData = async ()=>{
             const data = {
                 user_from_id: authContext.user.id,
@@ -72,18 +75,19 @@ const ProfileButtons = ({pageUser}) =>{
 
 
     const handleIsHiddenChange = () => {
-        const check = !isHidden;
-        setIsHidden(check);
+        console.log('changing visib')
+        const isHiddenRealValue = !isHidden;
+        setIsHidden(isHiddenRealValue);
+        authContext.setUser({...authContext.user, show_activity: !isHiddenRealValue});
         const fetchData = async () => {
             const config = {
                 headers: {
                     Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                 }
             }
-            const tmpUser = authContext.user;
-            tmpUser.show_activity = check;
             try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', tmpUser, config);
+                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', authContext.user, config);
+                console.log(authContext.user);
             }
             catch(error){
                 console.error('error while updating activity boolean value')
@@ -101,7 +105,7 @@ const ProfileButtons = ({pageUser}) =>{
     }, [subscriptions, page_id]);
 
     useEffect(()=>{
-        console.log(blacklistedUsers);
+    //    console.log(blacklistedUsers);
         blacklistedUsers.forEach((blacklistedUser)=>{
             if(blacklistedUser.user_to.id === Number(page_id)){
                 setIsBlackListed(true);
@@ -120,8 +124,8 @@ const ProfileButtons = ({pageUser}) =>{
             return(
                 <>
                 <Link 
-                   className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
-                   to="edit">Изменить</Link>
+                    className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
+                    to="edit">Изменить</Link>
                 <button onClick={handleIsHiddenChange}>{isHidden?"Показать активность":"Скрыть активность"}</button>
                 </>
             );

@@ -46,7 +46,7 @@ const SearchMain = () => {
             </form>
 
             <>{
-                filteredUsers?.length > 0 && filteredUsers.map((user)=>
+                filteredUsers?.length > 0?filteredUsers.map((user)=>
                 <div
                     id="user-card" 
                     className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"
@@ -62,7 +62,7 @@ const SearchMain = () => {
                         </Link>
                     </div>
                 </div>
-            )}   
+            ): <div className="text-3xl p-3 text-red text-center shadow shadow-red">Пользователь с запрошенным никнеймом не найден</div>}   
             </>
             </div>
         </div>

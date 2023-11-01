@@ -26,7 +26,7 @@ const useBlackList = ()=>{
             fetchData();
         }
     },[authContext.user, authContext.authToken]);
-    console.log(blacklistedUsers);
+    //console.log(blacklistedUsers);
     return blacklistedUsers;
 }
 
