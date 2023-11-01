@@ -74,7 +74,9 @@ const PlacemarkMain = ()=>{
                 console.error('Error while adding to favorites', error);
             }
         }
-        fetchData();
+        if(authContext.user){
+            fetchData();
+        }
     }
     
     const handleActivity = async (e) => {
@@ -147,7 +149,7 @@ const PlacemarkMain = ()=>{
 
                                     return (<div id="review-section" className="font-medium mt-[30px] p-[30px] rounded-lg border border-solid border-navbar">
                                         <div id="review-header">
-                                            Author: {review.author.username}
+                                            Author: {review.author?review.author.username:'Deleted account'}
                                         </div>
                                         <div id="review-body">
                                             <div id="review-text">

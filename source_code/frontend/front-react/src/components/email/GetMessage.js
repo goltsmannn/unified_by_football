@@ -34,14 +34,14 @@ const GetMessage = () => {
                     </div>
                     <div id="message-details-block" className="mt-[20px] font-medium">
                         <div id="header">
-                            <div id="message-topic">Тема письма: {message.message_topic}</div>
-                            <div id="message-sender">Отправитель: {message.sender.username}</div>
+                            <div id="message-topic">Subject: {message.message_topic}</div>
+                            <div id="message-sender">From: {message.sender.username}</div>
                         </div>
                         <div id="body">
-                            <div id="message-text">Текст: {message.message_text}</div>
+                            <div id="message-text">Text: {message.message_text}</div>
                         </div>
                         <div id="footer">
-                            <div id="message-datetime">Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                            <div id="message-datetime">Received at: {new Date(message.message_datetime).toLocaleString()}</div>
                         </div>
                     </div>
                 </div>
