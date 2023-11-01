@@ -30,7 +30,7 @@ const ProposePlacemark = () => {
     return(
         <div id="proposal-page">
             <div className="absolute top-[65px] left-[20px] bg-[#30b684da] w-[300px] h-[100px] z-40 text-[#ffff] flex items-center justify-center text-center font-medium rounded-md">
-                Кликните в любое место, чтобы поставить метку
+                Zoom in and click the map to propose placemark
             </div>
             <div id="proposal-map">
                 <YMaps>

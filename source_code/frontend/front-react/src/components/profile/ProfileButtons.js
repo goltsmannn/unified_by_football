@@ -72,18 +72,19 @@ const ProfileButtons = ({pageUser}) =>{
 
 
     const handleIsHiddenChange = () => {
-        const check = !isHidden;
-        setIsHidden(check);
+        console.log('changing visib')
+        const isHiddenRealValue = !isHidden;
+        setIsHidden(isHiddenRealValue);
+        authContext.setUser({...authContext.user, show_activity: !isHiddenRealValue});
         const fetchData = async () => {
             const config = {
                 headers: {
                     Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                 }
             }
-            const tmpUser = authContext.user;
-            tmpUser.show_activity = check;
+
             try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', tmpUser, config);
+                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', authContext.user, config);
             }
             catch(error){
                 console.error('error while updating activity boolean value')
@@ -120,17 +121,17 @@ const ProfileButtons = ({pageUser}) =>{
             return(
                 <>
                 <Link 
-                   className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
-                   to="edit">Изменить</Link>
-                <button onClick={handleIsHiddenChange}>{isHidden?"Показать активность":"Скрыть активность"}</button>
+                    className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
+                    to="edit">Edit</Link>
+                <button onClick={handleIsHiddenChange}>{isHidden?"Show Activity":"Hide Activity"}</button>
                 </>
             );
         }
         else{
             return(
                 <div className="mt-[20px]">
-                    <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubscriptionClick}>{isSubscribed?"Отписаться":"Подписаться"}</button> <br></br>
-                    <button className="mt-[10px] bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={handleBlackListClick}>{isBlackListed?"Убрать из черного списка":"Добавить в черный список"}</button>
+                    <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubscriptionClick}>{isSubscribed?"Unsubscribe":"Subscribe"}</button> <br></br>
+                    <button className="mt-[10px] bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={handleBlackListClick}>{isBlackListed?"Remove from Blacklist":"Add to Blacklist"}</button>
                 </div>
             );
         }

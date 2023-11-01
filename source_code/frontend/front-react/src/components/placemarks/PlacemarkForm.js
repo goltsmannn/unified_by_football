@@ -49,7 +49,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
             className='mt-[20px] w-full w-max-md'
         >
             <div className='flex flex-col'>
-                <label htmlFor="name">Название площадки:</label>
+                <label htmlFor="name">Pitch name:</label>
                 <input
                     className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     type="text"
@@ -59,7 +59,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
                 />
             </div>
             <div className='flex flex-col mt-[15px]'>
-                <label htmlFor="description">Описание:</label>
+                <label htmlFor="description">Description:</label>
                 <textarea
                     className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                     id="description"
@@ -71,7 +71,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
             
             <div className='flex flex-col mt-[15px]'>
                 <label  className="bg-navbar text-[#ffff] rounded-md p-2 cursor-pointer mt-[15px] flex flex-col font-medium">
-                    Фото площадки...
+                    Attach photo...
                 <input
                     className="hidden"
                     type="file"

@@ -37,16 +37,16 @@ const SearchMain = () => {
         >
             <div className="w-full max-w-md">
                 <form className="w-full mt-[20px] flex items-center mb-[50px]"  >
-                    <label className="font-medium text-navbar" htmlFor="searchLine">Найти пользователя:</label>
+                    <label className="font-medium text-navbar" htmlFor="searchLine">Find user:</label>
                     <input 
                         className='w-full max-w-[250px] ml-[20px] rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                         type="text" id="searchLine" onChange={(e)=>setSearchValue(e.target.value)} 
-                        placeholder="Введите имя пользователя"
+                        placeholder="Enter username"
                     />
             </form>
 
             <>{
-                filteredUsers?.length > 0 && filteredUsers.map((user)=>
+                filteredUsers?.length > 0?filteredUsers.map((user)=>
                 <div
                     id="user-card" 
                     className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"
@@ -58,11 +58,11 @@ const SearchMain = () => {
                             className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md"
                             to={`/profile/${user.id}`}
                         >
-                            Страничка пользователя
+                            Navigate to profile
                         </Link>
                     </div>
                 </div>
-            )}   
+            ): <div className="text-3xl p-3 text-red text-center shadow shadow-red">User not found</div>}   
             </>
             </div>
         </div>

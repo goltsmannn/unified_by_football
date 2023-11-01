@@ -36,7 +36,7 @@ const MessageList = ()=>{
         <div className="h-[calc(100vh-56px)] w-full flex items-start justify-center">
             <div className="w-full max-w-md">
                 <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                    <Link to="post">Написать сообщение</Link>
+                    <Link to="post">Compose Message</Link>
                 </div>
                 <div id="message-section-wrapper">
                     <div id="message-list">
@@ -44,9 +44,9 @@ const MessageList = ()=>{
                             if(!blackListedId.includes(message.sender.id)){
                                 return(
                                 <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`${message.id}`)}>
-                                    <div className="font-bold mb-2">Тема сообщения: {message.message_topic}</div>
-                                    <div className="mb-2">Никнейм отправителя: {message.sender.username}</div>
-                                    <div>Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                                    <div className="font-bold mb-2">Subject: {message.message_topic}</div>
+                                    <div className="mb-2">From: {message.sender.username}</div>
+                                    <div>Received: {new Date(message.message_datetime).toLocaleString()}</div>
                                 </div>);    
                             }
                         })}

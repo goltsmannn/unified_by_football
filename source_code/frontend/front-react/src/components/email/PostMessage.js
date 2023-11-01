@@ -48,10 +48,10 @@ const PostMessage = () => {
                 id="message-form"
                 className="w-full max-w-md px-[30px] max-h-[450px] rounded-lg border border-solid border-navbar text-navbar flex h-full mt-[100px] flex-col justify-around"
             >
-                <p className="text-center text-navbar font-bold">{!messageRecipient && "Выберите имя пользователя из выпадающего списка"}</p>
+                <p className="text-center text-navbar font-bold">{!messageRecipient && "Please, select the nickname from subscription list"}</p>
 
                 <li className="list-none flex flex-col font-medium">
-                    <label htmlFor="recipient">Recipient:</label>
+                    <label htmlFor="recipient">To:</label>
                     <input
                         className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                         type="text"
@@ -60,7 +60,7 @@ const PostMessage = () => {
                         value={messageRecipient}
                         pattern={`(${subscriptions.map(subscription => subscription.user_to.username).join('|')})`}
                         onChange={(event)=>setMessageRecipient(event.target.value)}
-                        onInvalid={(event)=>{event.target.setCustomValidity('Пожалуйста, выберите пользователя из списка подписок');}}
+                        onInvalid={(event)=>{event.target.setCustomValidity('Please, select the nickname from subscription list');}}
                         required
                     />
                 </li>
@@ -72,7 +72,7 @@ const PostMessage = () => {
                 <br />
 
                 <li className="list-none flex flex-col font-medium">
-                    <label htmlFor="message_topic">Message Topic:</label>
+                    <label htmlFor="message_topic">Subject:</label>
                     <input
                         className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                         required
@@ -84,7 +84,7 @@ const PostMessage = () => {
                 </li>
 
                 <li className="list-none flex flex-col font-medium">
-                    <label htmlFor="message_text">Message Text:</label>
+                    <label htmlFor="message_text">Text:</label>
                     <textarea
                         className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                         required
@@ -97,7 +97,7 @@ const PostMessage = () => {
                     className="bg-active px-1 py-1 rounded-lg text-[#ffff]"
                     type="submit"
                 >
-                    Send Message
+                    Send 
                 </button>
             </form>
         </div>

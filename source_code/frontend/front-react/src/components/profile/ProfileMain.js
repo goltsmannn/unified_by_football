@@ -55,7 +55,7 @@ const ProfileMain = () => {
                 className="px-[20px] py-[30px] max-w-md w-full mt-[100px] text-navbar flex flex-col justify-around rounded-lg border border-solid border-navbar"
             >
             <h1 className="text-center text-2xl text-navbar font-bold">
-                Профиль пользователя
+                User profile
             </h1>
 
             <div id="subscription-block">
@@ -64,12 +64,12 @@ const ProfileMain = () => {
                 id="user-info-fields"
                 className="mt-[20px]"
             >
-                <div id="user-age">Возраст: {pageUser.age ?? '----'}</div>
-                <div id="user-weight">Вес: {pageUser.weight ?? '----'}</div>
-                <div id="user-height">Рост: {pageUser.height ?? '----'}</div>
-                <div id="user-region">Регион: {pageUser.region ?? '----'}</div>
-                <div id="user-username">Никнейм: {pageUser.username ?? '----'}</div>
-                <div id="user-email">Почта: {pageUser.email ?? '----'}</div>
+                <div id="user-age">Age: {pageUser.age ?? '----'}</div>
+                <div id="user-weight">Weight: {pageUser.weight ?? '----'}</div>
+                <div id="user-height">Height: {pageUser.height ?? '----'}</div>
+                <div id="user-region">Region: {pageUser.region ?? '----'}</div>
+                <div id="user-username">Username: {pageUser.username ?? '----'}</div>
+                <div id="user-email">Email: {pageUser.email ?? '----'}</div>
             </div>
             <div 
                 id="user-info-fields-buttons"
@@ -78,11 +78,11 @@ const ProfileMain = () => {
                     pageUser={pageUser}
                 />
             </div>
+            <div id="user-edit-outlet">
+                <Outlet></Outlet>
+            </div>
             <div id='profile-activity'>
                 <ProfileActivity pageUser={pageUser}></ProfileActivity>
-            </div>
-            <div id="user-edit-outler">
-                <Outlet></Outlet>
             </div>
             </div>
 

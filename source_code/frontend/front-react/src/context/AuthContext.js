@@ -12,7 +12,7 @@ export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(null);
     let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
-    const readOnlyFields = ['email', 'id', 'is_staff', 'username'];
+    const readOnlyFields = ['email', 'id', 'is_staff', 'username', 'show_activity'];
     
     let loginUser = async (e ) => {
         e.preventDefault();

@@ -15,21 +15,21 @@ const Login = () => {
     return(
         <div className="h-screen w-full flex items-center justify-center">
         <div id="login-form" className="max-w-md w-full h-96 p-8 flex flex-col rounded-lg border border-solid border-navbar">
-            <h1 className="text-center text-2xl text-navbar font-bold">Авторизация</h1>
+            <h1 className="text-center text-2xl text-navbar font-bold">Authorization</h1>
             <form onSubmit={authContext.loginUser} className="text-navbar flex mt-8 h-full flex-col justify-around">
                 <li className="list-none flex flex-col font-medium">                 
                     <label htmlFor="password2-field">E-mail</label>
-                    <input className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active' type="text" name="email" placeholder="Введите почту"></input>
+                    <input className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active' type="text" name="email" placeholder="Enter email"></input>
                 </li>
                 <li className="list-none flex flex-col font-medium">                 
-                    <label htmlFor="password2-field">Пароль</label>
-                    <input className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active' type="password" name="password" placeholder="Введите пароль"></input> 
+                    <label htmlFor="password2-field">Password</label>
+                    <input className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active' type="password" name="password" placeholder="Enter password"></input> 
                 </li>
                 {/* type=password всегда чтобы не было видно вводимые данные */}
-                <input className="bg-navbar px-1 py-2 rounded-lg text-white" type="submit" />
+                <input className="bg-navbar px-1 py-2 rounded-lg text-white" type="submit" value="Submit"/>
             </form>
             <div id="login-link" className="text-center">
-                <span>У вас нет аккаунта? </span> <Link className="text-active font-medium" to="/register"> Зарегистрироваться </Link>
+                <span>Do not have an account yet? </span> <Link className="text-active font-medium" to="/register"> Sign up </Link>
             </div>
         </div>
         </div>

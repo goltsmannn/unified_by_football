@@ -33,7 +33,7 @@ const LoggedUserUpperMenu = () => {
                         className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""}
                         to="/"
                     >
-                        Карта
+                        Map
                     </NavLink>
                 </li>
 
@@ -42,7 +42,7 @@ const LoggedUserUpperMenu = () => {
                         className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""}
                         to="search" 
                     >
-                            Найти пользователя
+                            Find User
                     </NavLink>
                 </li>
                 <li className="hover:font-medium">
@@ -50,7 +50,7 @@ const LoggedUserUpperMenu = () => {
                         className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""}
                         to="message" 
                     >
-                        Почта
+                        Mail
                     </NavLink>
                 </li>
 
@@ -60,12 +60,12 @@ const LoggedUserUpperMenu = () => {
                         className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""}
                         to="propose" 
                     >
-                        Предложить место
+                        Propose Placemark
                     </NavLink>
                 </li>
                 <li className={`hover:font-medium ${isOpen ? 'font-medium' :'' }`}>
                     <button ref={buttonRef} onClick={toggleMenu}>
-                        Профиль
+                        Profile
                     </button>
                 </li>
             </ul>
@@ -81,7 +81,7 @@ const LoggedUserUpperMenu = () => {
                                 className={"px-4 py-1 hover:bg-active w-full block hover:text-[#ffff]"}
                                 to={`profile/${authContext.user.id}`} 
                             >
-                                Профиль
+                                Profile
                             </NavLink>
                         </li>
                         <li className="mt-[10px]">  
@@ -89,7 +89,7 @@ const LoggedUserUpperMenu = () => {
                                 className={" px-4 py-1 hover:bg-active w-full hover:text-[#ffff]" }
                                 to="favorites" 
                             >
-                                Избранное
+                                Saved
                             </NavLink>
                         </li>
                     </div>
@@ -100,7 +100,7 @@ const LoggedUserUpperMenu = () => {
                             to="/" 
                             onClick={authContext.logoutUser} 
                         >
-                            Выйти
+                            Exit
                         </NavLink>
                     </li>
                 </ul>

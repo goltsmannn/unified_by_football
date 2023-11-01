@@ -75,7 +75,7 @@ const ProfileActivity = ({pageUser}) => {
                         </div>);
                     })}
                 </div>
-            : <></>}
+            :<div>Activity is hidden</div>}
             </>
         );
     }
