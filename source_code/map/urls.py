@@ -21,6 +21,6 @@ urlpatterns = [
     path('placemark/post', views.post_placemark, name='placemark-post'),
     path('review/picture/post', views.post_picture, name='picture-post'),
     path('favorites', views.FavoritesAPIView.as_view(), name='favorites'),
-    path('activity/get', views.GetActivity.as_view(), name='activity-get')
+    path('activity', views.ActivityAPIView.as_view(), name='activity-get'),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

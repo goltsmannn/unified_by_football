@@ -21,7 +21,7 @@ const ProfileActivity = ({pageUser}) => {
                         user_id: pageUser.id,
                     }
                 }
-                const response = await axios.get('http://127.0.0.1:8000/api/map/activity/get',config);
+                const response = await axios.get('http://127.0.0.1:8000/api/map/activity',config);
                 console.log(response.data);
                 setActivity(response.data);
             }

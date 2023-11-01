@@ -14,9 +14,6 @@ const Login = () => {
     }
     return(
         <div className="h-screen w-full flex items-center justify-center">
-        <div id="redirect-error">
-            {state? <p>{state.error}</p>:null}
-        </div>
         <div id="login-form" className="max-w-md w-full h-96 p-8 flex flex-col rounded-lg border border-solid border-navbar">
             <h1 className="text-center text-2xl text-navbar font-bold">Авторизация</h1>
             <form onSubmit={authContext.loginUser} className="text-navbar flex mt-8 h-full flex-col justify-around">

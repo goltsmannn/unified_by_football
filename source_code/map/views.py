@@ -25,7 +25,8 @@ import base64
 # from users.authentication import JWTAuthentication
 from rest_framework.exceptions import ParseError, AuthenticationFailed, ValidationError
 from rest_framework.decorators import api_view, authentication_classes
-
+import datetime
+import pytz
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.models import User
 
@@ -104,9 +105,10 @@ class FavoritesAPIView(generics.ListCreateAPIView):
     
 
 
-class GetActivity(generics.ListAPIView):
+class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
     serializer_class = GetActivitySerializer
     authentication_classes = [JWTAuthentication]
+
     def get(self, request):
         response = None
         if request.query_params.get('get_by') == 'placemark':
@@ -116,7 +118,30 @@ class GetActivity(generics.ListAPIView):
         if response is None:
             raise exceptions.APIException('Lacking details')
         return Response(GetActivitySerializer(response, many=True).data)
+
+    def post(self, request):
+        serializer = PostActivitySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        last_activity = Activity.objects.filter(user__id=serializer.validated_data['user']['id']).last()
+        if last_activity is not None:
+            tz = pytz.timezone('Europe/Moscow')
+            expiry = last_activity.created + datetime.timedelta(hours=last_activity.expiry)
+            if datetime.datetime.now(tz=tz) < expiry:
+                raise exceptions.APIException('EXPIRY_ERROR')
+
+
+
+        try:
+            response = Activity.objects.create(user=User.objects.get(pk=serializer.validated_data['user']['id']), 
+                                placemark=Placemark.objects.get(pk=serializer.validated_data['placemark']['id']),
+                                expiry=serializer.validated_data.get('expiry'))
+            
+            return(Response(GetActivitySerializer(response).data))
+        except Exception as e:
+            raise e
+
 #     template_name = 'map/main_map.html'
+
 
     
 

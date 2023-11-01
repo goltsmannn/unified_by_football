@@ -3,6 +3,7 @@ import React, { useState, useContext} from "react";
 import axios from "axios";
 import useSubscriptions from "hooks/useSubscriptions";
 import AuthContext from "context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const PostMessage = () => {
@@ -11,6 +12,8 @@ const PostMessage = () => {
     const [messageRecipient, setMessageRecipient] = useState("");
     const subscriptions = useSubscriptions();
     const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -35,6 +38,7 @@ const PostMessage = () => {
             }
         };
         fetchData();
+        navigate('/message')
     };
 
     return (
@@ -44,6 +48,8 @@ const PostMessage = () => {
                 id="message-form"
                 className="w-full max-w-md px-[30px] max-h-[450px] rounded-lg border border-solid border-navbar text-navbar flex h-full mt-[100px] flex-col justify-around"
             >
+                <p className="text-center text-navbar font-bold">{!messageRecipient && "Выберите имя пользователя из выпадающего списка"}</p>
+
                 <li className="list-none flex flex-col font-medium">
                     <label htmlFor="recipient">Recipient:</label>
                     <input

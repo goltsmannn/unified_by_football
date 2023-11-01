@@ -53,10 +53,17 @@ class GetFavoritesSerializer(serializers.ModelSerializer):
         fields = ("user", "placemark")
 
 
+
+
 class PostActivitySerializer(serializers.ModelSerializer):
+    placemark_id = serializers.IntegerField(source='placemark.id')
+    user_id = serializers.IntegerField(source='user.id')
+
     class Meta:
-        fields = "__all__"
-        depth = 1
+        model = Activity
+        fields = ("user_id", "placemark_id", "expiry")
+
+
 
 class GetActivitySerializer(serializers.ModelSerializer):
     user = BasicUserInfoSerializer()
