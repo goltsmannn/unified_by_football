@@ -58,20 +58,23 @@ class GetFavoritesSerializer(serializers.ModelSerializer):
 class PostActivitySerializer(serializers.ModelSerializer):
     placemark_id = serializers.IntegerField(source='placemark.id')
     user_id = serializers.IntegerField(source='user.id')
-
+    delete = serializers.BooleanField()
+    expiry = serializers.IntegerField(required=False) # set expiry field as optional
     class Meta:
         model = Activity
-        fields = ("user_id", "placemark_id", "expiry")
+        fields = ("user_id", "placemark_id", "expiry", "delete")
+        
 
 
 
 class GetActivitySerializer(serializers.ModelSerializer):
     user = BasicUserInfoSerializer()
     placemark = BasicPlacemarkSerializer()
-
+    
     class Meta:
         fields = "__all__"
         model = Activity
+        
 
         
 # def encode():

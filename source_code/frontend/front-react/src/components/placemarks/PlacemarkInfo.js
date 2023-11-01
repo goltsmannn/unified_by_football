@@ -84,11 +84,11 @@ const PlacemarkMain = ()=>{
 
     const handleSubmitActivity = async (e) => {
         e.preventDefault();
-        setModalIsOpen(false);
         const data = {
             placemark_id: placemark_id,
             user_id: authContext.user.id,
-            expiry: activityValue
+            expiry: activityValue,
+            delete: false,
         }
         const config = {
             headers: {
@@ -97,13 +97,14 @@ const PlacemarkMain = ()=>{
         }
         try{
             const response = await axios.post(`http://127.0.0.1:8000/api/map/activity`, data, config);
-            setActivityError("")
+            setActivityError("");
+            setModalIsOpen(false);
         }
         catch (error){
             const err = error.response.data.detail;
             console.log(String(err));
             if(String(err)=='EXPIRY_ERROR'){
-                setActivityError("Завершите предыдущую активность");
+                setActivityError("Завершите в профиле предыдущую активность");
             }
         }   
     }
@@ -130,8 +131,7 @@ const PlacemarkMain = ()=>{
                     <Link to="post" className="rounded-lg border border-solid border-navbar h-full flex basis-[30%] justify-center items-center grow-0">Оставить отзыв</Link> 
                     <div className="h-full grow-0 basis-[30%] "><button className="bg-active rounded-lg text-[#ffff]" onClick={handleAddToFavorites}>{isFavorite?"Убрать из избранного":"Добавить в избранное"}</button></div>
                     <div className="h-full grow-0 basis-[30%] ">
-                        {activityError==""?<button className="rounded-lg border border-solid border-navbar" onClick={handleActivity}>Отметить активность</button>:
-                        <div className="bg-red text-white rounded-lg border border-solid border-navbar text-center">{activityError}</div>}
+                        <button className="rounded-lg border border-solid border-navbar" onClick={handleActivity}>Отметить активность</button>
                     </div>
                 </div>}
                 <div>
@@ -171,26 +171,29 @@ const PlacemarkMain = ()=>{
                 >
                     <div className="w-full rounded-md shadow-lg max-w-md h-[20] px-[25px] py-[20px] bg-[#ffff]" id="modal">
                         <button className="p-[5px] text-navbar font-xl bg-[#ffff] flex justify-center leading-none w-[25px] h-[25px] items-center hover:rounded-full hover:text-[#ffff] hover:bg-[#54545426]"
-                         onClick={()=>{
+                        onClick={()=>{
                             setModalIsOpen(false);
                            // document.body.style.overflow = 'auto';
                             }}>
                             <img src={closeIcon}/>
                         </button>
-                        <h2>Отметить активность</h2>
-                        <div>
-                            <label htmlFor="activity-slider">Выберите значение: </label>
-                            <input
-                                type="range"
-                                min="1"
-                                max="6"
-                                value={activityValue}
-                                onChange={(e) => setActivityValue(e.target.value)}
-                                id="activity-slider"
-                            />
-                            <p>Выбранное значение: {activityValue} (часа(-ов))</p>
-                        </div>
-                        <button onClick={handleSubmitActivity}>Отправить</button>
+                        {activityError===""?
+                        <>
+                            <h2 className="text-center text-xl">Отметить активность</h2>
+                            <div>
+                                <label htmlFor="activity-slider">Выберите значение: </label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="6"
+                                    value={activityValue}
+                                    onChange={(e) => setActivityValue(e.target.value)}
+                                    id="activity-slider"
+                                />
+                                <p>Выбранное значение: {activityValue} (часа(-ов))</p>
+                            </div>
+                            <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubmitActivity}>Отправить</button>
+                        </>:<div className="bg-red text-white rounded-lg border border-solid border-navbar text-center">{activityError}</div>}
                     </div>
                 </div>
                 }

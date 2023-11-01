@@ -122,21 +122,26 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
     def post(self, request):
         serializer = PostActivitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        last_activity = Activity.objects.filter(user__id=serializer.validated_data['user']['id']).last()
-        if last_activity is not None:
-            tz = pytz.timezone('Europe/Moscow')
-            expiry = last_activity.created + datetime.timedelta(hours=last_activity.expiry)
-            if datetime.datetime.now(tz=tz) < expiry:
-                raise exceptions.APIException('EXPIRY_ERROR')
-
-
 
         try:
-            response = Activity.objects.create(user=User.objects.get(pk=serializer.validated_data['user']['id']), 
-                                placemark=Placemark.objects.get(pk=serializer.validated_data['placemark']['id']),
-                                expiry=serializer.validated_data.get('expiry'))
-            
-            return(Response(GetActivitySerializer(response).data))
+            if serializer.validated_data.get('delete'):
+                Activity.objects.get(user__id=serializer.validated_data['user']['id'], 
+                                    placemark__id=serializer.validated_data['placemark']['id']).delete()
+                response = Activity.objects.filter(user__id=serializer.validated_data['user']['id'])
+                return Response(GetActivitySerializer(response, many=True).data)
+            else:
+                last_activity = Activity.objects.filter(user__id=serializer.validated_data['user']['id']).last()
+                if last_activity is not None:
+                    tz = pytz.timezone('Europe/Moscow')
+                    expiry = last_activity.created + datetime.timedelta(hours=last_activity.expiry)
+                    if datetime.datetime.now(tz=tz) < expiry:
+                        raise exceptions.APIException('EXPIRY_ERROR')
+
+                response = Activity.objects.create(user=User.objects.get(pk=serializer.validated_data['user']['id']), 
+                                    placemark=Placemark.objects.get(pk=serializer.validated_data['placemark']['id']),
+                                    expiry=serializer.validated_data.get('expiry'))
+                
+                return(Response(GetActivitySerializer(response).data))
         except Exception as e:
             raise e
 
