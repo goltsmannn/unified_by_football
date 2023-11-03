@@ -18,7 +18,7 @@ from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                               LoginSerializer, MessageSerializer,
                               SubscriptionSerializer, UserRegisterSerializer,
                               UserSerializer)
-
+from rest_framework.permissions import IsAuthenticated
 
 class UserViewSet(RetrieveModelMixin, 
                 ListModelMixin, 
@@ -101,9 +101,18 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
 
 class ListMessagesAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
+    permission_classes = (IsAuthenticated, )
+    
     def get_queryset(self):
-        return Message.objects.filter(recipient=self.kwargs['recipient_id'])
-
+        filter_by = self.kwargs.get('filter_by')
+        if filter_by is None:
+            raise exceptions.ValidationError('Filter by is not specified')
+        elif filter_by == 'sender':
+            return Message.objects.filter(sender=self.kwargs['user_id'])
+        elif filter_by == 'recipient':
+            return Message.objects.filter(recipient=self.kwargs['user_id'])
+        else:
+            raise exceptions.ValidationError('Invalid filter by value')
     
 
 @api_view(['GET'])

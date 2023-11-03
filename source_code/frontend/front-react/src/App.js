@@ -40,9 +40,10 @@ class App extends React.Component{
               </Route>
 
               <Route path="message" element={<MessageMain/>}>
-                <Route index element={<MessageList/>}></Route>
-                <Route path=":message_id" element={<GetMessage/>}></Route>
+                <Route index element={<MessageList filter_by="recipient"/>}></Route>
+                <Route path="submitted" element={<MessageList filter_by="sender"/>}></Route>
                 <Route path="post" element={<PostMessage/>}></Route>
+                <Route path=":message_id" element={<GetMessage/>}></Route>
               </Route>
 
               <Route path="profile/:user_id" element = {<ProfileMain/>}>
