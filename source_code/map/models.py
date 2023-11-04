@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
-from users.models import User
 from datetime import time
+from users.models import User
 
 
 class Placemark(models.Model):
@@ -22,12 +22,16 @@ class Placemark(models.Model):
     main_image = models.ImageField(upload_to='placemark_main_images', null=True, blank=True)
     #fields set by admin
 
+    
+
+
 
 class Review(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="reviews") # null = so that when user is removed, reviews are not removed
     text = models.CharField(max_length=200)
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="reviews")
     rating = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class ReviewPictures(models.Model):

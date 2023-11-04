@@ -1,4 +1,5 @@
 import pdb
+from django.urls import reverse_lazy
 
 import rest_framework.viewsets as viewsets
 from django.contrib.auth import login, logout
@@ -19,6 +20,11 @@ from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                               SubscriptionSerializer, UserRegisterSerializer,
                               UserSerializer)
 from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
+import IGW.settings as settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 
 class UserViewSet(RetrieveModelMixin, 
                 ListModelMixin, 
@@ -36,6 +42,42 @@ class ListUserBasicInfo(generics.ListAPIView):
 
 class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
+
+    def perform_create(self, serializer):
+        print('performing creation')
+        super().perform_create(serializer)
+        user = User.objects.get(email=serializer.data['email'])
+
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.id))
+        activation_url = f'api/users/confirm/{uid}/{token}'
+    #    activation_url = reverse_lazy('confirm_email', kwargs={'uidb64': uid, 'token': token})
+        print('sending email')
+        send_mail(
+            'Confirm your email',
+            f'Click this link to confirm your email: http://{self.request.get_host()}/{activation_url}',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[serializer.data['email']],
+        )
+        print('sent email')
+        return Response('sent email')
+
+
+@api_view(['GET'])
+def confirm_email(request, uidb64, token):
+    try:
+        pk = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=pk)
+    except:
+        raise exceptions.NotFound('User not found')
+    
+    if default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return Response('Email confirmed')
+    else:
+        return Response('Email confirmation failed')
 
 
 class LoginUserAPIView(APIView):

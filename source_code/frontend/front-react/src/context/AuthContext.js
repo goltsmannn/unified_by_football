@@ -53,7 +53,7 @@ export const AuthProvider = ({children}) => {
             }
             fetchData(); //синхронный вызов async функции, замыкание, didmount->useeffect->вызов, setuser известен
         }
-    }, [authToken, navigate]);
+    }, [authToken]);
     
     let logoutUser = () => {
         localStorage.removeItem('accessToken');

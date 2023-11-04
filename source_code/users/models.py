@@ -6,6 +6,8 @@ from jwt import encode
 from datetime import datetime, timedelta, timezone
 from IGW.settings import SECRET_KEY
 from django.utils import timezone
+#from map.models import Review
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **kwargs):
@@ -26,6 +28,8 @@ class UserManager(BaseUserManager):
         user = self.create_user(username, email, password)
         user.is_superuser = True
         user.is_staff = True
+        user.is_active = True
+
         user.save()
 
         return user
@@ -55,12 +59,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_proposed = models.DateTimeField(null=True)
     show_activity = models.BooleanField(default=True)
+    last_login = models.DateTimeField(null=True, default=None)
+
     
     region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, null=True, blank=True)
     height = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -104,8 +110,14 @@ class BlackList(models.Model):
     user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to_blacklist")
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     message_topic = models.TextField(max_length=200)
     message_text = models.TextField(max_length=2000)
     message_datetime = models.DateTimeField(auto_now_add=datetime.timestamp(timezone.now()))
+
+
+# class Complaint(models.Model):
+#     review = models.ForeignKey(map.models.Review, on_delete=models.CASCADE, related_name='complaints')
+#     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints')
+#     reason = models.TextField(max_length=2000)
