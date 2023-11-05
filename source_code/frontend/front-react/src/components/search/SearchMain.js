@@ -63,6 +63,7 @@ const SearchMain = () => {
                     </div>
                 </div>
             ): <div className="text-3xl p-3 text-red text-center shadow shadow-red">User not found</div>}   
+
             </>
             </div>
         </div>

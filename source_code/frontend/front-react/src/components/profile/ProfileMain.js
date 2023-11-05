@@ -19,7 +19,7 @@ const ProfileMain = () => {
    // const subscriptions = useSubscriptions();
     const location = useLocation()
 
-    console.log(location.pathname.includes('edit'));
+   // console.log(location.pathname.includes('edit'));
 
     useEffect(()=>{
         const fetchData = async ()=>{

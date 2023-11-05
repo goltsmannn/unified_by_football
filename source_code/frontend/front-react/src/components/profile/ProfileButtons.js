@@ -13,13 +13,16 @@ const ProfileButtons = ({pageUser}) =>{
     const page_id= useParams().user_id;
     const [isSubscribed, setIsSubscribed] = useState(null);
     const [isBlackListed, setIsBlackListed] = useState(null);
-    const [isHidden, setIsHidden] = useState(authContext.user.show_activity);
+    const [isHidden, setIsHidden] = useState(!authContext.user.show_activity);
+
+    console.log(isHidden);
 
 
     const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
         const check = !isSubscribed;
         setIsSubscribed(check);
+
         const fetchData = async ()=>{
             const data = {
                 user_from_id: authContext.user.id,
@@ -82,7 +85,6 @@ const ProfileButtons = ({pageUser}) =>{
                     Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
                 }
             }
-
             try{
                 const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', authContext.user, config);
             }
@@ -102,7 +104,7 @@ const ProfileButtons = ({pageUser}) =>{
     }, [subscriptions, page_id]);
 
     useEffect(()=>{
-        console.log(blacklistedUsers);
+    //    console.log(blacklistedUsers);
         blacklistedUsers.forEach((blacklistedUser)=>{
             if(blacklistedUser.user_to.id === Number(page_id)){
                 setIsBlackListed(true);

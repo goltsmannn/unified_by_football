@@ -58,9 +58,10 @@ const ProfileActivity = ({pageUser}) => {
         );
     }
     else{
+     //   console.log(authContext.user.id, Number(user_id));
         return(
 <>
-            {(authContext.user.id === Number(user_id) || pageUser.show_activity )?
+            {(authContext.user.id === Number(user_id) || pageUser.show_activity === true)?
                 <div id="activity-wrapper" className="bg-active mt-[20px] text-[#ffff] rounded-md p-4" > 
                     {activity?.length > 0 ?activity.map((event)=>{
                         const date = new Date(event.created);
