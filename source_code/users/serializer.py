@@ -39,9 +39,9 @@ class UserRegisterSerializer(serializers.Serializer):
 
         
 
-class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, error_messages = {'blank': "Missing Email"})
+    password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
 
     def check_user(self, validated_data):
         user = authenticate(email=validated_data.email, password=validated_data.password)

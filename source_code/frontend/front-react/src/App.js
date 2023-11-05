@@ -20,6 +20,7 @@ import ProposePlacemark from "components/placemarks/ProposePlacemark";
 import FavoritePlacemarks from "components/placemarks/FavoritePlacemarks";
 import "./_style.css";
 import PageWrapper from "PageWrapper";
+import Verification from "components/auth/Verification";
 
 class App extends React.Component{
 
@@ -53,6 +54,7 @@ class App extends React.Component{
 
             <Route path="/login" element = { <Login/> }></Route>
             <Route path="/register" element = {<Register/>}></Route>
+            <Route path="/verification/:uid/:token" element={<Verification/>}></Route>
             <Route path="*" element={<Page404/>}></Route> 
           </Routes>
         </AuthProvider>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthContext from "context/AuthContext";
 
 const Register = () => {
     const [registerInfo, setRegisterInfo] = useState({
@@ -9,8 +10,9 @@ const Register = () => {
         password:'',
     });
     const [registerErrors, setRegisterErrors] = useState(null);
-    const [userWasCreated, setUserWasCreated] = useState(false);
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
+    const authContext = useContext(AuthContext);
 
 
     const handleSubmit = async (e) => {
@@ -23,10 +25,11 @@ const Register = () => {
         }
         try{
             const response = await axios.post('http://127.0.0.1:8000/api/users/auth/register', data);
-            setUserWasCreated(true);
+            setRegisterErrors(null);
+            setSuccess("You were successfully registered. Check your email to activate the account.");
             setTimeout(()=>{
                 navigate("/login");
-            })
+            }, 2000);
             console.log('User successfully created');
         }       
         catch(error){
@@ -38,7 +41,7 @@ const Register = () => {
             setRegisterErrors(error.response.data);
         }
     }
-    if(!userWasCreated){
+    if(!authContext.user){
         return(
             <div className="h-screen w-full flex items-center justify-center">
                 <div id="register-form" className="overflow-auto max-w-md w-full h-[520px] p-8 flex flex-col justify-between rounded-lg border border-solid border-navbar">
@@ -120,6 +123,13 @@ const Register = () => {
                         })}
                     </div>
                     }
+                    {success && <div 
+                        id="success"
+                        className="bg-active px-1 py-1 rounded-lg text-[#ffff]"
+                    >
+                        {success}
+                    </div>}
+                                      
                 <div id="login-link" className="text-center">
                     <span>Already have an account? </span> <Link className="text-active font-medium" to="/login">Log in</Link>
                 </div>
@@ -128,12 +138,7 @@ const Register = () => {
         )
     }
     else{
-        return(
-            <div id="wrapper">
-                <div id="message">User created successfully</div>
-                <Link to="login">Log in</Link>
-            </div>
-        )
+        navigate(`/profile/${authContext.user.id}`)
     }
 }
 

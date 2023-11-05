@@ -44,23 +44,25 @@ class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     def perform_create(self, serializer):
-        print('performing creation')
         super().perform_create(serializer)
         user = User.objects.get(email=serializer.data['email'])
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.id))
-        activation_url = f'api/users/confirm/{uid}/{token}'
+        activation_url = f'verification/{uid}/{token}'
     #    activation_url = reverse_lazy('confirm_email', kwargs={'uidb64': uid, 'token': token})
-        print('sending email')
-        send_mail(
+        try:
+            send_mail(
             'Confirm your email',
-            f'Click this link to confirm your email: http://{self.request.get_host()}/{activation_url}',
+            f'Click this link to confirm your email: http://127.0.0.1:3000/{activation_url}',
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[serializer.data['email']],
-        )
-        print('sent email')
-        return Response('sent email')
+            )
+            return Response('sent email')
+        except:
+            user.delete()
+            raise exceptions.ValidationError('Email sending failed')
+    
 
 
 @api_view(['GET'])
@@ -74,19 +76,21 @@ def confirm_email(request, uidb64, token):
     if default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
         return Response('Email confirmed')
     else:
-        return Response('Email confirmation failed')
+        raise exceptions.ValidationError('Email confirmation failed')
 
 
 class LoginUserAPIView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.check_user(request.data)
-        login(request, user)
-        return Response(serializer.data)
+        try:
+            user = serializer.check_user(request.data)
+            login(request, user)
+            return Response(serializer.data)
+        except:
+            raise exceptions.AuthenticationFailed("Credentials error")
 
 
 class LogoutUserAPIView(APIView):
@@ -104,6 +108,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+    
 
 
 @api_view(['POST'])

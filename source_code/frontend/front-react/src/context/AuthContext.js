@@ -29,9 +29,10 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); //переписать под ключ - значение DONE
             localStorage.setItem('refreshToken',JSON.stringify(response.data['refresh'])); 
             navigate('/');
+            return null;
         }
         catch (error) {
-            alert('Неверный логин или пароль')
+            return error;
         }
     }
     
@@ -47,8 +48,8 @@ export const AuthProvider = ({children}) => {
                     setUser(response.data);
                 }
                 catch (error){
-                    console.log('сессия истекла, переадресую на login');     
-                    navigate('/login', { state: { error: 'Session expired'} });
+                    console.log('сессия истекла');     
+                  //  navigate('/login', { state: { error: 'Session expired'} });
                 }
             }
             fetchData(); //синхронный вызов async функции, замыкание, didmount->useeffect->вызов, setuser известен
