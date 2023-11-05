@@ -156,12 +156,24 @@ class ListMessagesAPIView(generics.ListAPIView):
         if filter_by is None:
             raise exceptions.ValidationError('Filter by is not specified')
         elif filter_by == 'sender':
-            return Message.objects.filter(sender=self.kwargs['user_id']).filter_by('-created_at')
+            return Message.objects.filter(sender=self.kwargs['user_id']).order_by('-message_datetime')
         elif filter_by == 'recipient':
-            return Message.objects.filter(recipient=self.kwargs['user_id']).filter_by('-created_at')
+            return Message.objects.filter(recipient=self.kwargs['user_id']).order_by('-message_datetime')
         else:
             raise exceptions.ValidationError('Invalid filter by value')
     
+
+class DeleteMessageAPIView(generics.DestroyAPIView):
+    authentication_classes = [JWTAuthentication]
+    
+    def delete(self, request, message_id):
+        try:
+            message = Message.objects.get(pk=message_id)
+            message.delete()
+            return Response('Message deleted successfully')
+        except Message.DoesNotExist:
+            raise exceptions.NotFound('Message not found')
+
 
 @api_view(['GET'])
 def retrieve_message(request, message_id):

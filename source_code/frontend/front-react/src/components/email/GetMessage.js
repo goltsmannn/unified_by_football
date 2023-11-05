@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
 
@@ -9,7 +9,7 @@ const GetMessage = () => {
     const [message, setMessage] = useState();
     const {message_id} = useParams();
     const authContext = useContext(AuthContext);
-
+    const navigate = useNavigate();
 
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -24,7 +24,24 @@ const GetMessage = () => {
 
         }
         fetchData();
-    }, );
+    }, [message_id]);
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
+        try{
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
+                }
+            }
+            await axios.delete(`http://127.0.0.1:8000/api/users/messages/delete/${message_id}`, {}, config);
+        }
+        catch(error){
+            console.error('error while deleting message', error);
+        }
+        navigate('/message/submitted');
+    }
+ 
 
     if(message){
         return(
@@ -34,7 +51,7 @@ const GetMessage = () => {
                 >
                     <div id="message-navlinks">
                         <Link className="font-semibold text-[#ffff] bg-navbar px-4 py-2 rounded-md"
-                            to={message.sender.id === authContext.user.id?"/message/submitted":"/message"}>{'<< Назад'}
+                            to={message?.sender.id === authContext.user?.id?"/message/submitted":"/message"}>{'<< Назад'}
                         </Link>
                     </div>
                     <div id="message-details-block" className="mt-[20px] font-medium">
@@ -47,6 +64,11 @@ const GetMessage = () => {
                         </div>
                         <div id="footer">
                             <div id="message-datetime">Received at: {new Date(message.message_datetime).toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div id="message-buttons" className="">
+                        <div id="report" className=" flex flex-row-reverse justify-end justify-between">
+                            <button className="flex justify-end text-white bg-red rounded p-2" onClick={handleDelete}>Delete</button>
                         </div>
                     </div>
                 </div>
