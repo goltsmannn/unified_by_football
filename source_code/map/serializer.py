@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from users.serializer import BasicUserInfoSerializer
-from map.models import Placemark, Review, ReviewPictures, Activity
-
+from map.models import Placemark, Review, ReviewPictures, Activity, Report
+from users.models import User
 
 class ReviewPicturesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,12 +76,26 @@ class GetActivitySerializer(serializers.ModelSerializer):
         model = Activity
         
 
-class ComplaintSerializer(serializers.ModelSerializer):
+class ReportSerializer(serializers.ModelSerializer):
     review_id = serializers.IntegerField(source='review.id')
-    user_id = serializers.IntegerField(source='user.id')
+    user_id = serializers.IntegerField(source='reporter.id')
     reason = serializers.CharField(required=True)
 
+    class Meta:
+        model = Report
+        fields = ("review_id", "user_id", "reason")
     
+    def create(self, validated_data):
+        try:
+            user = User.objects.get(pk=validated_data['reporter']['id'])
+            review = Review.objects.get(pk=validated_data['review']['id'])
+            return Report.objects.create(reporter=user, review=review, reason=validated_data['reason'])
+        except (User.DoesNotExist, Review.DoesNotExist):
+            raise exceptions.APIException('User or review do not exist')
+        except Exception as e:
+            raise e
+
+            
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

@@ -18,7 +18,7 @@ from users.permissions import IsCreatorOrReadOnly
 from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                               LoginSerializer, MessageSerializer,
                               SubscriptionSerializer, UserRegisterSerializer,
-                              UserSerializer, ComplaintSerializer)
+                              UserSerializer)
 from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
 import IGW.settings as settings

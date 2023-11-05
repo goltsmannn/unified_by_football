@@ -55,7 +55,7 @@ class Activity(models.Model): #Model for user activity on Placemark
     expiry = models.SmallIntegerField()
 
 
-class Complaint(models.Model): #Complaints on reviews model
+class Report(models.Model): #Complaints on reviews model
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='complaints')
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints')
     reason = models.TextField(max_length=2000)

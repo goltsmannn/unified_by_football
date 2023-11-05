@@ -11,12 +11,12 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from map.forms import MyCreationForm
-from map.models import Placemark, Review, ReviewPictures, Favorites, Activity
+from map.models import Placemark, Review, ReviewPictures, Favorites, Activity, Report
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer, ComplaintSerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer, ReportSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework import exceptions
@@ -148,10 +148,9 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
             raise e
 
 
-class PostComplaintAPIView(generics.CreateAPIView):
-    serializer_class = ComplaintSerializer
-
-
+class PostReportAPIView(generics.CreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    serializer_class = ReportSerializer
 #     template_name = 'map/main_map.html'
 
 
