@@ -28,7 +28,6 @@ from rest_framework.decorators import api_view, authentication_classes
 import datetime
 import pytz
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.models import User
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
@@ -109,7 +108,7 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
     serializer_class = GetActivitySerializer
     authentication_classes = [JWTAuthentication]
 
-    def get(self, request):
+    def get(self, request) -> Response:
         response = None
         if request.query_params.get('get_by') == 'placemark':
             response = Activity.objects.filter(placemark__id=request.query_params.get('placemark_id'))
@@ -119,7 +118,7 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
             raise exceptions.APIException('Lacking details')
         return Response(GetActivitySerializer(response, many=True).data)
 
-    def post(self, request):
+    def post(self, request) -> Response:
         serializer = PostActivitySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -151,10 +150,10 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
 class PostReportAPIView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
     serializer_class = ReportSerializer
-#     template_name = 'map/main_map.html'
 
 
-    
+
+
 
 # from django.contrib.auth import views as auth_views
 # from django.core.files.base import ContentFile

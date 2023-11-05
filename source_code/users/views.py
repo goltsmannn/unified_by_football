@@ -25,7 +25,7 @@ import IGW.settings as settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
-
+from map.models import Activity
 
 class UserViewSet(RetrieveModelMixin, 
                 ListModelMixin, 
@@ -251,7 +251,12 @@ class BlackListAPIView(generics.ListCreateAPIView):
     
 
 
-
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+def subscribed_users(request, placemark_id) -> Response:
+    id_list = Activity.objects.filter(placemark__id=placemark_id).values_list('user', flat=True)
+    users = User.objects.filter(id__in=id_list)
+    return Response(BasicUserInfoSerializer(users, many=True).data)
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()

@@ -20,6 +20,7 @@ urlpatterns = [
     path('messages/create', views.CreateMessageAPIView.as_view(), name='create-message'),
     path('messages/delete/<int:message_id>', views.DeleteMessageAPIView.as_view(), name='delete-message'),
     path('subscriptions', views.SubscriptionsAPIView.as_view(), name='subscription_get_post'),
+    path('subscribed_at/<int:placemark_id>', views.subscribed_users, name='subscribed_users'),
     path('blacklist', views.BlackListAPIView.as_view(), name='blacklist_get_post'),
     path('confirm/<str:uidb64>/<str:token>', views.confirm_email, name='confirm_email'),
 ] 

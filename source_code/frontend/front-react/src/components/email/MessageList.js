@@ -29,7 +29,7 @@ const MessageList = ({filter_by})=>{
             }
         }
         fetchData();
-    }, [authContext.user]);
+    }, [authContext.user, filter_by]);
 
 
     useEffect(()=>{
@@ -43,7 +43,7 @@ const MessageList = ({filter_by})=>{
         <div className="h-[calc(100vh-56px)] w-full">
             <div className="">
             <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                        <Link to="post">Compose Message</Link>
+                        <Link to="/message/post">Compose Message</Link>
                     </div>
                     {location.pathname==='/message'?
                         <div id="submitted-messages" className="my-2 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
@@ -59,11 +59,13 @@ const MessageList = ({filter_by})=>{
                         {messages.length>0?messages.map((message)=> {
                             if(!blackListedId.includes(message.sender.id)){
                                 return(
-                                <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`/message/${message.id}`)}>
+                                <div id="message-wrapper" style={{backgroundColor: message.sender.id===1 ? '#FFA07A' :'#FFF'}} 
+                                className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`/message/${message.id}`)}>
                                     <div className="font-bold mb-2">Subject: {message.message_topic}</div>
                                     <div className="mb-2">From: {message.sender.username}</div>
                                     <div>Received: {new Date(message.message_datetime).toLocaleString()}</div>
-                                </div>);    
+                                </div>
+                                );    
                             }
                         }): <div className="text-2xl text-center font-bold text-red shadow shadow-red p-5 mt-20">No messages yet</div>}
                     </div>

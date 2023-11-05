@@ -5,11 +5,37 @@ import closeIcon from '../../img/free-icon-close-4013407.png';
 import { useParams } from "react-router-dom";
 
 
-const ActivityModal = ({setModalIsOpen}) => {
+const ActivityModal = ({setModalIsOpen, placemark}) => {
     const [activityValue, setActivityValue] = useState(1);
     const [activityError, setActivityError] = useState("");
     const authContext = useContext(AuthContext);
     const {placemark_id} = useParams();
+
+
+    const massMessage = async () => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
+            }
+        }
+        const data = {
+            message_topic: `User ${authContext.user.username} has started activity on placemark "${placemark.name}"`,
+            message_text: `The user will be there for ${activityValue} hour(-s). Please, check the activity section of the pitch for more details.`,
+        };
+        
+        try{
+            const response = await axios.get(`http://127.0.0.1:8000/api/users/subscribed_at/${placemark_id}`, config);
+            const subscribedUsers = response.data;
+            for(const user of subscribedUsers){
+                console.log(user);
+                console.log({...data, recipient_username: user.username});
+                await axios.post('http://localhost:8000/api/users/messages/create', {...data, recipient_username: user.username}, config);
+            }
+        }
+        catch(error){
+            console.error('Error while sending mass message', error);
+        }
+    }
 
 
     const handleSubmitActivity = async (e) => {
@@ -37,6 +63,9 @@ const ActivityModal = ({setModalIsOpen}) => {
                 setActivityError("Finish your previous activity first (profile)");
             }
         }   
+        if(activityError===""){
+            massMessage();
+        }
     }
 
 

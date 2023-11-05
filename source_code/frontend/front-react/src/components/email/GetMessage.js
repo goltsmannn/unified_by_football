@@ -45,9 +45,9 @@ const GetMessage = () => {
 
     if(message){
         return(
-            <div className="h-screen w-full flex items-start justify-center">
+            <div className="mt-[100px] w-full flex items-start justify-center">
                 <div 
-                    className="w-full max-w-md px-[40px] py-[30px] max-h-[200px] rounded-lg border border-solid border-navbar border-2 text-navbar flex h-full mt-[100px] flex-col justify-around"
+                    className="w-full max-w-md px-[40px] py-[30px] max-h-[300px] rounded-lg border border-solid border-navbar border-2 text-navbar flex h-full flex-col justify-between"
                 >
                     <div id="message-navlinks">
                         <Link className="font-semibold text-[#ffff] bg-navbar px-4 py-2 rounded-md"
@@ -65,12 +65,11 @@ const GetMessage = () => {
                         <div id="footer">
                             <div id="message-datetime">Received at: {new Date(message.message_datetime).toLocaleString()}</div>
                         </div>
-                    </div>
-                    <div id="message-buttons" className="">
                         <div id="report" className=" flex flex-row-reverse justify-end justify-between">
                             <button className="flex justify-end text-white bg-red rounded p-2" onClick={handleDelete}>Delete</button>
                         </div>
                     </div>
+                  
                 </div>
             </div>
         )

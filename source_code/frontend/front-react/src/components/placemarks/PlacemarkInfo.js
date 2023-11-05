@@ -137,7 +137,7 @@ const PlacemarkMain = ()=>{
                         )}
                         </div>
                 </div>
-                { modalIsOpen && <ActivityModal setModalIsOpen={setModalIsOpen}></ActivityModal>}
+                { modalIsOpen && <ActivityModal setModalIsOpen={setModalIsOpen} placemark={placemark}></ActivityModal>}
                 {reportModalIsOpen && <ReportModal setReportModalIsOpen={setReportModalIsOpen} reviewId={reviewId}></ReportModal>}
             </div>
             <Outlet></Outlet>
