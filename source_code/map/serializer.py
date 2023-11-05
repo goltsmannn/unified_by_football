@@ -76,7 +76,12 @@ class GetActivitySerializer(serializers.ModelSerializer):
         model = Activity
         
 
-        
+class ComplaintSerializer(serializers.ModelSerializer):
+    review_id = serializers.IntegerField(source='review.id')
+    user_id = serializers.IntegerField(source='user.id')
+    reason = serializers.CharField(required=True)
+
+    
 # def encode():
 #     model = PlacemarkModel(x=22, y=36, type='b')
 #     model_sr = PlacemarkSerializer(model)

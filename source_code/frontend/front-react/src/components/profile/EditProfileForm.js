@@ -13,7 +13,6 @@ const EditProfileForm = () => {
         height: user.height,
         age: user.age, 
         region: user.region,
-        show_activity: user.show_activity,
     });
 
 
@@ -36,7 +35,6 @@ const EditProfileForm = () => {
             weight: e.target.weight.value,
             height: e.target.height.value,
             region: e.target.region.value,
-            show_activity: e.target.show_activity.value,
         }
         const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', data, config);
         if (response.status === 200){
@@ -66,7 +64,7 @@ const EditProfileForm = () => {
                         value={inputFields[key]} 
                         id={`${key}`+"-field"}
                     />
-                    <label className="ml-[10px]" htmlFor={`${key}`+"-field"}>{key} поле</label>
+                    <label className="ml-[10px]" htmlFor={`${key}`+"-field"}>{key.charAt(0).toUpperCase() + key.slice(1)} Field</label>
                     <br></br>
                 </>)
                 }
@@ -80,7 +78,7 @@ const EditProfileForm = () => {
         <input type="text" name="age" id="age-field" value={user.age}/>
         <input type="text" name="weight" id="weight-field" value={user.weight}/>
         <input type="text" name="region" id="region-field"value={user.region}/> */}
-        <input className="mt-[30px] bg-[#ffff] text-navbar font-medium rounded-md py-1 text-center w-full" type="submit" value="Отправить" />
+        <input className="mt-[30px] bg-[#ffff] text-navbar font-medium rounded-md py-1 text-center w-full" type="submit" value="Submit" />
     </form>
     );
 }

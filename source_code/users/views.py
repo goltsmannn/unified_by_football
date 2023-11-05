@@ -1,4 +1,5 @@
 import pdb
+from django.urls import reverse_lazy
 
 import rest_framework.viewsets as viewsets
 from django.contrib.auth import login, logout
@@ -17,7 +18,13 @@ from users.permissions import IsCreatorOrReadOnly
 from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                               LoginSerializer, MessageSerializer,
                               SubscriptionSerializer, UserRegisterSerializer,
-                              UserSerializer)
+                              UserSerializer, ComplaintSerializer)
+from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
+import IGW.settings as settings
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 
 
 class UserViewSet(RetrieveModelMixin, 
@@ -37,14 +44,54 @@ class ListUserBasicInfo(generics.ListAPIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        user = User.objects.get(email=serializer.data['email'])
+
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.id))
+        activation_url = f'verification/{uid}/{token}'
+    #    activation_url = reverse_lazy('confirm_email', kwargs={'uidb64': uid, 'token': token})
+        try:
+            send_mail(
+            'Confirm your email',
+            f'Click this link to confirm your email: http://127.0.0.1:3000/{activation_url}',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[serializer.data['email']],
+            )
+            return Response('sent email')
+        except:
+            user.delete()
+            raise exceptions.ValidationError('Email sending failed')
+    
+
+
+@api_view(['GET'])
+def confirm_email(request, uidb64, token):
+    try:
+        pk = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=pk)
+    except:
+        raise exceptions.NotFound('User not found')
+    
+    if default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return Response('Email confirmed')
+    else:
+        raise exceptions.ValidationError('Email confirmation failed')
+
 
 class LoginUserAPIView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.check_user(request.data)
-        login(request, user)
-        return Response(serializer.data)
+        try:
+            user = serializer.check_user(request.data)
+            login(request, user)
+            return Response(serializer.data)
+        except:
+            raise exceptions.AuthenticationFailed("Credentials error")
 
 
 class LogoutUserAPIView(APIView):
@@ -62,6 +109,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+    
 
 
 @api_view(['POST'])
@@ -101,9 +149,18 @@ class CreateMessageAPIView(generics.CreateAPIView): #serializer еще там д
 
 class ListMessagesAPIView(generics.ListAPIView):
     serializer_class = MessageSerializer
+    permission_classes = (IsAuthenticated, )
+    
     def get_queryset(self):
-        return Message.objects.filter(recipient=self.kwargs['recipient_id']) #!!!!!!!ДОБАВИТЬ VALUES LIST
-
+        filter_by = self.kwargs.get('filter_by')
+        if filter_by is None:
+            raise exceptions.ValidationError('Filter by is not specified')
+        elif filter_by == 'sender':
+            return Message.objects.filter(sender=self.kwargs['user_id']).filter_by('-created_at')
+        elif filter_by == 'recipient':
+            return Message.objects.filter(recipient=self.kwargs['user_id']).filter_by('-created_at')
+        else:
+            raise exceptions.ValidationError('Invalid filter by value')
     
 
 @api_view(['GET'])
@@ -180,7 +237,6 @@ class BlackListAPIView(generics.ListCreateAPIView):
         response = BlackListSerializer(blacklisted_users, many=True)       
         return Response(response.data)
     
-
 
 
 

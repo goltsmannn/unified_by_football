@@ -4,6 +4,8 @@ import axios from "axios";
 import AuthContext from "context/AuthContext";
 import useFavorites from "hooks/useFavorites";
 import closeIcon from '../../img/free-icon-close-4013407.png';
+import PlacemarkVisitors from "./PlacemarkVisitors";
+
 
 const PlacemarkMain = ()=>{
     const {placemark_id} = useParams();
@@ -72,7 +74,9 @@ const PlacemarkMain = ()=>{
                 console.error('Error while adding to favorites', error);
             }
         }
-        fetchData();
+        if(authContext.user){
+            fetchData();
+        }
     }
     
     const handleActivity = async (e) => {
@@ -104,7 +108,7 @@ const PlacemarkMain = ()=>{
             const err = error.response.data.detail;
             console.log(String(err));
             if(String(err)=='EXPIRY_ERROR'){
-                setActivityError("Завершите в профиле предыдущую активность");
+                setActivityError("Finish your previous activity first (profile)");
             }
         }   
     }
@@ -116,11 +120,11 @@ const PlacemarkMain = ()=>{
 
                 </div> */}
                 <div id="placemark-info" className="border border-solid border-gray-300 p-4 my-4">
-                    <h1 className="text-center text-2xl text-navbar font-bold my-3">Информация о поле</h1>
-                    <div className="font-medium">Название поля: {placemark?.name}</div>
-                    <div className="mt-2">Описание поля: {placemark?.description}</div>
-                    <div id='working_hours' className="mt-2">Открытие: {placemark?.working_hours?placemark.working_hours.from:"Не указано"}</div>
-                    <div id='working_hours' className="mt-2">Закрытие:  {placemark?.working_hours?placemark.working_hours.to:"Не указано"}</div>
+                    <h1 className="text-center text-2xl text-navbar font-bold my-3">Information</h1>
+                    <div className="font-medium">Pitch name: {placemark?.name}</div>
+                    <div className="mt-2">Description: {placemark?.description}</div>
+                    <div id='working_hours' className="mt-2">Opening at: {placemark?placemark.time_from:"Not mentioned"}</div>
+                    <div id='working_hours' className="mt-2">Closing at:  {placemark?placemark.time_to:"Not mentioned"}</div>
                     <img src={placemark?.main_image} alt="" className="w-full h-96 object-cover mt-4"/>
                 </div>
 
@@ -128,12 +132,15 @@ const PlacemarkMain = ()=>{
                 {authContext.user && <div id="placemark-buttons" className="flex justify-between items-center h-[50px]">
                     {/* <div ><Link to="post" className="py-1 rounded-lg border border-solid border-navbar text-center">Оставить отзыв</Link> </div> */}
                     {/* <div className="h-full grow-0 text-center basis-[30%] rounded-lg border border-solid border-navbar"><Link to="post" className="h-full w-full">Оставить отзыв</Link> </div> */}
-                    <Link to="post" className="rounded-lg border border-solid border-navbar h-full flex basis-[30%] justify-center items-center grow-0">Оставить отзыв</Link> 
-                    <div className="h-full grow-0 basis-[30%] "><button className="bg-active rounded-lg text-[#ffff]" onClick={handleAddToFavorites}>{isFavorite?"Убрать из избранного":"Добавить в избранное"}</button></div>
+                    <Link to="post" className="rounded-lg border border-solid border-navbar h-full flex basis-[30%] justify-center items-center grow-0">Leave feedback</Link> 
+                    <div className="h-full grow-0 basis-[30%] "><button className="bg-active rounded-lg text-[#ffff] h-full w-full" onClick={handleAddToFavorites}>{isFavorite?"Remove from Favorite":"Add to Favorite"}</button></div>
                     <div className="h-full grow-0 basis-[30%] ">
-                        <button className="rounded-lg border border-solid border-navbar" onClick={handleActivity}>Отметить активность</button>
+                        <button className="rounded-lg border border-solid border-navbar h-full w-full" onClick={handleActivity}>I'm here now...</button>
                     </div>
                 </div>}
+                <div id="active-players">
+                    {placemark && <PlacemarkVisitors placemark={placemark}></PlacemarkVisitors>}
+                </div>
                 <div>
                     <div id="placemark-reviews-section" className="mt-[25px] ">
                         {placemark && (
@@ -142,14 +149,14 @@ const PlacemarkMain = ()=>{
 
                                     return (<div id="review-section" className="font-medium mt-[30px] p-[30px] rounded-lg border border-solid border-navbar">
                                         <div id="review-header">
-                                            Автор: {review.author.username}
+                                            Author: {review.author?review.author.username:'Deleted account'}
                                         </div>
                                         <div id="review-body">
                                             <div id="review-text">
                                                 {review.text}
                                             </div>
                                             <div id="review-footer">
-                                                Рейтинг: {review.rating}
+                                                Rating: {review.rating}
                                             </div>
                                             <div id="review-pictures">
                                                 {review.pictures.map((picture)=>
@@ -175,13 +182,13 @@ const PlacemarkMain = ()=>{
                             setModalIsOpen(false);
                            // document.body.style.overflow = 'auto';
                             }}>
-                            <img src={closeIcon}/>
+                            <img src={closeIcon}/>                           
                         </button>
                         {activityError===""?
                         <>
-                            <h2 className="text-center text-xl">Отметить активность</h2>
                             <div>
-                                <label htmlFor="activity-slider">Выберите значение: </label>
+                                <h2 className="text-center text-xl">Activity Form</h2>
+                                <label htmlFor="activity-slider">Choose Duration: </label>
                                 <input
                                     type="range"
                                     min="1"
@@ -190,9 +197,9 @@ const PlacemarkMain = ()=>{
                                     onChange={(e) => setActivityValue(e.target.value)}
                                     id="activity-slider"
                                 />
-                                <p>Выбранное значение: {activityValue} (часа(-ов))</p>
+                                <p>Will be for: {activityValue} (hour(-s))</p>
                             </div>
-                            <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubmitActivity}>Отправить</button>
+                            <button className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md" onClick={handleSubmitActivity}>Submit</button>
                         </>:<div className="bg-red text-white rounded-lg border border-solid border-navbar text-center">{activityError}</div>}
                     </div>
                 </div>

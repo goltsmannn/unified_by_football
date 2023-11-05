@@ -1,3 +1,7 @@
+IMPORTANT!!! IF YOU WANT TO TRY THE APP WITH CURRENT VERSION, YOU WON'T BE ABLE TO USE EMAIL VERIFICATION (AS THE PASSWORDS ARE STORED LOCALLY ON MY PC).
+Create superuser (use django-admin createsuperuser or (python) manage.py createsuperuser) and set is_active flag on the model instances yourself (this will verify the account).
+Moreover, proposed placemark would be invisible unless you set verified flag to true from the admin panel. The panel opens at /api/admin.
+
 How to start the app:
 
 1) Create empty directory. Git bash there

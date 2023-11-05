@@ -54,7 +54,7 @@ const ProfileActivity = ({pageUser}) => {
 
     if(!authContext.user){
         return(
-            <div>Просмотр активности доступен только авторизованным пользователям</div>
+            <div>Log in to View Activity</div>
         );
     }
     else{
@@ -63,20 +63,22 @@ const ProfileActivity = ({pageUser}) => {
 <>
             {(authContext.user.id === Number(user_id) || pageUser.show_activity === true)?
                 <div id="activity-wrapper" className="bg-active mt-[20px] text-[#ffff] rounded-md p-4" > 
-                    {activity.map((event)=>{
+                    {activity?.length > 0 ?activity.map((event)=>{
                         const date = new Date(event.created);
                         return(<div id="activity-block">
-                            <p>Активность</p>
+                            <p>Activity List</p>
                             <div id="placemark-part" className="mt-4">
-                                <p>Поле: {event.placemark.name}</p>
-                                <p>Начало: {date.toLocaleString()}</p>
-                                <p>Окончание: {new Date(date.setHours(date.getHours() + event.expiry)).toLocaleString()}</p>
-                                <button className="bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={()=>handleRemoveActivity(event)}>Удалить активность</button>
+                                <p>Pitch: {event.placemark.name}</p>
+                                <p>From: {date.toLocaleString()}</p>
+                                <p>To: {new Date(date.setHours(date.getHours() + event.expiry)).toLocaleString()}</p>
+                                {(authContext.user.id === Number(user_id)) &&
+                                    <button className="bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={()=>handleRemoveActivity(event)}>Remove activity</button>
+                                }
                             </div>
                         </div>);
-                    })}
+                    }): <div className="text-white">No tracked activity yet...</div>}
                 </div>
-            : <div>Пользователь не делится своей активностью</div>}
+            :<div>Activity is hidden</div>}
             </>
         );
     }

@@ -1,21 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useBlackList from "hooks/useBlackList";
 
-const MessageList = ()=>{
+const MessageList = ({filter_by})=>{
     const [messages, setMessages] = useState([]);
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
     const blacklistedUsers = useBlackList();
     const [blackListedId, setBlackListedId] = useState([]);
+    const location = useLocation();
+
 
     useEffect(()=>{
         const fetchData = async() => {
             try{
-                const response = await axios.get(`http://127.0.0.1:8000/api/users/messages/all/${authContext.user.id}`);
+                const config = {
+                    headers: { Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` }              
+                }
+                const response = await axios.get(`http://127.0.0.1:8000/api/users/messages/all/${authContext.user.id}/${filter_by}`, config);
                 setMessages(response.data);
             }
             catch(error){
@@ -26,32 +31,43 @@ const MessageList = ()=>{
         fetchData();
     }, [authContext.user]);
 
+
     useEffect(()=>{
         blacklistedUsers.forEach((blacklistedUser)=>{
             setBlackListedId((blackListedId)=>[...blackListedId, blacklistedUser.user_to.id]);
         });
     }, [blacklistedUsers]);
 
+
     return(
-        <div className="h-[calc(100vh-56px)] w-full flex items-start justify-center">
-            <div className="w-full max-w-md">
-                <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                    <Link to="post">Написать сообщение</Link>
-                </div>
-                <div id="message-section-wrapper">
-                    <div id="message-list">
-                        {messages.map((message)=> {
+        <div className="h-[calc(100vh-56px)] w-full">
+            <div className="">
+            <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                        <Link to="post">Compose Message</Link>
+                    </div>
+                    {location.pathname==='/message'?
+                        <div id="submitted-messages" className="my-2 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                            <Link to="submitted">Sent Messages</Link>
+                        </div>:
+                        <div id="received-messages" className="my-2 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                            <Link to="/message">Received Messages</Link>
+                        </div>          
+                    }                
+                <div id="message-section-wrapper" className="mt-20 shadow shadow-active">
+                    <h2 className="text-2xl text-center m-4">{location.pathname==='/message'?"Inbox":"Sent"}</h2>
+                    <div id="message-list" className="m-4">
+                        {messages.length>0?messages.map((message)=> {
                             if(!blackListedId.includes(message.sender.id)){
                                 return(
-                                <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`${message.id}`)}>
-                                    <div className="font-bold mb-2">Тема сообщения: {message.message_topic}</div>
-                                    <div className="mb-2">Никнейм отправителя: {message.sender.username}</div>
-                                    <div>Время отправки: {new Date(message.message_datetime).toLocaleString()}</div>
+                                <div id="message-wrapper" className="w-full text-navbar border-2 border-navbar p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:text-active hover:border-active" key={message.id} onClick={()=>navigate(`/message/${message.id}`)}>
+                                    <div className="font-bold mb-2">Subject: {message.message_topic}</div>
+                                    <div className="mb-2">From: {message.sender.username}</div>
+                                    <div>Received: {new Date(message.message_datetime).toLocaleString()}</div>
                                 </div>);    
                             }
-                        })}
+                        }): <div className="text-2xl text-center font-bold text-red shadow shadow-red p-5 mt-20">No messages yet</div>}
                     </div>
-                    <div id="navigation-links">
+                    <div id="navigation-links" className="mb-4">
                         {/* will be needed for pagination in the future */}
                     </div>
                 </div>

@@ -32,6 +32,20 @@ CORS_ALLOWED_ORIGINS = [
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-k3kwf_(wg#rqm_b84yz-fb!pl-@)&6glt)vsde%3p7)av^1j-1'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = os.environ.get('UNIFIEDBYFOOTBALL_EMAIL_LOGIN')
+EMAIL_HOST_PASSWORD = os.environ.get('UNIFIEDBYFOOTBALL_EMAIL_PASSWORD')
+print(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+EMAIL_PORT = 2525
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = False

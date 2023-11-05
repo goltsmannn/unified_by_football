@@ -52,10 +52,10 @@ const ReviewForm = () => {
             <div
                 className="w-full max-w-md p-[30px] max-h-[450px] rounded-lg border border-solid border-navbar text-navbar flex h-full mt-[100px] flex-col justify-around"
             >
-                <h1 className="text-center text-2xl text-navbar font-bold">Отзыв</h1>
+                <h1 className="text-center text-2xl text-navbar font-bold">Review</h1>
                 <form onSubmit={handleSubmit} className="mt-[30px] h-full flex flex-col">
                     <div className="mt-[15px] flex flex-col font-medium">
-                        <label> Текст отзыва:</label>
+                        <label> Text:</label>
                         <input
                             className=' rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
                             type="text"
@@ -66,7 +66,7 @@ const ReviewForm = () => {
 
                     <div className="mt-[15px] flex flex-col font-medium">
                         <label>
-                            Рейтинг:
+                            Rating:
                         </label>
 
                         <select
@@ -84,7 +84,7 @@ const ReviewForm = () => {
 
                     <div>
                         <label  className="bg-navbar text-[#ffff] rounded-md p-2 cursor-pointer mt-[15px] flex flex-col font-medium">
-                            Прикрепите фото...
+                            Photo (optional)...
                         <input
                             className="hidden"
                             type="file"

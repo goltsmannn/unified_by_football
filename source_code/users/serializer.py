@@ -14,10 +14,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserRegisterSerializer(serializers.Serializer):
 
-    email = serializers.EmailField(required=True, error_messages = {'blank': 'this field cannot be blank'})
-    username = serializers.CharField(required=True, error_messages = {'blank': 'this field cannot be blank'})
-    password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': 'this field cannot be blank'})
-    password2 = serializers.CharField(required=True, write_only=True, error_messages = {'blank': 'this field cannot be blank'})
+    email = serializers.EmailField(required=True, error_messages = {'blank': "Missing Email"})
+    username = serializers.CharField(required=True, error_messages = {'blank': "Missing Username"})
+    password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
+    password2 = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password Confirmation"})
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError('Passwords do not match')
@@ -39,9 +39,9 @@ class UserRegisterSerializer(serializers.Serializer):
 
         
 
-class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, error_messages = {'blank': "Missing Email"})
+    password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
 
     def check_user(self, validated_data):
         user = authenticate(email=validated_data.email, password=validated_data.password)
@@ -82,3 +82,5 @@ class BlackListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlackList
         fields = ("user_to", "id")
+
+    

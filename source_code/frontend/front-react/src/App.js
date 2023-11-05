@@ -20,6 +20,7 @@ import ProposePlacemark from "components/placemarks/ProposePlacemark";
 import FavoritePlacemarks from "components/placemarks/FavoritePlacemarks";
 import "./_style.css";
 import PageWrapper from "PageWrapper";
+import Verification from "components/auth/Verification";
 
 class App extends React.Component{
 
@@ -40,9 +41,10 @@ class App extends React.Component{
               </Route>
 
               <Route path="message" element={<MessageMain/>}>
-                <Route index element={<MessageList/>}></Route>
-                <Route path=":message_id" element={<GetMessage/>}></Route>
+                <Route index element={<MessageList filter_by="recipient"/>}></Route>
+                <Route path="submitted" element={<MessageList filter_by="sender"/>}></Route>
                 <Route path="post" element={<PostMessage/>}></Route>
+                <Route path=":message_id" element={<GetMessage/>}></Route>
               </Route>
 
               <Route path="profile/:user_id" element = {<ProfileMain/>}>
@@ -52,6 +54,7 @@ class App extends React.Component{
 
             <Route path="/login" element = { <Login/> }></Route>
             <Route path="/register" element = {<Register/>}></Route>
+            <Route path="/verification/:uid/:token" element={<Verification/>}></Route>
             <Route path="*" element={<Page404/>}></Route> 
           </Routes>
         </AuthProvider>
