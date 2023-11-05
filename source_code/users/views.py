@@ -87,7 +87,7 @@ class LoginUserAPIView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            user = serializer.check_user(request.data)
+            user = serializer.check_user(serializer.validated_data)
             login(request, user)
             return Response(serializer.data)
         except:
@@ -95,8 +95,13 @@ class LoginUserAPIView(APIView):
 
 
 class LogoutUserAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
     def post(self, request):
-        logout(request)
+        try:
+            logout(request)
+            return Response('Logged out successfully')
+        except Exception as e:
+            raise exceptions.AuthenticationFailed("Logout failed")
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

@@ -56,11 +56,21 @@ export const AuthProvider = ({children}) => {
         }
     }, [authToken]);
     
-    let logoutUser = () => {
+    let logoutUser = async (e) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         setUser(null);
         setAuthToken(null);
+        try{
+            const response = await axios.post('http://127.0.0.1:8000/api/users/auth/logout', {}, {
+            headers: {
+                Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
+            }
+            });
+        }   
+        catch (error){
+            console.error('Error while logging out', error)
+        }
         navigate('/');
     }
 

@@ -36,7 +36,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_HOST_USER = os.environ.get('UNIFIEDBYFOOTBALL_EMAIL_LOGIN')
 EMAIL_HOST_PASSWORD = os.environ.get('UNIFIEDBYFOOTBALL_EMAIL_PASSWORD')
-print(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
 EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
@@ -71,7 +70,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'users.apps.UsersConfig',
     'frontend.apps.FrontendConfig',
-    'django_pdb',
+    #'django_pdb',
     "debug_toolbar",
     'rest_framework_simplejwt.token_blacklist',
 ]

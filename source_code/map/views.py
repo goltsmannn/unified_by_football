@@ -31,6 +31,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class PlacemarkViewSet(RetrieveModelMixin, ListModelMixin, viewsets.GenericViewSet):
+    authentication_classes = []
     queryset = Placemark.objects.all()
     serializer_class = PlacemarkSerializer
 

@@ -9,6 +9,7 @@ from rest_framework import routers
 app_name ='map'
 router = routers.DefaultRouter()
 router.register(r'placemarks', views.PlacemarkViewSet, basename="map")
+#print(router.urls)
 
 urlpatterns = [
     # path('login', views.MyLoginView.as_view(), name='login_page'),

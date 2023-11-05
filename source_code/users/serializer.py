@@ -44,7 +44,7 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
 
     def check_user(self, validated_data):
-        user = authenticate(email=validated_data.email, password=validated_data.password)
+        user = authenticate(email=validated_data['email'], password=validated_data['password'])
         if not user:
             raise serializers.ValidationError('User not found')
         return user
