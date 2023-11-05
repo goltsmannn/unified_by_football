@@ -18,13 +18,14 @@ from users.permissions import IsCreatorOrReadOnly
 from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                               LoginSerializer, MessageSerializer,
                               SubscriptionSerializer, UserRegisterSerializer,
-                              UserSerializer)
+                              UserSerializer, ComplaintSerializer)
 from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
 import IGW.settings as settings
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+
 
 class UserViewSet(RetrieveModelMixin, 
                 ListModelMixin, 
@@ -155,9 +156,9 @@ class ListMessagesAPIView(generics.ListAPIView):
         if filter_by is None:
             raise exceptions.ValidationError('Filter by is not specified')
         elif filter_by == 'sender':
-            return Message.objects.filter(sender=self.kwargs['user_id'])
+            return Message.objects.filter(sender=self.kwargs['user_id']).filter_by('-created_at')
         elif filter_by == 'recipient':
-            return Message.objects.filter(recipient=self.kwargs['user_id'])
+            return Message.objects.filter(recipient=self.kwargs['user_id']).filter_by('-created_at')
         else:
             raise exceptions.ValidationError('Invalid filter by value')
     
@@ -236,7 +237,6 @@ class BlackListAPIView(generics.ListCreateAPIView):
         response = BlackListSerializer(blacklisted_users, many=True)       
         return Response(response.data)
     
-
 
 
 

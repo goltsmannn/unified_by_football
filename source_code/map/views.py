@@ -16,7 +16,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import User
-from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer
+from map.serializer import PlacemarkSerializer, ReviewSerializer, PlacemarkPostSerializer, PostFavoritesSerializer, GetFavoritesSerializer, GetActivitySerializer, PostActivitySerializer, ComplaintSerializer
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, ListModelMixin
 import rest_framework.viewsets as viewsets
 from rest_framework import exceptions
@@ -146,6 +146,11 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
                 return(Response(GetActivitySerializer(response).data))
         except Exception as e:
             raise e
+
+
+class PostComplaintAPIView(generics.CreateAPIView):
+    serializer_class = ComplaintSerializer
+
 
 #     template_name = 'map/main_map.html'
 

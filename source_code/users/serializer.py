@@ -82,3 +82,5 @@ class BlackListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlackList
         fields = ("user_to", "id")
+
+    

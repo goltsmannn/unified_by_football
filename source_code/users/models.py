@@ -116,8 +116,3 @@ class Message(models.Model):
     message_text = models.TextField(max_length=2000)
     message_datetime = models.DateTimeField(auto_now_add=datetime.timestamp(timezone.now()))
 
-
-# class Complaint(models.Model):
-#     review = models.ForeignKey(map.models.Review, on_delete=models.CASCADE, related_name='complaints')
-#     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints')
-#     reason = models.TextField(max_length=2000)

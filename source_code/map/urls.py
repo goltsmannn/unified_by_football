@@ -22,5 +22,6 @@ urlpatterns = [
     path('review/picture/post', views.post_picture, name='picture-post'),
     path('favorites', views.FavoritesAPIView.as_view(), name='favorites'),
     path('activity', views.ActivityAPIView.as_view(), name='activity-get'),
+    path('complaint', views.PostComplaintAPIView.as_view(), name='complaint-post'),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 

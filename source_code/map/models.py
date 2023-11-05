@@ -4,7 +4,7 @@ from datetime import time
 from users.models import User
 
 
-class Placemark(models.Model):
+class Placemark(models.Model):  #Model for Placemark
     x = models.FloatField()
     y = models.FloatField()
     #fields set by click on map
@@ -26,20 +26,20 @@ class Placemark(models.Model):
 
 
 
-class Review(models.Model):
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="reviews") # null = so that when user is removed, reviews are not removed
+class Review(models.Model): #Model for Review on Placemark
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="reviews") # null = so that when user is removed, reviews are not removed. the user will be shown as "deleted user"
     text = models.CharField(max_length=200)
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="reviews")
     rating = models.PositiveSmallIntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True) #to sort by created_at
 
 
-class ReviewPictures(models.Model):
+class ReviewPictures(models.Model): #pictures attached to review model
     image = models.ImageField(upload_to='review_pictures/', null=True) 
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="pictures")
 
 
-class Favorites(models.Model):
+class Favorites(models.Model): #List of favorite placemarks for a user model
 
     class Meta:
         unique_together = (("user", "placemark"),)
@@ -48,8 +48,14 @@ class Favorites(models.Model):
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="favorites")
 
 
-class Activity(models.Model):
+class Activity(models.Model): #Model for user activity on Placemark
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="activities")
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="activities")
     created = models.DateTimeField(auto_now_add=True)
     expiry = models.SmallIntegerField()
+
+
+class Complaint(models.Model): #Complaints on reviews model
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='complaints')
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaints')
+    reason = models.TextField(max_length=2000)
