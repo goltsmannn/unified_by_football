@@ -8,6 +8,8 @@ const Register = () => {
         email: '',
         username:'',
         password:'',
+        password2:'',
+        referal:'',
     });
     const [registerErrors, setRegisterErrors] = useState(null);
     const [success, setSuccess] = useState("");
@@ -21,7 +23,8 @@ const Register = () => {
             email: e.target.email.value,
             password: e.target.password.value,
             password2: e.target.password2.value,
-            username: e.target.username.value
+            username: e.target.username.value,
+            referal: e.target.referal.value,
         }
         try{
             const response = await axios.post('http://127.0.0.1:8000/api/users/auth/register', data);
@@ -106,6 +109,20 @@ const Register = () => {
                                 placeholder="Confirm Password" 
                                 onChange={(e)=>setRegisterInfo({
                                     password2: e.target.value
+                                })}
+                            />
+                        </li>
+
+                        <li className="list-none flex flex-col font-medium">                  
+                            <label htmlFor="referal-field">Referal ID (optional)</label>
+                            <input 
+                                className='rounded-lg px-1 py-2 border border-solid border-navbar focus:outline-active'
+                                type="text" 
+                                id="referal-field" 
+                                name="referal"
+                                placeholder="1" 
+                                onChange={(e)=>setRegisterInfo({
+                                    referal: e.target.value
                                 })}
                             />
                         </li>

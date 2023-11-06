@@ -5,16 +5,20 @@ const Verification = () => {
     const {uid, token} = useParams();
     const [response, setResponse] = useState(null);
     const navigate = useNavigate();
-
+    const [awaitTime, setAwaitTime] = useState(3);
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 const response = await fetch(`http://127.0.0.1:8000/api/users/confirm/${uid}/${token}`);
                 setResponse(response);
+                const interval = setInterval(()=>{
+                    setAwaitTime((awaitTime) => awaitTime-1);
+                }, 1000);
                 setTimeout(()=>{
+                    clearInterval(interval);
                     navigate('/login');
-                }, 2000);
+                }, 3500);
             }
             catch (error){
                 setResponse(error);
@@ -25,11 +29,12 @@ const Verification = () => {
         fetchData();
     }, [uid, token]);
 
+
     if(response?.status === 200){
         return(
             <div id="success">
                 <h1 className="text-center text-2xl text-navbar font-bold">Success</h1>
-                <p className="text-center">Your account has been activated. You will be redirected to the login page in 2s.</p>
+                <p className="text-center">Your account has been activated. You will be redirected to the login page in {awaitTime}s.</p>
             </div>
         )
     }

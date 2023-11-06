@@ -53,7 +53,10 @@ const ProfileMain = () => {
             <h1 className="text-center text-2xl text-navbar font-bold">
                 User profile
             </h1>
-
+            {authContext.user?.id === pageUser.id && <h3 className="text-center text-l text-navbar font-bold">
+                Your ID for future referals: {pageUser.id}.
+                Send it to your friends to get a bonus!
+            </h3>}
             <div id="subscription-block">
             </div>
             <div 
@@ -81,7 +84,6 @@ const ProfileMain = () => {
                 <ProfileActivity pageUser={pageUser}></ProfileActivity>
             </div>
             </div>
-
         </div>
     )
     }

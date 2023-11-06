@@ -21,6 +21,7 @@ class UserRegisterSerializer(serializers.Serializer):
     username = serializers.CharField(required=True, error_messages = {'blank': "Missing Username"})
     password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
     password2 = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password Confirmation"})
+    referal = serializers.CharField(required=False)
     
     def validate(self, attrs):
         """

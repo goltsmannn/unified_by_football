@@ -1,5 +1,5 @@
 import json
-from users.models import BlackList, Message, Subscriptions, User
+from users.models import BlackList, Message, Subscriptions, User, Referals
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
@@ -17,13 +17,18 @@ class AuthTestCase(APITestCase):
             'email': 'mmgoltsman@mail.ru',
             'username': 'mark',
             'password': '123',
-            'password2': '123'
+            'password2': '123',
+            'referal': '1'
         }
-        response = self.client.post(url, data)
+        response = self.client.post(url, data)        
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         user = User.objects.get(username='mark')
         self.assertEqual('mmgoltsman@mail.ru', user.email) #obligatory field
         self.assertEqual(user.is_active, False) #should be false until email confirmation
+        
+        referals = Referals.objects.get(invite_to=user)
+        self.assertEqual(referals.invite_from.username, 'testuser')
+
 
 
     def test_login(self):

@@ -81,8 +81,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     age = models.PositiveSmallIntegerField( null=True, blank=True)
     weight = models.PositiveSmallIntegerField( null=True, blank=True)
     
+        
     def __str__(self) -> str:
-        print(self.id, self.username)
+       # print(self.id, self.username)
         return super().__str__()
 # #    profile_picture = models.ImageField()
 
@@ -127,3 +128,8 @@ class Message(models.Model):
     message_text = models.TextField(max_length=2000)
     message_datetime = models.DateTimeField(auto_now_add=datetime.timestamp(timezone.now()))
 
+
+class Referals(models.Model):
+    """Model for referals"""
+    invite_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referals_from')
+    invite_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referals_to')

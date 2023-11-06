@@ -3,7 +3,8 @@ import AuthContext from "context/AuthContext";
 import useBlackList from "hooks/useBlackList";
 import useSubscriptions from "hooks/useSubscriptions";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import DeleteModal from "./DeleteModal";
 
 const ProfileButtons = ({pageUser}) =>{
     const location = useLocation();
@@ -14,6 +15,7 @@ const ProfileButtons = ({pageUser}) =>{
     const [isSubscribed, setIsSubscribed] = useState(null);
     const [isBlackListed, setIsBlackListed] = useState(null);
     const [isHidden, setIsHidden] = useState(!authContext.user.show_activity);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
 
     /**
@@ -128,15 +130,20 @@ const ProfileButtons = ({pageUser}) =>{
 
 
 
-
     if((location.pathname===`/profile/${page_id}`) && (authContext.user)){
         if(pageUser.id === authContext.user.id){
             return(
                 <>
                 <Link 
-                    className={`mt-[30px] text-center w-full block bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
-                    to="edit">Edit</Link>
+                    className={`mt-[30px] text-center block  bg-navbar px-1 py-2 rounded-lg text-white active:bg-active`}
+                    to="edit">Edit
+                </Link>
+                <button 
+                    className={`mt-[30px] text-center block w-full bg-red px-1 py-2 rounded-lg text-white active:bg-active`}
+                    onClick={()=>setModalIsOpen(true)}>Delete profile
+                </button>
                 <button onClick={handleIsHiddenChange}>{isHidden?"Show Activity":"Hide Activity"}</button>
+                {modalIsOpen && <DeleteModal closeModal={()=>setModalIsOpen(false)} />}
                 </>
             );
         }

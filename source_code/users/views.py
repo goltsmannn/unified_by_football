@@ -1,6 +1,7 @@
 import IGW.settings as settings
 import rest_framework.viewsets as viewsets
 from django.http import HttpRequest
+from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -16,7 +17,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.models import BlackList, Message, Subscriptions, User
+from users.models import BlackList, Message, Subscriptions, User, Referals
 from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                                 LoginSerializer, MessageSerializer,
                                 SubscriptionSerializer, UserRegisterSerializer,
@@ -68,19 +69,27 @@ class RegisterUserAPIView(generics.CreateAPIView):
             Response: HTTP Response
         """
         super().perform_create(serializer)
-        user = User.objects.get(email=serializer.data['email'])
+        user = User.objects.get(email=serializer.validated_data['email'])
 
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.id))
         activation_url = f'verification/{uid}/{token}'
-        #    activation_url = reverse_lazy('confirm_email', kwargs={'uidb64': uid, 'token': token})
+        #activation_url = reverse_lazy('users:confirm_email', kwargs={'uidb64': uid, 'token': token})
+        
         try:
             send_mail(
                 'Confirm your email',
                 f'Click this link to confirm your email: http://127.0.0.1:3000/{activation_url}',
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[serializer.data['email']],
+                recipient_list=[serializer.validated_data['email']],
             )
+            referal = int(serializer.validated_data.get('referal', 1))
+            referal_user = User.objects.filter(pk=referal).first()
+            if referal_user:
+                Referals.objects.create(
+                    invite_from=referal_user,
+                    invite_to=user
+                )
             return Response('sent email')
         except:
             user.delete()
@@ -166,7 +175,15 @@ class LogoutUserAPIView(APIView):
         except Exception:
             raise exceptions.AuthenticationFailed("Logout failed")
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def delete_user(request: HttpRequest) -> Response:
+    print(request.user)
+    User.objects.get(id=request.user.id).delete()
+    return Response('Successfully deleted')
 
+    
+    
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
     Custom token class to add email to the token payload
