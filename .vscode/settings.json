@@ -1,7 +1,0 @@
-{
-    "html-to-css-autocompletion.triggerCharacters": false,
-    "git.ignoreLimitWarning": true,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true
-    }
-}

@@ -37,7 +37,7 @@ const ReviewForm = () => {
                 formData.append('review_id', response.data.id);
                 console.log(response.data);
                 const config2 = {...config, headers: {...config.headers, 'Content-Type': 'multipart/form-data'}}; 
-                const response2 = await axios.post('http://localhost:8000/api/map/review/picture/post', formData, config2);
+                const response2 = await axios.post('http://localhost:8000/api/map/review/picture/post', formData, config2); 
                 console.log(response2); 
             }
             catch(error){
