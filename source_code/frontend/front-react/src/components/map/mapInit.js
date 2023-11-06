@@ -1,16 +1,17 @@
-import { YMaps, Map, Placemark} from "@pbe/react-yandex-maps";
-import React, { useEffect, useState } from "react";
+import { Map, Placemark, YMaps } from "@pbe/react-yandex-maps";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import Portal from "./Portal";
+import { useEffect, useState } from "react";
 import logo from '../../logo.png';
+import Portal from "./Portal";
 
 async function requestPlacemarks(){
     let response = await axios.get('http://127.0.0.1:8000/api/map/placemarks');
     return response.data;
 }
 
-
+/**
+ * Initializes the map, populates in with placemarks and triggers the portal once a placemark is clicked
+ */
 const MyMap = () => {
     const [placemarks, setPlacemarks] = useState([]);
     const [activePortal,    setActivePortal] = useState(false);

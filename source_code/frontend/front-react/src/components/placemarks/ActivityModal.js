@@ -1,8 +1,8 @@
-import AuthContext from "context/AuthContext";
-import React, { useContext, useState } from "react";
 import axios from "axios";
-import closeIcon from '../../img/free-icon-close-4013407.png';
+import AuthContext from "context/AuthContext";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
+import closeIcon from '../../img/free-icon-close-4013407.png';
 
 
 const ActivityModal = ({setModalIsOpen, placemark}) => {
@@ -11,7 +11,10 @@ const ActivityModal = ({setModalIsOpen, placemark}) => {
     const authContext = useContext(AuthContext);
     const {placemark_id} = useParams();
 
-
+    /**
+     * Sending messages to all users that added placemark to favorites,
+     * once there is new activity on the placemark
+     */
     const massMessage = async () => {
         const config = {
             headers: {

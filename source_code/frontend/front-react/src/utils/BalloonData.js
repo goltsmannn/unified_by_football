@@ -1,3 +1,6 @@
+/**
+ * Function to populate placemark balloon with information
+ */
 function prepareBalloonData(plc_json){
     let pictures = [];
     let avg = 0.0, cnt = 0;

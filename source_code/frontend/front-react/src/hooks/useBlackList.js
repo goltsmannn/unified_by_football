@@ -1,14 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
+import { useContext, useEffect, useState } from "react";
 
 
 const useBlackList = ()=>{
     const [blacklistedUsers, setBlacklistedUsers] = useState([]);
     const authContext = useContext(AuthContext);
 
+    /**
+     * Obtaining and setting the blacklisted users for current user
+     */
     useEffect(()=>{
-        if(authContext.user?.id){ //читать про это) опциональная цепочка
+        if(authContext.user?.id){ 
             const fetchData = async()=>{
                 try{
                     const config = {

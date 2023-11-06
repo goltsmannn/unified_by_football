@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import useBlackList from "hooks/useBlackList";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const MessageList = ({filter_by})=>{
     const [messages, setMessages] = useState([]);
@@ -31,7 +30,7 @@ const MessageList = ({filter_by})=>{
         fetchData();
     }, [authContext.user, filter_by]);
 
-
+    /** Listing blacklisted users to hide messages from them */
     useEffect(()=>{
         blacklistedUsers.forEach((blacklistedUser)=>{
             setBlackListedId((blackListedId)=>[...blackListedId, blacklistedUser.user_to.id]);

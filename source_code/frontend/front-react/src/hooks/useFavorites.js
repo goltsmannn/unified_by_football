@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
+import { useContext, useEffect, useState } from "react";
 
 
 const useFavorites = ()=>{
     const [favoritePlacemarks, setFavoritePlacemarks] = useState([]);
     const authContext = useContext(AuthContext);
-    
+    /**
+     * Obtaining and setting the favorite placemarks for current user
+     */
     useEffect(()=>{
         if(authContext.user?.id){ 
             const fetchData = async ()=>{

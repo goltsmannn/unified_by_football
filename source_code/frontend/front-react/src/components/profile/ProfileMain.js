@@ -1,23 +1,19 @@
-import AuthContext from "context/AuthContext";
-import React, { useContext, useState } from "react";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import axios from "axios";
-import useSubscriptions from "hooks/useSubscriptions";
-import ProfileButtons from "./ProfileButtons";
+import AuthContext from "context/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { Outlet, useParams } from "react-router-dom";
 import ProfileActivity from "./ProfileActivity";
+import ProfileButtons from "./ProfileButtons";
 
 
 const ProfileMain = () => {
     const authContext = useContext(AuthContext);
     const page_id = useParams().user_id;
-    const [pageUser, setPageUser] = useState(null); //хорошо ли так ? спросить надо
+    const [pageUser, setPageUser] = useState(null); 
   //  const [isSubscribed, setIsSubscribed] = useState(false);
   //  const location = useLocation();
   //  const navigate = useNavigate();
    // const subscriptions = useSubscriptions();
-    const location = useLocation()
 
    // console.log(location.pathname.includes('edit'));
 

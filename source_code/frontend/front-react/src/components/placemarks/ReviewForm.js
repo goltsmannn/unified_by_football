@@ -1,7 +1,7 @@
-import React, { useState, useContext, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const ReviewForm = () => {
@@ -36,7 +36,7 @@ const ReviewForm = () => {
                 formData.append('picture', reviewPicture);
                 formData.append('review_id', response.data.id);
                 console.log(response.data);
-                const config2 = {...config, headers: {...config.headers, 'Content-Type': 'multipart/form-data'}}; //жесть, но работает
+                const config2 = {...config, headers: {...config.headers, 'Content-Type': 'multipart/form-data'}}; 
                 const response2 = await axios.post('http://localhost:8000/api/map/review/picture/post', formData, config2);
                 console.log(response2); 
             }

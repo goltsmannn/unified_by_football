@@ -1,19 +1,30 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
-import getAPIURL from "utils/getAPIURL";
 import jwtDecode from "jwt-decode";
+import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-const AuthContext = createContext('fuck');
+import getAPIURL from "utils/getAPIURL";
+const AuthContext = createContext('blank');
 let urls = await getAPIURL();
 
 
 export default AuthContext;
+
+/**
+ * Context provider for authentication functions
+ * Current user state
+ * Read_only fields list
+ * Logout 
+ * Authorization tokens
+ */
 export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(null);
     let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
     const readOnlyFields = ['email', 'id', 'is_staff', 'username', 'show_activity'];
     
+    /**
+     * Loggin the user in and setting local storage variables, context variables
+     */
     let loginUser = async (e ) => {
         e.preventDefault();
         try{
@@ -25,8 +36,8 @@ export const AuthProvider = ({children}) => {
                     'Content-Type': 'multipart/form-data',
             }});
             setAuthToken(response.data.access);
-            setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser
-            localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); //переписать под ключ - значение DONE
+            setUser(jwtDecode(response.data.access)); //Заменить на useEffect с getUser?
+            localStorage.setItem('accessToken',JSON.stringify(response.data['access'])); 
             localStorage.setItem('refreshToken',JSON.stringify(response.data['refresh'])); 
             navigate('/');
             return null;
@@ -36,6 +47,7 @@ export const AuthProvider = ({children}) => {
         }
     }
     
+    /**Loading previously logged in user to avoid logging in after every reload */
     useEffect(()=>{
         if(authToken){
             async function fetchData(){

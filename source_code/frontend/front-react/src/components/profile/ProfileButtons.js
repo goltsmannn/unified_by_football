@@ -1,9 +1,9 @@
-import AuthContext from "context/AuthContext";
-import useSubscriptions from "hooks/useSubscriptions";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import AuthContext from "context/AuthContext";
 import useBlackList from "hooks/useBlackList";
+import useSubscriptions from "hooks/useSubscriptions";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 const ProfileButtons = ({pageUser}) =>{
     const location = useLocation();
@@ -15,9 +15,10 @@ const ProfileButtons = ({pageUser}) =>{
     const [isBlackListed, setIsBlackListed] = useState(null);
     const [isHidden, setIsHidden] = useState(!authContext.user.show_activity);
 
-    console.log(isHidden);
 
-
+    /**
+     * Subscribing or unsubscribing  the user
+     */
     const handleSubscriptionClick = async (e)=>{
         e.preventDefault();
         const check = !isSubscribed;
@@ -46,6 +47,9 @@ const ProfileButtons = ({pageUser}) =>{
         await fetchData();
     }
 
+    /**
+     * Adding to or removing from blacklist
+     */
     const handleBlackListClick = async (e)=>{
         e.preventDefault();
         const check = !isBlackListed;
@@ -73,7 +77,9 @@ const ProfileButtons = ({pageUser}) =>{
         await fetchData();      
     }
 
-
+    /**
+     * Hiding/showing activity from other users 
+     */
     const handleIsHiddenChange = () => {
         console.log('changing visib')
         const isHiddenRealValue = !isHidden;
@@ -95,6 +101,9 @@ const ProfileButtons = ({pageUser}) =>{
         fetchData();
     }
 
+    /**
+     * Looking through subscriptions of the user to find looked up profile and decide on the relationship with the current user
+     */
     useEffect(()=>{
         subscriptions.forEach((subscription)=>{
             if(subscription.user_to.id === Number(page_id)){
@@ -103,8 +112,10 @@ const ProfileButtons = ({pageUser}) =>{
         })
     }, [subscriptions, page_id]);
 
+    /**
+     * Looking through blacklisted users of the user to find looked up profile and decide on the relationship with the current user
+     */
     useEffect(()=>{
-    //    console.log(blacklistedUsers);
         blacklistedUsers.forEach((blacklistedUser)=>{
             if(blacklistedUser.user_to.id === Number(page_id)){
                 setIsBlackListed(true);

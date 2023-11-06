@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "context/AuthContext";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [registerInfo, setRegisterInfo] = useState({
@@ -41,6 +41,8 @@ const Register = () => {
             setRegisterErrors(error.response.data);
         }
     }
+
+    
     if(!authContext.user){
         return(
             <div className="h-screen w-full flex items-center justify-center">

@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import AuthContext from "context/AuthContext";
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const SearchMain = () => {
     const [users, setUsers] = useState([]);
@@ -18,7 +18,7 @@ const SearchMain = () => {
             const response = await axios.get('http://127.0.0.1:8000/api/users/retrieve_users_basic_info')
             if(response.status === 200){
                 console.log('successful user basic info request');
-                setUsers(response.data); //СПРОСИТЬ ЗАЧЕМ ТУТ USESTATE (done)
+                setUsers(response.data); 
             }
             else{
                 console.log('failed user basic info request');

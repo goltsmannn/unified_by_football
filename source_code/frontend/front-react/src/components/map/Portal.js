@@ -1,10 +1,12 @@
-import React from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import prepareBalloonData from "utils/BalloonData";
 import Balloon from "./Balloon";
-import { useEffect } from "react";
 
 
+/**
+ * Portal for creating balloon layout, as there is no built-in ballon in yandex maps
+ */
 const Portal = ({placemark, onClose}) => {
     const element = <Balloon 
         placemark_id={placemark.id}
