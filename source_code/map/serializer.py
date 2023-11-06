@@ -5,12 +5,14 @@ from map.models import Placemark, Review, ReviewPictures, Activity, Report
 from users.models import User
 
 class ReviewPicturesSerializer(serializers.ModelSerializer):
+    """Serializer for pictures in the review"""
     class Meta:
         model = ReviewPictures
         fields = ["image"]
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    """Serializer for reviews"""
     pictures = ReviewPicturesSerializer(many=True)
     author = BasicUserInfoSerializer()
     class Meta:
@@ -19,6 +21,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class PlacemarkSerializer(serializers.ModelSerializer):
+    """Extended serializer for placemarks (for detailed info)"""
     reviews = ReviewSerializer(many=True)
     class Meta:
         model = Placemark
@@ -26,18 +29,21 @@ class PlacemarkSerializer(serializers.ModelSerializer):
 
 
 class BasicPlacemarkSerializer(serializers.ModelSerializer):
+    """Basic serializer for placemarks (used when multiple placemarks are returned)"""
     class Meta:
         model = Placemark
         fields = ("id", "name")
 
 
 class PlacemarkPostSerializer(serializers.ModelSerializer):
+    """Serializer for placemark proposal page"""
     class Meta:
         model = Placemark
         fields = "__all__"
 
 
 class PostFavoritesSerializer(serializers.ModelSerializer):
+    """Serializer for adding or removing placemark from favorites (required only basic info about placemark and user)"""
     user = BasicUserInfoSerializer()
     placemark_id = serializers.ReadOnlyField(source='placemark.id')
     class Meta:
@@ -46,6 +52,7 @@ class PostFavoritesSerializer(serializers.ModelSerializer):
         
 
 class GetFavoritesSerializer(serializers.ModelSerializer):
+    """Serializer for getting favorites (includes some additional info about placemark and user to avoid extra requests)"""
     user = BasicUserInfoSerializer()
     placemark = PlacemarkSerializer()
     class Meta:
@@ -56,6 +63,7 @@ class GetFavoritesSerializer(serializers.ModelSerializer):
 
 
 class PostActivitySerializer(serializers.ModelSerializer):
+    """Serializer for adding or removing activity at placemark (required only basic info about placemark and user). Expiry field's value is retrieved from a slider"""
     placemark_id = serializers.IntegerField(source='placemark.id')
     user_id = serializers.IntegerField(source='user.id')
     delete = serializers.BooleanField()
@@ -68,6 +76,7 @@ class PostActivitySerializer(serializers.ModelSerializer):
 
 
 class GetActivitySerializer(serializers.ModelSerializer):
+    """Serializer for getting user activity"""
     user = BasicUserInfoSerializer()
     placemark = BasicPlacemarkSerializer()
     
@@ -77,6 +86,7 @@ class GetActivitySerializer(serializers.ModelSerializer):
         
 
 class ReportSerializer(serializers.ModelSerializer):
+    """Serializer for reporting false reviews"""
     review_id = serializers.IntegerField(source='review.id')
     user_id = serializers.IntegerField(source='reporter.id')
     reason = serializers.CharField(required=True)
@@ -86,6 +96,7 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = ("review_id", "user_id", "reason")
     
     def create(self, validated_data):
+        """To make the report apiview as compact as possible"""
         try:
             user = User.objects.get(pk=validated_data['reporter']['id'])
             review = Review.objects.get(pk=validated_data['review']['id'])

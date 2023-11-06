@@ -10,7 +10,13 @@ from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
+    """
+    As our custom user model is inheriting from AbstractBaseUser, we need to define a custom manager that extends BaseUserManager.
+    Manager handles the creation of superusers with activated by default accounts.
+    Manager also handles the creation of normal users.
+    """
     def create_user(self, username, email, password=None, **kwargs):
+        """Creating regular user"""
         if username is None or email is None:
             raise TypeError('Missing registration field')
         
@@ -22,6 +28,7 @@ class UserManager(BaseUserManager):
     
 
     def create_superuser(self, username, email, password):
+        """Creating admin staff superuser"""
         if password is None:
             raise TypeError('Missing registration field')
 
@@ -36,6 +43,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """User model (extended due to custom fields and JWT auth needs)"""
     class Meta:
         db_table = "auth_user"
 
@@ -52,13 +60,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('NWAO', "Северо-Западный административный округ"),
     ]
     username = models.CharField(db_index=True, max_length=255, unique=True) #blabk true
-    email = models.EmailField(db_index=True, unique=True, blank=False)
-
+    email = models.EmailField(db_index=True, unique=True, blank=False)    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-
+    #Obligatory fields for administration
     objects = UserManager()
 
+    #Automatic fields
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     show_activity = models.BooleanField(default=True)
     last_login = models.DateTimeField(null=True, default=None)
 
-    
+    #Profile fields
     region = models.CharField(max_length=4, choices=REGION_IN_MOSCOW_CHOICES, null=True, blank=True)
     height = models.PositiveSmallIntegerField(null=True, blank=True)
     age = models.PositiveSmallIntegerField( null=True, blank=True)
@@ -94,8 +102,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Subscriptions(models.Model):
+    """Subscription relationship model"""
     class Meta:
-        unique_together = ('user_from', 'user_to')
+        unique_together = ('user_from', 'user_to') #User can subscribe to another user only once (obviously)
 
     user_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_from")
     user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to")
@@ -103,6 +112,7 @@ class Subscriptions(models.Model):
 
 
 class BlackList(models.Model):
+    """Blacklist relationship model"""
     class Meta:
         unique_together = ('user_from', 'user_to')
 
@@ -110,6 +120,7 @@ class BlackList(models.Model):
     user_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_to_blacklist")
 
 class Message(models.Model):
+    """Model for messages between users (or admin and user)"""
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     message_topic = models.TextField(max_length=200)

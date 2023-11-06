@@ -1,11 +1,12 @@
-from rest_framework import serializers 
-from rest_framework.fields import empty
+from django.contrib.auth import authenticate
+from rest_framework import serializers
 from users.models import User, Message, Subscriptions, BlackList
-from django.contrib.auth import get_user_model, authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    """
+    Model for storing detailed info about user (for profile) 
+    """
     class Meta:
         model = User
         fields = ["id", "username", "is_staff", "weight", "height", "age", "region", "email", "show_activity"]
@@ -13,12 +14,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserRegisterSerializer(serializers.Serializer):
-
+    """
+    Serializer for handling registration of new users
+    """
     email = serializers.EmailField(required=True, error_messages = {'blank': "Missing Email"})
     username = serializers.CharField(required=True, error_messages = {'blank': "Missing Username"})
     password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
     password2 = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password Confirmation"})
+    
     def validate(self, attrs):
+        """
+        Confirming uniqueness of email and username and that password and password2 match
+        """
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError('Passwords do not match')
         elif User.objects.filter(email=attrs['email']).first() is not None:
@@ -29,6 +36,9 @@ class UserRegisterSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
+        """
+        Creating user after validation
+        """
         user = User.objects.create_user(
             email=validated_data['email'],
             username=validated_data['username'],
@@ -40,10 +50,12 @@ class UserRegisterSerializer(serializers.Serializer):
         
 
 class LoginSerializer(serializers.Serializer):
+    """Serializer for login endpoint."""
     email = serializers.EmailField(required=True, error_messages = {'blank': "Missing Email"})
     password = serializers.CharField(required=True, write_only=True, error_messages = {'blank': "Missing Password"})
 
     def check_user(self, validated_data):
+        """Checking user authentication (email and password)"""
         user = authenticate(email=validated_data['email'], password=validated_data['password'])
         if not user:
             raise serializers.ValidationError('User not found')
@@ -52,7 +64,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class BasicUserInfoSerializer(serializers.ModelSerializer):
-    
+    """Serializer for most used user info (id, username, email, region) for search, messaging, reviews etc."""
     class Meta:
         model = User
         fields = ["id", "username", "email", "region"]
@@ -60,6 +72,7 @@ class BasicUserInfoSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    """Serializer for messages"""
     sender = UserSerializer()
     recipient = UserSerializer()
 
@@ -69,6 +82,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    """Serializer for subscriptions"""
     user_to = BasicUserInfoSerializer()
 
     class Meta:
@@ -77,6 +91,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
 
 class BlackListSerializer(serializers.ModelSerializer):
+    """Serializer for blacklist relationships"""
     user_to = BasicUserInfoSerializer()
 
     class Meta:
