@@ -36,7 +36,7 @@ const EditProfileForm = () => {
             height: e.target.height.value,
             region: e.target.region.value,
         }
-        const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', data, config);
+        const response = await axios.post(`${authContext.requestHost}/api/users/auth/update_user_by_token`, data, config);
         if (response.status === 200){
             console.log('success');
             authContext.setUser(response.data);

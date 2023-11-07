@@ -19,7 +19,7 @@ const DeleteModal = ({closeModal}) => {
         authContext.logoutUser();
         navigate('/');
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/users/auth/delete', {}, config);       
+            const response = await axios.post(`${authContext.requestHost}/api/users/auth/delete`, {}, config);       
         }
         catch(error){
             console.error('Error while deleting user', error);

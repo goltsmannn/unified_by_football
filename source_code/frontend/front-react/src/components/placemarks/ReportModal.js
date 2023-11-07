@@ -23,7 +23,7 @@ const ReportModal = ({setReportModalIsOpen, reviewId}) => {
             reason: description,
         }
         try{
-            const response = await axios.post(`http://127.0.0.1:8000/api/map/report`, data, config);
+            const response = await axios.post(`${authContext.requestHost}/api/map/report`, data, config);
             
         }
         catch (error){

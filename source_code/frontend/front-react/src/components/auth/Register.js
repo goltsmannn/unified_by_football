@@ -27,7 +27,7 @@ const Register = () => {
             referal: e.target.referal.value,
         }
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/users/auth/register', data);
+            const response = await axios.post(`${authContext.requestHost}/api/users/auth/register`, data);
             setRegisterErrors(null);
             setSuccess("You were successfully registered. Check your email to activate the account.");
             setTimeout(()=>{

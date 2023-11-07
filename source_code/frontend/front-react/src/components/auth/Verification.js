@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import AuthContext from "context/AuthContext";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Verification = () => {
@@ -6,11 +7,13 @@ const Verification = () => {
     const [response, setResponse] = useState(null);
     const navigate = useNavigate();
     const [awaitTime, setAwaitTime] = useState(3);
+    const authContext = useContext(AuthContext);
 
+    
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response = await fetch(`http://127.0.0.1:8000/api/users/confirm/${uid}/${token}`);
+                const response = await fetch(`${authContext.requestHost}/api/users/confirm/${uid}/${token}`);
                 setResponse(response);
                 const interval = setInterval(()=>{
                     setAwaitTime((awaitTime) => awaitTime-1);

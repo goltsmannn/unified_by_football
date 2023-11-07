@@ -18,7 +18,7 @@ const useFavorites = ()=>{
                     }
                 }
                 try{
-                    const response = await axios.get('http://127.0.0.1:8000/api/map/favorites', config);
+                    const response = await axios.get(`${authContext.requestHost}/api/map/favorites`, config);
                     setFavoritePlacemarks(response.data);
                 }
                 catch(error){

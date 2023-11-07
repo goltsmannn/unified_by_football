@@ -19,7 +19,7 @@ const useBlackList = ()=>{
                             Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
                         }
                     }
-                    const response = await axios.get(`http://127.0.0.1:8000/api/users/blacklist`, config);
+                    const response = await axios.get(`${authContext.requestHost}/api/users/blacklist`, config);
                     setBlacklistedUsers(response.data);
                 }
                 catch(error){
