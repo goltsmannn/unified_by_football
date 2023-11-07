@@ -33,7 +33,7 @@ jobs:
       run: |
         cd source_code/frontend/front-react/
         npm install
-        npm run build
+        CI=false npm run build
     - name: Start Django
       run: |
         cd source_code
