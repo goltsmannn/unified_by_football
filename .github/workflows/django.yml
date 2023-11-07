@@ -29,3 +29,15 @@ jobs:
       run: |
         cd source_code/
         python manage.py test
+    - name: Build React
+      run: 
+        cd source_code/frontend/front-react
+        npm install
+        npm run build
+    - name: Start Django
+      run:
+        cd source_code
+        python manage.py migrate
+        python manage.py runserver
+    
+  
