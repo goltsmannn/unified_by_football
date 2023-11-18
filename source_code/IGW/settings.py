@@ -23,7 +23,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://165.22.73.102:8000',
-    'http://165.22.73.102:8000'
+    'http://unifiedbyfootball.ru:8000',
 ]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 #APPEND_SLASH = False
@@ -50,9 +50,9 @@ EMAIL_USE_SSL = False
 DEBUG = True
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = [
-    'http://unifiedbyfootball.ru',
-    'http://165.22.73.102',
-    'http://127.0.0.1'
+    'unifiedbyfootball.ru',
+    '165.22.73.102',
+    '127.0.0.1'
 ]
 INTERNAL_IPS = [
     # ...
