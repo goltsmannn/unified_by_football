@@ -57,7 +57,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
     Supports only post requests
     """
     serializer_class = UserRegisterSerializer
-
+    queryset = User.objects.all()
     def perform_create(self, serializer: UserRegisterSerializer) -> Response:
         """Created a user instance and sends an email with a confirmation link
 

@@ -9,7 +9,7 @@ const Register = () => {
         username:'',
         password:'',
         password2:'',
-        referal:'',
+        referal:1,
     });
     const [registerErrors, setRegisterErrors] = useState(null);
     const [success, setSuccess] = useState("");
@@ -121,6 +121,7 @@ const Register = () => {
                                 id="referal-field" 
                                 name="referal"
                                 placeholder="1" 
+                                default="1"
                                 onChange={(e)=>setRegisterInfo({
                                     referal: e.target.value
                                 })}
