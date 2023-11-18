@@ -36,7 +36,7 @@ const PlacemarkForm = ({coordinates, onClose}) => {
             if(placemarkPicture){
                 formData.append('main_image', placemarkPicture);
             }
-            const response = await axios.post('http://127.0.0.1:8000/api/map/placemark/post', formData, config);
+            const response = await axios.post(`${authContext.requestHost}/api/map/placemark/post`, formData, config);
         };
         fetchData();
         onClose();

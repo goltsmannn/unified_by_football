@@ -16,7 +16,7 @@ const useSubscriptions = ()=>{
                             Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
                         }
                     }
-                    const response = await axios.get(`http://127.0.0.1:8000/api/users/subscriptions`, config);
+                    const response = await axios.get(`${authContext.requestHost}/api/users/subscriptions`, config);
                     setSubscriptions(response.data);
                 }
                 catch(error){

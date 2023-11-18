@@ -14,7 +14,7 @@ const GetMessage = () => {
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
-                const response = await axios.get(`http://127.0.0.1:8000/api/users/messages/details/${message_id}`);
+                const response = await axios.get(`${authContext.requestHost}/api/users/messages/details/${message_id}`);
                 setMessage(response.data);
             }
             catch(error){
@@ -34,7 +34,7 @@ const GetMessage = () => {
                     Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}`,
                 }
             }
-            await axios.delete(`http://127.0.0.1:8000/api/users/messages/delete/${message_id}`, {}, config);
+            await axios.delete(`${authContext.requestHost}/api/users/messages/delete/${message_id}`, {}, config);
         }
         catch(error){
             console.error('error while deleting message', error);

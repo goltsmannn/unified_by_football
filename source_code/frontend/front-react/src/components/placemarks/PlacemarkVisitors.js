@@ -22,7 +22,7 @@ const PlacemarkVisitors = ({placemark}) => {
                 }
             };
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/map/activity',config);
+                const response = await axios.get(`${authContext.requestHost}/api/map/activity`, config);
                 setVisitors(response.data);
             }
             catch (error){

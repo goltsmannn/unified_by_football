@@ -19,7 +19,7 @@ const MessageList = ({filter_by})=>{
                 const config = {
                     headers: { Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` }              
                 }
-                const response = await axios.get(`http://127.0.0.1:8000/api/users/messages/all/${authContext.user.id}/${filter_by}`, config);
+                const response = await axios.get(`${authContext.requestHost}/api/users/messages/all/${authContext.user.id}/${filter_by}`, config);
                 setMessages(response.data);
             }
             catch(error){

@@ -9,7 +9,7 @@ const Register = () => {
         username:'',
         password:'',
         password2:'',
-        referal:'',
+        referal:1,
     });
     const [registerErrors, setRegisterErrors] = useState(null);
     const [success, setSuccess] = useState("");
@@ -27,7 +27,7 @@ const Register = () => {
             referal: e.target.referal.value,
         }
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/users/auth/register', data);
+            const response = await axios.post(`${authContext.requestHost}/api/users/auth/register`, data);
             setRegisterErrors(null);
             setSuccess("You were successfully registered. Check your email to activate the account.");
             setTimeout(()=>{
@@ -121,6 +121,7 @@ const Register = () => {
                                 id="referal-field" 
                                 name="referal"
                                 placeholder="1" 
+                                default="1"
                                 onChange={(e)=>setRegisterInfo({
                                     referal: e.target.value
                                 })}

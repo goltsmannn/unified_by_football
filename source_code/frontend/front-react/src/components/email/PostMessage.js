@@ -28,7 +28,7 @@ const PostMessage = () => {
             };
 
             try {
-                const response = await axios.post('http://localhost:8000/api/users/messages/create', data, config);
+                const response = await axios.post(`${authContext.requestHost}/api/users/messages/create`, data, config);
                 console.log(response.data); 
                 setMessageRecipient("");
                 setMessageText("");
