@@ -147,7 +147,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+print(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
