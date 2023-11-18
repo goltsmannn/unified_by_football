@@ -9,7 +9,7 @@ const Register = () => {
         username:'',
         password:'',
         password2:'',
-        referal:1,
+        referal:'1',
     });
     const [registerErrors, setRegisterErrors] = useState(null);
     const [success, setSuccess] = useState("");
@@ -24,7 +24,7 @@ const Register = () => {
             password: e.target.password.value,
             password2: e.target.password2.value,
             username: e.target.username.value,
-            referal: e.target.referal.value,
+            referal: e.target.referal.value?e.target.referal.value:'1',
         }
         try{
             const response = await axios.post(`${authContext.requestHost}/api/users/auth/register`, data);
