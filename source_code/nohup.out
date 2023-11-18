@@ -1,0 +1,23 @@
+unified_by_football@mail.ru HG3dApPjBwb0WKnQ7nk4
+unified_by_football@mail.ru HG3dApPjBwb0WKnQ7nk4
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 18, 2023 - 23:18:25
+Django version 4.2.3, using settings 'IGW.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+[18/Nov/2023 23:19:02] "GET / HTTP/1.1" 200 622
+[18/Nov/2023 23:19:02] "GET /static/css/main.25dd9bc5.css HTTP/1.1" 200 13652
+[18/Nov/2023 23:19:02] "GET /static/js/main.069d2ea9.js HTTP/1.1" 200 294661
+[18/Nov/2023 23:19:03] "GET /api/map/placemarks/ HTTP/1.1" 200 5307
+[18/Nov/2023 23:19:03] "GET /favicon.ico HTTP/1.1" 200 622
+[18/Nov/2023 23:19:03] "GET /static/media/logo.469aeced4d9fe34ec4fa.png HTTP/1.1" 200 12128
+[18/Nov/2023 23:19:05] "GET /favicon.ico HTTP/1.1" 200 622
+[18/Nov/2023 23:19:06] "GET /favicon.ico HTTP/1.1" 200 622
+[18/Nov/2023 23:19:07] "GET /api/map/placemarks/ HTTP/1.1" 200 5307
+[18/Nov/2023 23:19:13] "GET / HTTP/1.1" 200 622
+[18/Nov/2023 23:19:13] "GET /api/map/placemarks/ HTTP/1.1" 200 5307
+[18/Nov/2023 23:19:13] "GET /favicon.ico HTTP/1.1" 200 622
