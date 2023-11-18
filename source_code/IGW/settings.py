@@ -51,7 +51,10 @@ EMAIL_USE_SSL = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'unifiedbyfootball.ru',
+    '165.22.73.102',
+]
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
