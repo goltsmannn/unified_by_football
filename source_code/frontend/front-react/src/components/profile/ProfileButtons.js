@@ -39,7 +39,7 @@ const ProfileButtons = ({pageUser}) =>{
             }
             try{
                 console.log(data);
-                const response = await axios.post('http://127.0.0.1:8000/api/users/subscriptions', data, config);
+                const response = await axios.post(`${authContext.requestHost}/api/users/subscriptions`, data, config);
                 console.log(response.data);
             }
             catch(error){
@@ -69,7 +69,7 @@ const ProfileButtons = ({pageUser}) =>{
                 }
             }
             try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/blacklist', data, config);
+                const response = await axios.post(`${authContext.requestHost}/api/users/blacklist`, data, config);
                 console.log(response.data);
             }
             catch(error){
@@ -94,7 +94,7 @@ const ProfileButtons = ({pageUser}) =>{
                 }
             }
             try{
-                const response = await axios.post('http://127.0.0.1:8000/api/users/auth/update_user_by_token', authContext.user, config);
+                const response = await axios.post(`${authContext.requestHost}/api/users/auth/update_user_by_token`, authContext.user, config);
             }
             catch(error){
                 console.error('error while updating activity boolean value')

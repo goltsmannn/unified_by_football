@@ -2,9 +2,8 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import getAPIURL from "utils/getAPIURL";
+import useAPIURL from "utils/useAPIURL";
 const AuthContext = createContext('blank');
-let urls = await getAPIURL();
 
 
 export default AuthContext;
@@ -21,14 +20,14 @@ export const AuthProvider = ({children}) => {
     let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
     const readOnlyFields = ['email', 'id', 'is_staff', 'username', 'show_activity'];
-    
+    const requestHost = 'http://unifiedbyfootball.ru:8000';
     /**
      * Loggin the user in and setting local storage variables, context variables
      */
     let loginUser = async (e ) => {
         e.preventDefault();
         try{
-            const response = await axios.post(urls['token-access'],{
+            const response = await axios.post(`${requestHost}/api/token/`,{
                 email: e.target.email.value,
                 password: e.target.password.value,
                     },{
@@ -52,7 +51,7 @@ export const AuthProvider = ({children}) => {
         if(authToken){
             async function fetchData(){
                 try{
-                        const response = await axios.post('http://127.0.0.1:8000/api/users/auth/retrieve_user_by_token', null, {
+                        const response = await axios.post(`${requestHost}/api/users/auth/retrieve_user_by_token`, null, {
                         headers: {
                             Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
                         }
@@ -74,7 +73,7 @@ export const AuthProvider = ({children}) => {
         setUser(null);
         setAuthToken(null);
         try{
-            const response = await axios.post('http://127.0.0.1:8000/api/users/auth/logout', {}, {
+            const response = await axios.post(`${requestHost}/api/users/auth/logout`, {}, {
             headers: {
                 Authorization: `Bearer ${authToken.replaceAll('"', '')}`,
             }
@@ -87,13 +86,13 @@ export const AuthProvider = ({children}) => {
     }
 
     let contextData = {
-        urls: urls,
         loginUser: loginUser,
         user:user,
         setUser: setUser,
         logoutUser: logoutUser,
         authToken: authToken,
         readOnlyFields: readOnlyFields,
+        requestHost: requestHost,
     };
     
     return(

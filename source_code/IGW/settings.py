@@ -20,11 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
     'http://127.0.0.1:8000',
-    'http://localhost:8000'
+    'http://localhost:8000',
+    'http://165.22.73.102:8000',
+    'http://unifiedbyfootball.ru:8000',
 ]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 #APPEND_SLASH = False
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -44,11 +45,14 @@ EMAIL_USE_SSL = False
 
 
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'unifiedbyfootball.ru',
+    '165.22.73.102',
+    '127.0.0.1'
+]
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",

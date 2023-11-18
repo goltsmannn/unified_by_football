@@ -57,7 +57,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
     Supports only post requests
     """
     serializer_class = UserRegisterSerializer
-
+    queryset = User.objects.all()
     def perform_create(self, serializer: UserRegisterSerializer) -> Response:
         """Created a user instance and sends an email with a confirmation link
 
@@ -79,7 +79,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
         try:
             send_mail(
                 'Confirm your email',
-                f'Click this link to confirm your email: http://127.0.0.1:3000/{activation_url}',
+                f'Click this link to confirm your email: http://unifiedbyfootball.ru:8000/{activation_url}',
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[serializer.validated_data['email']],
             )

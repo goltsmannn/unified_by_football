@@ -21,7 +21,7 @@ const ProfileActivity = ({pageUser}) => {
                 }
             }
             try{
-                const response = await axios.get('http://127.0.0.1:8000/api/map/activity',config);
+                const response = await axios.get(`${authContext.requestHost}/api/map/activity`,config);
                 setActivity(response.data);
             }
             catch(error){
@@ -43,7 +43,7 @@ const ProfileActivity = ({pageUser}) => {
             delete: true,
         }
         try{
-            const response = await axios.post(`http://127.0.0.1:8000/api/map/activity`, data, config);
+            const response = await axios.post(`${authContext.requestHost}/api/map/activity`, data, config);
             setActivity(response.data);
         }
         catch (error) {

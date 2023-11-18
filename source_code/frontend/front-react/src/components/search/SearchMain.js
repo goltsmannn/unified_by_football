@@ -15,7 +15,7 @@ const SearchMain = () => {
     
     useEffect(()=>{
         const fetchData = async ()=>{
-            const response = await axios.get('http://127.0.0.1:8000/api/users/retrieve_users_basic_info')
+            const response = await axios.get(`${authContext.requestHost}/api/users/retrieve_users_basic_info`)
             if(response.status === 200){
                 console.log('successful user basic info request');
                 setUsers(response.data); 

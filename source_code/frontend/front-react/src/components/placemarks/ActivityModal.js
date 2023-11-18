@@ -27,12 +27,12 @@ const ActivityModal = ({setModalIsOpen, placemark}) => {
         };
         
         try{
-            const response = await axios.get(`http://127.0.0.1:8000/api/users/subscribed_at/${placemark_id}`, config);
+            const response = await axios.get(`${authContext.requestHost}/api/users/subscribed_at/${placemark_id}`, config);
             const subscribedUsers = response.data;
             for(const user of subscribedUsers){
                 console.log(user);
                 console.log({...data, recipient_username: user.username});
-                await axios.post('http://localhost:8000/api/users/messages/create', {...data, recipient_username: user.username}, config);
+                await axios.post(`${authContext.requestHost}/api/users/messages/create`, {...data, recipient_username: user.username}, config);
             }
         }
         catch(error){
@@ -55,7 +55,7 @@ const ActivityModal = ({setModalIsOpen, placemark}) => {
             }
         }
         try{
-            const response = await axios.post(`http://127.0.0.1:8000/api/map/activity`, data, config);
+            const response = await axios.post(`${authContext.requestHost}/api/map/activity`, data, config);
             setActivityError("");
             setModalIsOpen(false);
         }

@@ -20,7 +20,7 @@ const ProfileMain = () => {
     useEffect(()=>{
         const fetchData = async ()=>{
             try{
-                const response = await axios.get(`http://127.0.0.1:8000/api/users/${page_id}`);
+                const response = await axios.get(`${authContext.requestHost}/api/users/${page_id}`);
                 setPageUser(response.data);
             }
             catch(error){

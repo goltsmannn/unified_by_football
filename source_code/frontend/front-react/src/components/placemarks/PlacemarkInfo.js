@@ -20,7 +20,7 @@ const PlacemarkMain = ()=>{
 
     useEffect(()=>{
         const fetchData = async () => {
-            const response = await axios.get(`http://127.0.0.1:8000/api/map/placemarks/${placemark_id}`);
+            const response = await axios.get(`${authContext.requestHost}/api/map/placemarks/${placemark_id}`);
             if(response.status===200){
                 console.log('Placemark response correct');
                 setPlacemark(response.data);
@@ -52,7 +52,7 @@ const PlacemarkMain = ()=>{
                 }
             }
             try{
-                const response = await axios.post(`http://127.0.0.1:8000/api/map/favorites`, {placemark_id: placemark_id, delete: !check}, config);
+                const response = await axios.post(`${authContext.requestHost}/api/map/favorites`, {placemark_id: placemark_id, delete: !check}, config);
             }
             catch (error){
                 console.error('Error while adding to favorites', error);
