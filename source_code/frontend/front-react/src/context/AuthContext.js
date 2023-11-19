@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) => {
     let [authToken, setAuthToken] = useState(()=> localStorage.getItem('accessToken')?localStorage.getItem('accessToken'):null) ;
     let navigate = useNavigate();
     const readOnlyFields = ['email', 'id', 'is_staff', 'username', 'show_activity'];
-    const requestHost = 'http://unifiedbyfootball.ru:8000';
+    const requestHost = 'http://unifiedbyfootball.ru';
     /**
      * Loggin the user in and setting local storage variables, context variables
      */

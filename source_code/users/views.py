@@ -79,7 +79,7 @@ class RegisterUserAPIView(generics.CreateAPIView):
         try:
             send_mail(
                 'Confirm your email',
-                f'Click this link to confirm your email: http://unifiedbyfootball.ru:8000/{activation_url}',
+                f'Click this link to confirm your email: http://unifiedbyfootball.ru/{activation_url}',
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[serializer.validated_data['email']],
             )

@@ -8,7 +8,7 @@ accesslog = errorlog = "/var/log/gunicorn/dev.log"
 capture_output = True
 pidfile = "/var/run/gunicorn/dev.pid"
 
-bind = "0.0.0.0:8000"
+bind = "127.0.0.1:8000"
 
 reload = True
 
