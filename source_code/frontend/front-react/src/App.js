@@ -21,6 +21,9 @@ import FavoritePlacemarks from "components/placemarks/FavoritePlacemarks";
 import "./_style.css";
 import PageWrapper from "PageWrapper";
 import Verification from "components/auth/Verification";
+import PrivateRoute from "utils/AuthRequiredRoute";
+import AuthRequiredRoute from "utils/AuthRequiredRoute";
+
 
 class App extends React.Component{
 
@@ -30,7 +33,7 @@ class App extends React.Component{
         <AuthProvider>      
           {/* <UpperMenu /> */}
           <Routes>
-            <Route path="/" element = {<PageWrapper />} exact>
+            <Route path="/" element = {<AuthRequiredRoute><PageWrapper /></AuthRequiredRoute>} exact>
               <Route index element = {<MainPage />} exact></Route>
               <Route path="search" element = { <SearchMain></SearchMain>}></Route>
               <Route path="propose" element = { <ProposePlacemark/> }></Route>
@@ -40,7 +43,7 @@ class App extends React.Component{
                 <Route path="post" element = {<ReviewForm/>}></Route>
               </Route>
 
-              <Route path="message" element={<MessageMain/>}>
+              <Route path="message" element={<AuthRequiredRoute><MessageMain /></AuthRequiredRoute>}>
                 <Route index element={<MessageList filter_by="recipient"/>}></Route>
                 <Route path="submitted" element={<MessageList filter_by="sender"/>}></Route>
                 <Route path="post" element={<PostMessage/>}></Route>
