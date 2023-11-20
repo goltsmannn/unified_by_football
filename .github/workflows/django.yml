@@ -27,6 +27,7 @@ jobs:
     - name: Build React
       run: |
         cd source_code/frontend/front-react/
+        npm install
         CI=false npm run build
     - name: Prepare Django
       run: |
