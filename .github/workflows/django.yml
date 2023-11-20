@@ -20,7 +20,8 @@ jobs:
     - name: Install Dependencies
       run: |
         virtualenv venv
-        source venv/bin/activate
+        . .venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
         pip install -r requirements.txt
     - name: Run Tests
       run: |
