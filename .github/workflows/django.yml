@@ -19,6 +19,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install Dependencies
       run: |
+        virtualenv venv
+        source venv/bin/activate
         pip install -r requirements.txt
     - name: Run Tests
       run: |
