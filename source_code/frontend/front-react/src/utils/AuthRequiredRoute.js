@@ -1,6 +1,6 @@
 import AuthContext from "context/AuthContext";
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate} from "react-router-dom";
 
 
 const AuthRequiredRoute = ({children}) => {
@@ -8,8 +8,7 @@ const AuthRequiredRoute = ({children}) => {
     const navigate = useNavigate();
 
     if(!authContext.user){
-        navigate("/login");
-        return null;
+        <Navigate to="/login" />
     }
     return children;
 }
