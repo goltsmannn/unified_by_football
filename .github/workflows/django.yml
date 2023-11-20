@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: [self-hosted, linux]
+    runs-on: [self-hosted]
     strategy:
       max-parallel: 4
       matrix:
@@ -17,26 +17,31 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set SysVar
-      run : |
-        export $UNIFIEDBYFOOTBALL_EMAIL_LOGIN='unified_by_football@mail.ru'
-        export $UNIFIEDBYFOOTBALL_EMAIL_PASSWORD='HG3dApPjBwb0WKnQ7nk4'
     - name: Install Dependencies
       run: |
+        virtualenv venv
+        source venv/bin/activate
         pip install -r requirements.txt
     - name: Run Tests
       run: |
+        source venv/bin/activate
         cd source_code/
-        python manage.py test
+        python3 manage.py test
     - name: Build React
       run: |
         cd source_code/frontend/front-react/
         npm install
         CI=false npm run build
-    - name: Start Django
+    - name: Prepare Django
+      run: |
+        source venv/bin/activate
+        cd source_code
+        python3 manage.py migrate
+        python3 manage.py collectstatic
+    - name: Start server side
       run: |
         cd source_code
-        python manage.py migrate
-        python manage.py runserver 0.0.0.0:8000
+        gunicorn -c config/gunicorn/dev.py
+        systemctl restart nginx
     
   
