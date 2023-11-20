@@ -20,11 +20,11 @@ jobs:
     - name: Install Dependencies
       run: |
         virtualenv venv
-        . .venv/bin/activate
-        echo PATH=$PATH >> $GITHUB_ENV
+        source venv/bin/activate
         pip install -r requirements.txt
     - name: Run Tests
       run: |
+        source venv/bin/activate
         cd source_code/
         python3 manage.py test
     - name: Build React
@@ -34,6 +34,7 @@ jobs:
         CI=false npm run build
     - name: Prepare Django
       run: |
+        source venv/bin/activate
         cd source_code
         python3 manage.py migrate
         python3 manage.py collectstatic
