@@ -39,13 +39,15 @@ const PlacemarkVisitors = ({placemark}) => {
             <div className="border border-navbar h-full w-full my-10 rounded">
                 <h2 className="text-center text-2xl">Users on the pitch</h2>
                 {visitors.map((visit)=>{
-                const date = new Date(visit.created);
+                    const beginDT = new Date(visit.created);
+                    const tmp = new Date(visit.created);
+                    const endDT = visit.finished_early? new Date(visit.finished_early): new Date(tmp.setHours(tmp.getHours() + visit.expiry));
                     return(
                         <div>
                             <div className="flex items-center justify-center shadow shadow-active my-5 mx-2">
                                 <Link className='font-bold' to={`/profile/${visit.user.id}`}>Username: {visit.user.username} (clickable)</Link>
-                                <p>From: {date.toLocaleString()}</p>
-                                <p>To: {new Date(date.setHours(date.getHours() + visit.expiry)).toLocaleString()}</p>
+                                <p>From: {beginDT.toLocaleString()}</p>
+                                <p>To: {endDT.toLocaleString()}</p>
                             </div>
                         </div>
                     );

@@ -57,6 +57,7 @@ class Activity(models.Model):
     placemark = models.ForeignKey(Placemark, on_delete=models.CASCADE, related_name="activities")
     created = models.DateTimeField(auto_now_add=True)
     expiry = models.SmallIntegerField()
+    finished_early = models.DateTimeField(default=None, null=True)
 
 
 class Report(models.Model): 

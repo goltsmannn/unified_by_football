@@ -38,9 +38,27 @@ const ProfileActivity = ({pageUser}) => {
             }
         }
         const data = {
-            placemark_id: event.placemark.id,
-            user_id: event.user.id,
             delete: true,
+            activity_id: event.id,
+        }
+        try{
+            const response = await axios.post(`${authContext.requestHost}/api/map/activity`, data, config);
+            setActivity(response.data);
+        }
+        catch (error) {
+            console.error('Error while removing activity', error);
+        }
+    }
+
+    const handleFinishEarly = async (event) => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
+            }
+        }
+        const data = {
+            finished_early: true,
+            activity_id: event.id,
         }
         try{
             const response = await axios.post(`${authContext.requestHost}/api/map/activity`, data, config);
@@ -63,18 +81,27 @@ const ProfileActivity = ({pageUser}) => {
 <>
             {(authContext.user.id === Number(user_id) || pageUser.show_activity === true)?
                 <div id="activity-wrapper" className="bg-active mt-[20px] text-[#ffff] rounded-md p-4" > 
+                    <p>Activity List</p>
+
                     {activity?.length > 0 ?activity.map((event)=>{
-                        const date = new Date(event.created);
+                        const beginDT = new Date(event.created);
+                        const tmp = new Date(event.created);
+                        const endDT = event.finished_early? new Date(event.finished_early): new Date(tmp.setHours(tmp.getHours() + event.expiry));
                         return(<div id="activity-block">
-                            <p>Activity List</p>
                             <div id="placemark-part" className="mt-4">
                                 <p>Pitch: {event.placemark.name}</p>
-                                <p>From: {date.toLocaleString()}</p>
-                                <p>To: {new Date(date.setHours(date.getHours() + event.expiry)).toLocaleString()}</p>
-                                {(authContext.user.id === Number(user_id)) &&
-                                    <button className="bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={()=>handleRemoveActivity(event)}>Remove activity</button>
+                                <p>From: {beginDT.toLocaleString()}</p>
+                                <p>To: {endDT.toLocaleString()}</p>
+                                {(authContext.user.id === Number(user_id)) && 
+                                    <>
+                                        <button className="bg-[#cf0404] text-[#ffff] px-2 py-1 rounded-md" onClick={()=>handleRemoveActivity(event)}>Remove activity</button>
+                                        {endDT > new Date() && 
+                                            <div id="report" className=" flex flex-row-reverse justify-end justify-between">
+                                                <button className="flex justify-end text-white bg-[#cf0404] rounded p-2" onClick={()=>handleFinishEarly(event)}>Finish</button>
+                                            </div>}
+                                    </>
                                 }
-                            </div>
+                </div>
                         </div>);
                     }): <div className="text-white">No tracked activity yet...</div>}
                 </div>

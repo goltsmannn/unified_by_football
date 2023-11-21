@@ -45,7 +45,6 @@ const ActivityModal = ({setModalIsOpen, placemark}) => {
         e.preventDefault();
         const data = {
             placemark_id: placemark_id,
-            user_id: authContext.user.id,
             expiry: activityValue,
             delete: false,
         }

@@ -114,6 +114,7 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
             response = Activity.objects.filter(user__id=request.query_params.get('user_id'))
         if response is None:
             raise exceptions.APIException('Lacking details')
+        response.order_by('-created')
         return Response(GetActivitySerializer(response, many=True).data)
 
     def post(self, request) -> Response:
@@ -122,22 +123,27 @@ class ActivityAPIView(generics.ListAPIView, generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         try:
-            if serializer.validated_data['user']['id'] != request.user.id:
-                raise exceptions.APIException('User id does not match')
             if serializer.validated_data.get('delete'):
-                Activity.objects.get(user__id=serializer.validated_data['user']['id'],
-                                    placemark__id=serializer.validated_data['placemark']['id']).delete()
-                response = Activity.objects.filter(user__id=serializer.validated_data['user']['id'])
+                Activity.objects.get(pk=serializer.validated_data['activity_id']).delete()
+                response = Activity.objects.filter(user__id=request.user.id)
+                return Response(GetActivitySerializer(response, many=True).data)
+            elif serializer.validated_data.get('finished_early'):
+                activity = Activity.objects.get(pk=serializer.validated_data['activity_id'])
+                if activity.finished_early is not None:
+                    raise exceptions.APIException('ALREADY_FINISHED')
+                activity.finished_early = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+                activity.save()
+                response = Activity.objects.filter(user__id=request.user.id)
                 return Response(GetActivitySerializer(response, many=True).data)
             else:
-                last_activity = Activity.objects.filter(user__id=serializer.validated_data['user']['id']).last()
+                last_activity = Activity.objects.filter(user__id=request.user.id).last()
                 if last_activity is not None:
                     tz = pytz.timezone('Europe/Moscow')
-                    expiry = last_activity.created + datetime.timedelta(hours=last_activity.expiry)
+                    expiry = last_activity.finished_early if last_activity.finished_early else (last_activity.created + datetime.timedelta(hours=last_activity.expiry))
                     if datetime.datetime.now(tz=tz) < expiry:
                         raise exceptions.APIException('EXPIRY_ERROR')
 
-                response = Activity.objects.create(user=User.objects.get(pk=serializer.validated_data['user']['id']),
+                response = Activity.objects.create(user=User.objects.get(pk=request.user.id),
                                                     placemark=Placemark.objects.get(
                                                     pk=serializer.validated_data['placemark']['id']),
                                                     expiry=serializer.validated_data.get('expiry'))
