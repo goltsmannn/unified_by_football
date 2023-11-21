@@ -7,7 +7,7 @@ const SearchMain = () => {
     const [users, setUsers] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     const authContext = useContext(AuthContext);
-    const [filteredUsers, setFilteredUsers] = useState(users); //переписать потом под серверный поиск (для реализации в декабре) (или виртуальным скроллом) !!!
+    const [filteredUsers, setFilteredUsers] = useState([]); //переписать потом под серверный поиск (для реализации в декабре) (или виртуальным скроллом) !!!
     const [selectedRegion, setSelectedRegion] = useState('no filter');
 
     const userRegions = [
@@ -28,6 +28,7 @@ const SearchMain = () => {
             if(response.status === 200){
                 console.log('successful user basic info request');
                 setUsers(response.data); 
+                setFilteredUsers(response.data);
             }
             else{
                 console.log('failed user basic info request');
@@ -46,7 +47,6 @@ const SearchMain = () => {
     }, [searchValue, selectedRegion]);
 
 
-    console.log(users, filteredUsers);
 
     return(
         <div
