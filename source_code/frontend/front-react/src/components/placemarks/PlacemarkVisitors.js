@@ -29,7 +29,9 @@ const PlacemarkVisitors = ({placemark}) => {
                 console.error('error while getting placemark visitors', error);
             }
         }
-        fetchData();
+        if(authContext.user){
+            fetchData();
+        }
     }, [placemark]);
     
     if(visitors.length>0){
@@ -52,7 +54,7 @@ const PlacemarkVisitors = ({placemark}) => {
         );
     }
     else{
-        return(<div>No activity</div>);
+        return(authContext.user?<div>No activity</div>:<div>Sign in to Check Activity</div>);
     }
 }
 

@@ -6,6 +6,7 @@ import useFavorites from "hooks/useFavorites";
 import PlacemarkVisitors from "./PlacemarkVisitors";
 import ActivityModal from "./ActivityModal";
 import ReportModal from "./ReportModal";
+import AuthOrHidden from "utils/AuthOrHidden";
 
 
 const PlacemarkMain = ()=>{
@@ -123,12 +124,14 @@ const PlacemarkMain = ()=>{
                                             </div>
                                         </div>
                                         <div id="review-footer" className="mt-2">
-                                            <div id="report" className=" flex flex-row-reverse justify-end justify-between">
-                                                <button className="flex justify-end text-white bg-red rounded p-2" onClick={(e)=>{
-                                                    setReportModalIsOpen(true)
-                                                    setReviewId(review.id)
-                                                }}>Report</button>
-                                            </div>
+                                            <AuthOrHidden>
+                                                <div id="report" className=" flex flex-row-reverse justify-end justify-between">
+                                                    <button className="flex justify-end text-white bg-red rounded p-2" onClick={(e)=>{
+                                                        setReportModalIsOpen(true)
+                                                        setReviewId(review.id)
+                                                    }}>Report</button>
+                                                </div>
+                                            </AuthOrHidden>
                                         </div>
                                     </div>);
                                 }

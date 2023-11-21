@@ -1,16 +1,25 @@
 import AuthContext from "context/AuthContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Navigate} from "react-router-dom";
 
 
 const AuthRequiredRoute = ({children}) => {
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    if(!authContext.user){
-        <Navigate to="/login" />
+    useEffect(()=>{
+        if(authContext.user){
+            setIsAuthenticated(true);
+        }
+        else{
+            navigate('/login');
+        }
+    }, []);
+    
+    if(isAuthenticated){
+        return children;
     }
-    return children;
 }
 
 export default AuthRequiredRoute;
