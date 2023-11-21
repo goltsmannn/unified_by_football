@@ -137,9 +137,17 @@ const Register = () => {
                         className="bg-red px-1 py-1 rounded-lg text-[#ffff]"
                     >
                         {registerErrors && Object.entries(registerErrors).map((error)=>{
-                            return (<div id="register-error">
-                                {`${error[1]}`}
-                            </div>);
+                            if(error[0] === 'non_field_errors'){
+                                console.log(error[1]);
+                                return Object.entries(error[1]).map((errorText)=>{
+                                    return(<div id="register-error">
+                                        {errorText[1]}
+                                    </div>);
+                                });
+                            }
+                            else{
+                                return (<div id="register-error">{error[1]}</div>);
+                            }
                         })}
                     </div>
                     }

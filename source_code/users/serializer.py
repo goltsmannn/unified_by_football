@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from users.models import User, Message, Subscriptions, BlackList
+from django.contrib.auth.password_validation import validate_password
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -33,7 +34,7 @@ class UserRegisterSerializer(serializers.Serializer):
             raise serializers.ValidationError('Email is not unique')
         elif User.objects.filter(username=attrs['username']).first() is not None:
             raise serializers.ValidationError('Username is not unique')
-
+        validate_password(attrs['password'])
         return attrs
 
     def create(self, validated_data):
