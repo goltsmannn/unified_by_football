@@ -133,3 +133,13 @@ class Referals(models.Model):
     """Model for referals"""
     invite_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referals_from')
     invite_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referals_to')
+
+
+class PasswordResetToken(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='password_token')
+    token = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=datetime.timestamp(timezone.now()))
+
+    class Meta:
+        unique_together = ('user', 'token')

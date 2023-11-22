@@ -136,7 +136,7 @@ const Register = () => {
                         id="register-errors-list"
                         className="bg-red px-1 py-1 rounded-lg text-[#ffff]"
                     >
-                        {registerErrors && Object.entries(registerErrors).map((error)=>{
+                        {Object.entries(registerErrors).map((error)=>{
                             if(error[0] === 'non_field_errors'){
                                 console.log(error[1]);
                                 return Object.entries(error[1]).map((errorText)=>{

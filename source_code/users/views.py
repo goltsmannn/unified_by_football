@@ -17,11 +17,13 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.models import BlackList, Message, Subscriptions, User, Referals
+from users.models import BlackList, Message, Subscriptions, User, Referals, PasswordResetToken
 from users.serializer import (BasicUserInfoSerializer, BlackListSerializer,
                                 LoginSerializer, MessageSerializer,
                                 SubscriptionSerializer, UserRegisterSerializer,
                                 UserSerializer)
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 class UserViewSet(RetrieveModelMixin,
@@ -419,9 +421,50 @@ def subscribed_users(request, placemark_id: int) -> Response:
     return Response(BasicUserInfoSerializer(users, many=True).data)
 
 
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def create_password_reset_token(request) -> Response:
+    uid = urlsafe_base64_encode(force_bytes(request.user.id))
+    token = default_token_generator.make_token(request.user)
+    activation_url = f'password-reset/{uid}/{token}'
+    try:
+        send_mail(
+            'Reset your password',
+            f'Click this link to reset your password: http://unifiedbyfootball.ru/{activation_url}. The link will expire in 30 days',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[request.user.email],
+        )
+        PasswordResetToken.objects.update_or_create(
+            user=request.user,
+            token=token
+        )
+        return Response('Sent reset mail')
+    except:
+        raise exceptions.APIException('Error while sending password confirmation mail')
 
 
-
+@api_view(['POST'])
+def reset_password(request, uidb64: str,    token: str) -> Response:
+    try:
+        pk = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=pk)
+        default_token_generator.check_token(user, token)
+        password = request.data['password']
+        if request.data['password'] != request.data['password2']:
+            raise exceptions.ValidationError()
+        validate_password(password=password)
+    #    validate_password(password=request.data['password'])
+        user.set_password(request.data['password'])
+        user.save()
+        PasswordResetToken.objects.get(user=user).delete()
+        return Response('Password successfully set', status=204)
+    except ValidationError as error:
+        raise exceptions.ValidationError(error.messages)
+    except exceptions.ValidationError:
+        raise exceptions.ValidationError('Passwords do not match') 
+    except BaseException as e:
+        raise exceptions.APIException('Something went wrong when changing passwords. Check your link or wait')
+    
 
 # class ProfileApiDetail(generics.RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()

@@ -186,5 +186,5 @@ cython_debug/
 # Built Visual Studio Code Extensions
 *.vsix
 
-
+source_code/media
 #React 

@@ -82,27 +82,38 @@ const ProfileButtons = ({pageUser}) =>{
     /**
      * Hiding/showing activity from other users 
      */
-    const handleIsHiddenChange = () => {
+    const handleIsHiddenChange = async () => {
         console.log('changing visib')
         const isHiddenRealValue = !isHidden;
         setIsHidden(isHiddenRealValue);
         authContext.setUser({...authContext.user, show_activity: !isHiddenRealValue});
-        const fetchData = async () => {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
-                }
-            }
-            try{
-                const response = await axios.post(`${authContext.requestHost}/api/users/auth/update_user_by_token`, authContext.user, config);
-            }
-            catch(error){
-                console.error('error while updating activity boolean value')
+        const config = {
+            headers: {
+                Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
             }
         }
-        fetchData();
+        try{
+            const response = await axios.post(`${authContext.requestHost}/api/users/auth/update_user_by_token`, authContext.user, config);
+        }
+        catch(error){
+            console.error('error while updating activity boolean value')
+        }    
     }
 
+    const handleRequestPasswordChange = async () => {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${authContext.authToken.replaceAll('"', '')}` 
+            }
+        }
+        try{
+            await axios.post(`${authContext.requestHost}/api/users/create_password_reset_token`, {}, config);
+            document.getElementById('change-password-button').innerHTML = 'Check your email!';
+        }
+        catch (error){
+            console.error('error while creating reset token', error);
+        }
+    }
     /**
      * Looking through subscriptions of the user to find looked up profile and decide on the relationship with the current user
      */
@@ -142,7 +153,10 @@ const ProfileButtons = ({pageUser}) =>{
                     className={`mt-[30px] text-center block w-full bg-red px-1 py-2 rounded-lg text-white active:bg-active`}
                     onClick={()=>setModalIsOpen(true)}>Delete profile
                 </button>
-                <button onClick={handleIsHiddenChange}>{isHidden?"Show Activity":"Hide Activity"}</button>
+                <div className="flex justify-between">
+                    <button onClick={handleIsHiddenChange}>{isHidden?"Show Activity":"Hide Activity"}</button>
+                    <button id='change-password-button' className='text-[#000]' onClick={handleRequestPasswordChange}>Change Password</button>
+                </div>
                 {modalIsOpen && <DeleteModal closeModal={()=>setModalIsOpen(false)} />}
                 </>
             );

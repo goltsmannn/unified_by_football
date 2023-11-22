@@ -21,8 +21,7 @@ FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
-  #  'http://localhost:3000',
-
+    #'http://localhost:3000',
     'http://165.22.73.102:8000',
     'http://unifiedbyfootball.ru:8000',
 ]
@@ -68,7 +67,7 @@ EMAIL_USE_SSL = False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = [
     'unifiedbyfootball.ru',
     '165.22.73.102',

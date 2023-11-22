@@ -20,10 +20,13 @@ urlpatterns = [
     path('messages/all/<int:user_id>/<str:filter_by>', views.ListMessagesAPIView.as_view(), name='get-user-messages'),
     path('messages/create', views.CreateMessageAPIView.as_view(), name='create-message'),
     path('messages/delete/<int:message_id>', views.DeleteMessageAPIView.as_view(), name='delete-message'),
-    path('subscriptions', views.SubscriptionsAPIView.as_view(), name='subscription_get_post'),
-    path('subscribed_at/<int:placemark_id>', views.subscribed_users, name='subscribed_users'),
-    path('blacklist', views.BlackListAPIView.as_view(), name='blacklist_get_post'),
-    path('confirm/<str:uidb64>/<str:token>', views.confirm_email, name='confirm_email'),
+    path('subscriptions', views.SubscriptionsAPIView.as_view(), name='subscription-get-post'),
+    path('subscribed_at/<int:placemark_id>', views.subscribed_users, name='subscribed-users'),
+    path('blacklist', views.BlackListAPIView.as_view(), name='blacklist-get-post'),
+    path('confirm/<str:uidb64>/<str:token>', views.confirm_email, name='confirm-email'),
+    path('create_password_reset_token', views.create_password_reset_token, name='password-reset-token'),
+    path('reset_password/<str:uidb64>/<str:token>', views.reset_password, name='password-reset-page')
+    
 ] 
 
 # urlpatterns = [ 
