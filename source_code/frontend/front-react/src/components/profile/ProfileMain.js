@@ -35,12 +35,6 @@ const ProfileMain = () => {
 
 
 
-
-
-    useEffect(()=>{
-
-    },);
-
     if(pageUser){
     return(
         <div 
