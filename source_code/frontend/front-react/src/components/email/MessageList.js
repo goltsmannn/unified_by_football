@@ -41,15 +41,15 @@ const MessageList = ({filter_by})=>{
     return(
         <div className="h-[calc(100vh-56px)] w-full">
             <div className="">
-            <div id="write-message" className="my-2 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                        <Link to="/message/post">Compose Message</Link>
-                    </div>
+            <div id="write-message" className="py-4 w-full text-center bg-navbar text-[#ffff] font-bold text-xl border-2 border-lightgreen rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                <Link to="/message/post" className="pt-4 pb-4 px-24 box-border">Compose Message</Link>
+            </div>
                     {location.pathname==='/message'?
-                        <div id="submitted-messages" className="my-2 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                            <Link to="submitted">Sent Messages</Link>
+                        <div id="submitted-messages" className="py-4 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen mt-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                            <Link to="submitted" className="pt-4 pb-4 px-24 box-border">Sent Messages</Link>
                         </div>:
-                        <div id="received-messages" className="my-2 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen p-4 mb-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
-                            <Link to="/message">Received Messages</Link>
+                        <div id="received-messages" className="py-4 w-full  text-center bg-white text-active font-bold text-xl border-2 border-lightgreen mt-4 rounded-md cursor-pointer transition duration-300 ease-in-out hover:bg-accent hover:text-text hover:border-background2border">
+                            <Link to="/message" className="pt-4 pb-4 px-24 box-border">Received Messages</Link>
                         </div>          
                     }                
                 <div id="message-section-wrapper" className="mt-20 shadow shadow-active">

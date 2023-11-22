@@ -45,7 +45,7 @@ const PlacemarkVisitors = ({placemark}) => {
                     return(
                         <div>
                             <div className="flex items-center justify-center shadow shadow-active my-5 mx-2">
-                                <Link className='font-bold' to={`/profile/${visit.user.id}`}>Username: {visit.user.username} (clickable)</Link>
+                                <Link className='font-bold' to={`/profile/${visit.user.id}`}>Username: <br/> {visit.user.username} (clickable)</Link>
                                 <p>From: {beginDT.toLocaleString()}</p>
                                 <p>To: {endDT.toLocaleString()}</p>
                             </div>

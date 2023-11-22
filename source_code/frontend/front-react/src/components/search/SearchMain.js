@@ -77,24 +77,26 @@ const SearchMain = () => {
                 </form>
 
             <>{
-                    filteredUsers?.length > 0?filteredUsers.map((user)=>
-                    <div
-                        id="user-card" 
-                        className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"
-                    >
-                        <div>Username: {user.username} </div>
-                        <div>Region: {user.region}</div>
-                        <div className="mt-[20px]">
-                            <Link 
-                                className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md"
-                                to={`/profile/${user.id}`}
-                            >
-                                Navigate to the profile
-                            </Link>
+                    filteredUsers?.length > 0?filteredUsers.map((user)=>{
+                    if(user.id !== 1){
+                        return(
+                        <div id="user-card" 
+                            className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"
+                        >
+                            <div>Username: {user.username} </div>
+                            <div>Region: {user.region}</div>
+                            <div className="mt-[20px]">
+                                <Link 
+                                    className="bg-navbar text-[#ffff] text-center px-2 py-1 rounded-md"
+                                    to={`/profile/${user.id}`}
+                                >
+                                    Navigate to the profile
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                ):
+                    )}}):
                 <div className="text-3xl p-3 text-red text-center shadow shadow-red">User not found</div>}   
+                
             </>
             </div>
         </div>

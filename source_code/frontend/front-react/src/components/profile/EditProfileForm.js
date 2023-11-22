@@ -15,6 +15,18 @@ const EditProfileForm = () => {
         region: user.region,
     });
 
+    const userRegions = [
+        'CAO',
+        'NAO',
+        'NEAO',
+        'EAO',
+        'SEAO',
+        'SAO',
+        'SWAO',
+        'WAO',
+        'NWAO',
+    ];
+
 
     const inputHandler = (e) => {
         console.log('changing input)')
@@ -55,7 +67,8 @@ const EditProfileForm = () => {
     >
         {Object.keys(user).map((key)=> {
                 //проверим, что поле не входит в список readOnlyFields
-                return ((authContext.readOnlyFields.indexOf(key) === -1) && 
+                console.log(key);
+                return ((authContext.readOnlyFields.indexOf(key) === -1 && key != 'region') && 
                 <>
                     <input
                         className='mt-[10px] text-[#000] rounded-lg px-1 py-1 border border-solid border-navbar focus:outline-active'
@@ -70,7 +83,19 @@ const EditProfileForm = () => {
                 }
         )}
 
-        
+        <select
+                        className='mt-[10px] text-[#000] rounded-lg px-1 py-1 border border-solid border-navbar focus:outline-active'
+                        value={inputFields.region}
+            name='region'
+            onChange={(e)=>setInputFields({region: e.target.value})}
+            id='region-field'
+        >
+            {userRegions.map((region)=>
+                <option key={region} value={region}>{region}</option>
+            )}
+        </select> 
+        <label className="ml-[10px]" htmlFor='region-field'>Region Field</label>
+
         {/* <label htmlFor="username-field">Имя пользователя</label>
         <input type="text" name="username" id="username-field" value={user.username}></input>
         <input type="text" name="email" id="email-field"value={user.email}/>

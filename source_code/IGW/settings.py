@@ -21,7 +21,7 @@ FRONTEND_DIR = os.path.join(Path(__file__).resolve().parent.parent, 'frontend')
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
-    #'http://localhost:3000',
+  #  'http://localhost:3000',
     'http://165.22.73.102:8000',
     'http://unifiedbyfootball.ru:8000',
 ]
@@ -106,7 +106,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=3),
     'SIGNING_KEY': SECRET_KEY,  
     'ALGORITHM': 'HS256',

@@ -27,7 +27,7 @@ const LoggedUserUpperMenu = () => {
     return(
         <>
         <nav className="bg-navbar flex justify-end">
-            <ul className="flex justify-between w-full max-w-[760px] text-[#ffff] items-center py-4 px-2">
+            <ul className="flex justify-between w-full max-w-[760px] text-[#ffff] items-center py-4 px-10">
                 <li className="hover:font-medium">
                     <NavLink 
                         className={({ isActive }) => isActive ? "border border-solid border-[#24e3e3] border-[3px] rounded-lg px-2 py-1" : ""}
@@ -94,7 +94,7 @@ const LoggedUserUpperMenu = () => {
                         </li>
                     </div>
 
-                    <li >
+                    <li>
                         <NavLink
                             className='text-[#cf0404] px-4 py-1 rounded-md w-full'    
                             to="/" 
