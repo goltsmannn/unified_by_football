@@ -22,6 +22,7 @@ const ActivityModal = ({setModalIsOpen, placemark}) => {
             }
         }
         const data = {
+            user_id: 1,
             message_topic: `User ${authContext.user.username} has started activity on placemark "${placemark.name}"`,
             message_text: `The user will be there for ${activityValue} hour(-s). Please, check the activity section of the pitch for more details.`,
         };

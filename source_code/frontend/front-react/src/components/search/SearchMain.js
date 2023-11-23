@@ -78,7 +78,7 @@ const SearchMain = () => {
 
             <>{
                     filteredUsers?.length > 0?filteredUsers.map((user)=>{
-                    if(user.id !== 1){
+                    if(user.id !== 1 && user.id !== authContext.user?.id){
                         return(
                         <div id="user-card" 
                             className="px-[40px] py-[20px] text-navbar border border-solid border-2 border-navbar mg-8 rounded-md my-4"

@@ -25,6 +25,7 @@ const PostMessage = () => {
                 message_topic: messageTopic,
                 message_text: messageText,
                 recipient_username: messageRecipient,
+                user_id: authContext.user.id,
             };
 
             try {

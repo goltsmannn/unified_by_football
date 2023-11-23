@@ -246,7 +246,7 @@ class CreateMessageAPIView(generics.CreateAPIView):
         try:
             recipient = User.objects.get(username=request.data.get('recipient_username'))
             message = Message.objects.create(
-                sender=request.user,
+                sender=User.objects.get(pk=request.data.get('user_id')),
                 recipient=recipient,
                 message_text=request.data.get('message_text'),
                 message_topic=request.data.get('message_topic'),
